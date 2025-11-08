@@ -1,0 +1,257 @@
+// Gradle plugins for building the code, and general quality-of-life features
+plugins {
+  // Built-in Gradle plugins
+  id "java"
+  id "idea"
+
+  // GradleRIO to deploy/push code, etc
+  id "edu.wpi.first.GradleRIO" version "2026.0.0-alpha-1"
+
+  // Quality-of-life plugins
+  id "com.diffplug.spotless" version "8.0.0"
+  id "com.peterabeles.gversion" version "1.10.3"
+  id "net.ltgt.errorprone" version "4.3.0"
+}
+
+def final javaVersion = JavaVersion.VERSION_17
+def final robotPackage = "com.team1165.robot"
+def final robotMainClass = robotPackage + ".Main"
+def final constantsPackage = robotPackage + ".globalconstants"
+
+// Set the version of Java that the code is compatible with
+java {
+  sourceCompatibility = javaVersion
+  targetCompatibility = javaVersion
+}
+
+// Task to deploy to the RIO
+deploy {
+  targets {
+    roborio(getTargetTypeClass("RoboRIO")) {
+      team = project.frc.getTeamNumber()
+      debug = project.frc.getDebugOrDefault(false)
+
+      artifacts {
+        frcJava(getArtifactTypeClass("FRCJavaArtifact")) {
+          // Add GC changes to optimize loop times
+          final maxJavaHeapSizeMb = 100
+          jvmArgs.addAll([
+            "-XX:+UnlockExperimentalVMOptions",
+            "-XX:GCTimeRatio=5",
+            "-XX:+UseSerialGC",
+            "-XX:MaxGCPauseMillis=50",
+            "-Xmx" + maxJavaHeapSizeMb + "M",
+            "-Xms" + maxJavaHeapSizeMb + "M",
+            "-XX:+AlwaysPreTouch"
+          ])
+
+          // Run "./gradlew deploy -PprofilingMode" to run with profiling mode enabled
+          project.logger.lifecycle("Checking if performance profiling is enabled...")
+          if (frc.project.hasProperty("profilingMode")) {
+            project.logger.lifecycle("Performance profiling mode is enabled!")
+            project.logger.lifecycle("Connect JMX client to roborio-" + team + "-frc.local:1198 or " + "10." + (team / 100) + ".2" + ":1198 for roboRIO performance profiling.")
+            jvmArgs.addAll([
+              "-Dcom.sun.management.jmxremote=true",
+              "-Dcom.sun.management.jmxremote.port=1198",
+              "-Dcom.sun.management.jmxremote.local.only=false",
+              "-Dcom.sun.management.jmxremote.ssl=false",
+              "-Dcom.sun.management.jmxremote.authenticate=false",
+              "-Djava.rmi.server.hostname=10." + (team / 100) + ".2"
+            ])
+          }
+        }
+      }
+
+      // Deploy folder tasks
+      frcStaticFileDeploy(getArtifactTypeClass("FileTreeArtifact")) {
+        deleteOldFiles = true
+        directory = "/home/lvuser/deploy"
+        files = project.fileTree("src/main/deploy")
+      }
+    }
+  }
+}
+def deployArtifact = deploy.targets.roborio.artifacts.frcJava
+wpi.java.debugJni = false
+
+// Task to run the code in simulation
+simulateJavaRelease {
+  // Run "./gradlew simulateJava -PreplayMode" to run with replay mode enabled
+  project.logger.lifecycle("Checking if AdvantageKit replay mode is enabled...")
+  if (frc.project.hasProperty("replayMode")) {
+    project.logger.lifecycle("Replay mode is enabled!")
+    args "--replay"
+  }
+}
+
+// Simulation configuration, enable both the sim GUI and driver station support by default
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation().defaultEnabled = true
+
+dependencies {
+  annotationProcessor wpi.java.deps.wpilibAnnotations()
+  implementation wpi.java.deps.wpilib()
+  implementation wpi.java.vendor.java()
+
+  roborioDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.roborio)
+  roborioDebug wpi.java.vendor.jniDebug(wpi.platforms.roborio)
+
+  roborioRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.roborio)
+  roborioRelease wpi.java.vendor.jniRelease(wpi.platforms.roborio)
+
+  nativeDebug wpi.java.deps.wpilibJniDebug(wpi.platforms.desktop)
+  nativeDebug wpi.java.vendor.jniDebug(wpi.platforms.desktop)
+  simulationDebug wpi.sim.enableDebug()
+
+  nativeRelease wpi.java.deps.wpilibJniRelease(wpi.platforms.desktop)
+  nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
+  simulationRelease wpi.sim.enableRelease()
+
+  implementation "com.google.errorprone:error_prone_annotations:2.44.0"
+  errorprone("com.google.errorprone:error_prone_core:2.44.0")
+
+  testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"
+  testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.1"
+
+  // Setup AdvantageKit
+  def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
+  annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
+}
+
+// Add libraries into the jar file
+jar {
+  from {
+    configurations.runtimeClasspath.collect {
+      it.isDirectory() ? it : zipTree(it)
+    }
+  }
+  from sourceSets.main.allSource
+  manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(robotMainClass)
+  duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+// Configure jar and deploy tasks
+deployArtifact.jarTask = jar
+wpi.java.configureExecutableTasks(jar)
+wpi.java.configureTestTasks(test)
+
+tasks.withType(JavaCompile).configureEach {
+    // Configure string concat to always inline compile
+    options.compilerArgs.add "-XDstringConcat=inline"
+    options.errorprone.enabled = true
+    options.errorprone.excludedPaths = ".*/build/generated/.*"
+}
+
+// Create BuildConstants file using gversion.
+project.compileJava.dependsOn(createVersionFile)
+gversion {
+  srcDir = "src/main/java/"
+  classPackage = constantsPackage
+  className = "BuildConstants"
+  dateFormat = "yyyy-MM-dd HH:mm:ss z"
+  timeZone = "America/Phoenix"
+  indent = "  "
+}
+
+// Configure JetBrains IntelliJ IDEA support
+idea {
+  project {
+    // The project.sourceCompatibility setting is not always picked up, so we set explicitly
+    languageLevel = javaVersion
+  }
+  module {
+    // Improve development & debugging experience by having libraries' source & javadoc attached
+    downloadJavadoc = true
+    downloadSources = true
+    // Exclude the .vscode directory from indexing and search
+    excludeDirs += file(".vscode")
+  }
+}
+
+// Add replay watch task for AdvantageKit
+tasks.register("replayWatch", JavaExec) {
+  args "--replay"
+  mainClass = "org.littletonrobotics.junction.ReplayWatch"
+  classpath = sourceSets.main.runtimeClasspath
+}
+
+// Create a task to make a new commit if we are currently at an event (based on branch starting with "event")
+tasks.register("eventDeploy") {
+  doLast {
+    if (project.gradle.startParameter.taskNames.any({ it.toLowerCase().contains("deploy") })) {
+      def branchPrefix = "event"
+      def branch = "git branch --show-current".execute().text.trim()
+      def commitMessage = "Update at '${new Date().toString()}'"
+
+      if (branch.startsWith(branchPrefix)) {
+        exec {
+          workingDir(projectDir)
+          executable "git"
+          args "add", "-A"
+        }
+        exec {
+          workingDir(projectDir)
+          executable "git"
+          args "commit", "-m", commitMessage
+          ignoreExitValue = true
+        }
+
+        println "Committed to branch: '$branch'"
+        println "Commit message: '$commitMessage'"
+      } else {
+        println "Not on an event branch, skipping commit."
+      }
+    } else {
+      println "Not running deploy task, skipping commit."
+    }
+  }
+}
+createVersionFile.dependsOn(eventDeploy)
+
+// Configure Spotless code formatting
+project.compileJava.dependsOn(spotlessApply)
+spotless {
+  java {
+    target fileTree(".") {
+      include "src/**/*.java"
+      exclude "**/build/**", "**/build-*/**", "src/main/java/" + constantsPackage.replaceAll("\\.", "/") + "/BuildConstants.java"
+    }
+    toggleOffOn()
+    googleJavaFormat()
+    removeUnusedImports()
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+  groovyGradle {
+    target fileTree(".") {
+      include "**/*.gradle"
+      exclude "**/build/**", "**/build-*/**"
+    }
+    greclipse()
+    indentWithSpaces(2)
+    trimTrailingWhitespace()
+    endWithNewline()
+  }
+  json {
+    target fileTree(".") {
+      include "**/*.json"
+      exclude "**/build/**", "**/build-*/**", "**/vision_backup/**"
+    }
+    gson().indentWithSpaces(2)
+  }
+  format "misc", {
+    target fileTree(".") {
+      include "**/*.md", "**/.gitignore"
+      exclude "**/build/**", "**/build-*/**"
+    }
+    trimTrailingWhitespace()
+    indentWithSpaces(2)
+    endWithNewline()
+  }
+}
+
+// Setup testing capabilities
+test {
+  useJUnitPlatform()
+  systemProperty "junit.jupiter.extensions.autodetection.enabled", "true"
+}
