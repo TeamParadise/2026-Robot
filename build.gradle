@@ -17,6 +17,7 @@ def final javaVersion = JavaVersion.VERSION_17
 def final robotPackage = "com.team1165.robot"
 def final robotMainClass = robotPackage + ".Main"
 def final constantsPackage = robotPackage + ".globalconstants"
+def final isDeployBuild = gradle.startParameter.taskNames.any { it.toLowerCase().contains("deploy") };
 
 // Set the version of Java that the code is compatible with
 java {
@@ -60,13 +61,13 @@ deploy {
             ])
           }
         }
-      }
 
-      // Deploy folder tasks
-      frcStaticFileDeploy(getArtifactTypeClass("FileTreeArtifact")) {
-        deleteOldFiles = true
-        directory = "/home/lvuser/deploy"
-        files = project.fileTree("src/main/deploy")
+        // Deploy folder tasks
+        frcStaticFileDeploy(getArtifactTypeClass("FileTreeArtifact")) {
+          deleteOldFiles = true
+          directory = "/home/lvuser/deploy"
+          files = project.fileTree("src/main/deploy")
+        }
       }
     }
   }
@@ -136,10 +137,10 @@ wpi.java.configureExecutableTasks(jar)
 wpi.java.configureTestTasks(test)
 
 tasks.withType(JavaCompile).configureEach {
-    // Configure string concat to always inline compile
-    options.compilerArgs.add "-XDstringConcat=inline"
-    options.errorprone.enabled = true
-    options.errorprone.excludedPaths = ".*/build/generated/.*"
+  // Configure string concat to always inline compile
+  options.compilerArgs.add "-XDstringConcat=inline"
+  options.errorprone.enabled = true
+  options.errorprone.excludedPaths = ".*/build/generated/.*"
 }
 
 // Create BuildConstants file using gversion.
@@ -178,7 +179,7 @@ tasks.register("replayWatch", JavaExec) {
 // Create a task to make a new commit if we are currently at an event (based on branch starting with "event")
 tasks.register("eventDeploy") {
   doLast {
-    if (project.gradle.startParameter.taskNames.any({ it.toLowerCase().contains("deploy") })) {
+    if (isDeployBuild) {
       def branchPrefix = "event"
       def branch = "git branch --show-current".execute().text.trim()
       def commitMessage = "Update at '${new Date().toString()}'"
@@ -228,8 +229,8 @@ spotless {
       exclude "**/build/**", "**/build-*/**"
     }
     greclipse()
-    indentWithSpaces(2)
     trimTrailingWhitespace()
+    leadingTabsToSpaces(2)
     endWithNewline()
   }
   json {
@@ -237,6 +238,7 @@ spotless {
       include "**/*.json"
       exclude "**/build/**", "**/build-*/**", "**/vision_backup/**"
     }
+    trimTrailingWhitespace()
     gson().indentWithSpaces(2)
   }
   format "misc", {
@@ -245,7 +247,7 @@ spotless {
       exclude "**/build/**", "**/build-*/**"
     }
     trimTrailingWhitespace()
-    indentWithSpaces(2)
+    leadingTabsToSpaces(2)
     endWithNewline()
   }
 }
