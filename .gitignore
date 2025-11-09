@@ -320,7 +320,7 @@ BuildConstants.java
 # === Entries from WPILib team ===
 # The following gitignore entries have been specially created by the WPILib development team.
 
-# Simulation GUI and other tools window save file
+# Simulation GUI and other tools
 *-window.json
 simgui*.json
 networktables.json
