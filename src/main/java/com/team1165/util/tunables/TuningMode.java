@@ -10,36 +10,18 @@ package com.team1165.util.tunables;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public final class TuningMode {
-  private static final boolean currentStatus;
-  private static final LoggedNetworkBoolean requestedStatus;
-
-  /** Static initialization to set the current tunable mode status. */
-  static {
-    // TODO: Actually add the code to find if tunable mode was previously enabled and enable it
-    currentStatus = false;
-    futureStatus = new LoggedNetworkBoolean("Tuning/Enabled", currentStatus);
-  }
+  private static final LoggedNetworkBoolean enabled = new LoggedNetworkBoolean("Tuning/Enabled", false);
+  private static final Tunable[] tunables;
 
   /** Private in order to prevent instantization. */
   private TuningMode() {}
 
   /**
-   * Returns whether the code is currently in tuning mode
+   * Returns whether the code is currently in tuning mode.
    *
    * @return If tuning mode is enabled.
    */
   public static boolean get() {
-    return currentStatus;
-  }
-
-  /**
-   * Returns the tuning mode setting requested by the user.
-   *
-   * <p>This value represents the requested tuning mode configured through NetworkTables.
-   *
-   * @return If tuning mode has been requested.
-   */
-  public static boolean getRequestedStatus() {
-    return requestedStatus.get();
+    return enabled;
   }
 }
