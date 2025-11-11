@@ -8,10 +8,10 @@
 package com.team1165.util.tunables;
 
 /**
- * Interface for a tunable value, which is a value that can be adjusted in real time while the robot
- * is running, provided that {@link TuningMode} is enabled.
+ * Abstract class for a tunable value, which is a value that can be adjusted in real time while the
+ * robot is running, provided that {@link TuningMode} is enabled.
  */
-public interface Tunable {
+public abstract class Tunable {
 
   /**
    * Updates the tuning mode status for this value.
@@ -22,5 +22,5 @@ public interface Tunable {
    *
    * @param enabled {@code true} to enable tuning mode, {@code false} to disable tuning mode.
    */
-  protected void updateTuningMode(boolean enabled);
+  protected abstract void updateTuningMode(boolean enabled);
 }

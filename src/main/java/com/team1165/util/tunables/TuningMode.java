@@ -7,11 +7,15 @@
 
 package com.team1165.util.tunables;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public final class TuningMode {
-  private static final LoggedNetworkBoolean enabled = new LoggedNetworkBoolean("Tuning/Enabled", false);
-  private static final Tunable[] tunables;
+  private static final LoggedNetworkBoolean enabled =
+      new LoggedNetworkBoolean("Tuning/Enabled", false);
+  private static Tunable[] tunables;
 
   /** Private in order to prevent instantization. */
   private TuningMode() {}
@@ -22,6 +26,13 @@ public final class TuningMode {
    * @return If tuning mode is enabled.
    */
   public static boolean get() {
-    return enabled;
+    return enabled.get();
+  }
+
+  protected static void registerTunables(Tunable... newTunables) {
+    tunables =
+        Stream.concat(Arrays.stream(tunables), Arrays.stream(newTunables))
+            .distinct()
+            .toArray(Tunable[]::new);
   }
 }
