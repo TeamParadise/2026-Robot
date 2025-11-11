@@ -9,9 +9,9 @@ package com.team1165.util.tunables;
 
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
-public final class TunableModeToggle {
-  private final static boolean currentStatus;
-  private final static LoggedNetworkBoolean futureStatus;
+public final class TuningMode {
+  private static final boolean currentStatus;
+  private static final LoggedNetworkBoolean requestedStatus;
 
   /** Static initialization to set the current tunable mode status. */
   static {
@@ -21,7 +21,25 @@ public final class TunableModeToggle {
   }
 
   /** Private in order to prevent instantization. */
-  private TunableModeToggle() {
+  private TuningMode() {}
 
+  /**
+   * Returns whether the code is currently in tuning mode
+   *
+   * @return If tuning mode is enabled.
+   */
+  public static boolean get() {
+    return currentStatus;
+  }
+
+  /**
+   * Returns the tuning mode setting requested by the user.
+   *
+   * <p>This value represents the requested tuning mode configured through NetworkTables.
+   *
+   * @return If tuning mode has been requested.
+   */
+  public static boolean getRequestedStatus() {
+    return requestedStatus.get();
   }
 }
