@@ -9,7 +9,6 @@ package com.team1165.util.tunables;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
-
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 public final class TuningMode {
