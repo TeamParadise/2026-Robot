@@ -16,7 +16,7 @@ public final class TuningMode {
       new LoggedNetworkBoolean("Tuning/Enabled", false);
   private static Tunable[] tunables;
 
-  /** Private in order to prevent instantization. */
+  /** Private constructor in order to prevent instantization. */
   private TuningMode() {}
 
   /**
@@ -28,7 +28,7 @@ public final class TuningMode {
     return enabled.get();
   }
 
-  protected static void registerTunables(Tunable... newTunables) {
+  static void registerTunables(Tunable... newTunables) {
     tunables =
         Stream.concat(Arrays.stream(tunables), Arrays.stream(newTunables))
             .distinct()

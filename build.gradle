@@ -17,7 +17,7 @@ def final javaVersion = JavaVersion.VERSION_17
 def final robotPackage = "com.team1165.robot"
 def final robotMainClass = robotPackage + ".Main"
 def final constantsPackage = robotPackage + ".globalconstants"
-def final isDeployBuild = gradle.startParameter.taskNames.any { it.toLowerCase().contains("deploy") };
+def final isDeployBuild = gradle.startParameter.taskNames.any { it.toLowerCase().contains("deploy") }
 
 // Set the version of Java that the code is compatible with
 java {
@@ -81,7 +81,7 @@ simulateJavaRelease {
   project.logger.lifecycle("Checking if AdvantageKit replay mode is enabled...")
   if (frc.project.hasProperty("replayMode")) {
     project.logger.lifecycle("Replay mode is enabled!")
-    args "--replay"
+    jvmArgs "-DreplayMode=true"
   }
 }
 
@@ -171,7 +171,8 @@ idea {
 
 // Add replay watch task for AdvantageKit
 tasks.register("replayWatch", JavaExec) {
-  args "--replay"
+  project.logger.lifecycle("Replay watch is enabled!")
+  jvmArgs "-DreplayMode=true"
   mainClass = "org.littletonrobotics.junction.ReplayWatch"
   classpath = sourceSets.main.runtimeClasspath
 }

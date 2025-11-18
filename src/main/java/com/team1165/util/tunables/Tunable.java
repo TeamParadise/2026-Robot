@@ -12,7 +12,6 @@ package com.team1165.util.tunables;
  * robot is running, provided that {@link TuningMode} is enabled.
  */
 public abstract class Tunable {
-
   /**
    * Updates the tuning mode status for this value.
    *

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
+ * Copyright (c) 2025-2026 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
  *
  * Use of this source code is governed by the MIT License, which can be found in the LICENSE file at
  * the root directory of this project.
@@ -19,8 +19,8 @@ public class TunableNumber extends Tunable {
   /**
    * Constructs a new {@link TunableNumber}.
    *
-   * @param dashboardKey The key to put the value under in NetworkTables and the log.
-   * @param value The deafult value for the number.
+   * @param key The key to put the value under in NetworkTables and the log.
+   * @param value The default value for the number.
    */
   public TunableNumber(String key, double value) {
     // Assign values
