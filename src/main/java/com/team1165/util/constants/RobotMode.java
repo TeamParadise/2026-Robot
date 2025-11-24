@@ -16,7 +16,10 @@ public final class RobotMode {
 
   // Static initialization block
   static {
-    robotMode = RobotBase.isReal() ? Mode.REAL : (Boolean.getBoolean("replayMode") ? Mode.REPLAY : Mode.SIM);
+    robotMode =
+        RobotBase.isReal()
+            ? Mode.REAL
+            : (Boolean.getBoolean("replayMode") ? Mode.REPLAY : Mode.SIM);
   }
 
   /** Private constructor in order to prevent instantization. */
