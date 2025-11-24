@@ -22,7 +22,7 @@ public final class RobotMode {
             : (Boolean.getBoolean("replayMode") ? Mode.REPLAY : Mode.SIM);
   }
 
-  /** Private constructor in order to prevent instantization. */
+  /** Private constructor in order to prevent instantiation. */
   private RobotMode() {}
 
   /**
