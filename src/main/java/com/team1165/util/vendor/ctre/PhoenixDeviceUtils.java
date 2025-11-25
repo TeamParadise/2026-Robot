@@ -8,7 +8,7 @@
 package com.team1165.util.vendor.ctre;
 
 /** Class containing various utilities to interface with CTR Electronics Phoenix 6 devices. */
-public final class PhoenixUtil {
+public final class PhoenixDeviceUtils {
   /** Private constructor in order to prevent instantiation. */
-  private PhoenixUtil() {}
+  private PhoenixDeviceUtils() {}
 }
