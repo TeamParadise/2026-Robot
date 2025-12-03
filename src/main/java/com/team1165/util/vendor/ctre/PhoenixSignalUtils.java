@@ -184,8 +184,7 @@ public final class PhoenixSignalUtils {
    */
   public static boolean tryUntilOk(int maxAttempts, Supplier<StatusCode> method) {
     for (int i = 0; i < maxAttempts; i++) {
-      var error = method.get();
-      if (error.isOK()) return true;
+      if (method.get().isOK()) return true;
     }
     return false;
   }
