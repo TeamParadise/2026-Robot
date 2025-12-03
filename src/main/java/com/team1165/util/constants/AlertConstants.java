@@ -14,5 +14,5 @@ package com.team1165.util.constants;
 public class AlertConstants {
   public static final String debug = "Debug";
   public static final String general = "General";
-  public static final String init = "Init";
+  public static final String init = "Initialization";
 }
