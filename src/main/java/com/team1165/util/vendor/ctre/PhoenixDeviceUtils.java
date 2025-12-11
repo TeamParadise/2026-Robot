@@ -99,7 +99,7 @@ public final class PhoenixDeviceUtils {
                   + "\" (ID: "
                   + config.canId()
                   + ") configuration has failed. Unexpected behavior may occur.",
-              AlertType.kWarning)
+              AlertType.kError)
           .set(true);
     }
 

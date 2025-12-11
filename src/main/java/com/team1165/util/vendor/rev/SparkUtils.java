@@ -16,6 +16,8 @@ import com.revrobotics.spark.SparkMax;
 import com.team1165.util.constants.AlertConstants;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 /** Class containing various utilities to interface with SPARK motor controllers. */
@@ -61,9 +63,120 @@ public class SparkUtils {
           .set(true);
     }
 
-    // TODO: Consider doing some sort of default configuration with encoder filtering
-
     return spark;
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @param errorMethod A method to call if an error is reported.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static boolean ifOkOrDefault(
+      SparkBase spark, BooleanSupplier supplier, boolean defaultValue, Runnable errorMethod) {
+    var value = supplier.getAsBoolean();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      errorMethod.run();
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static boolean ifOkOrDefault(
+      SparkBase spark, BooleanSupplier supplier, boolean defaultValue) {
+    var value = supplier.getAsBoolean();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @param errorMethod A method to call if an error is reported.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static double ifOkOrDefault(
+      SparkBase spark, DoubleSupplier supplier, double defaultValue, Runnable errorMethod) {
+    var value = supplier.getAsDouble();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      errorMethod.run();
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static double ifOkOrDefault(
+      SparkBase spark, DoubleSupplier supplier, double defaultValue) {
+    var value = supplier.getAsDouble();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @param errorMethod A method to call if an error is reported.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static <T> T ifOkOrDefault(
+      SparkBase spark, Supplier<T> supplier, T defaultValue, Runnable errorMethod) {
+    var value = supplier.get();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      errorMethod.run();
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
+   *
+   * @param spark The {@link SparkBase} that the value is from.
+   * @param supplier The value to attempt to get from the SPARK.
+   * @param defaultValue The default value to be returned if the value is invalid.
+   * @return The value from the SPARK, or the default if the value is invalid.
+   */
+  public static <T> T ifOkOrDefault(SparkBase spark, Supplier<T> supplier, T defaultValue) {
+    var value = supplier.get();
+    if (spark.getLastError() == REVLibError.kOk) {
+      return value;
+    } else {
+      return defaultValue;
+    }
   }
 
   /**
