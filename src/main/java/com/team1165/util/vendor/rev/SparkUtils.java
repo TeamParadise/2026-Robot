@@ -66,6 +66,8 @@ public class SparkUtils {
     return spark;
   }
 
+  // ifOkOrDefault() methods are used because of:
+  // https://www.chiefdelphi.com/t/advantagekit-2024-log-replay-again/442968/193
   /**
    * Returns a value from a SPARK ({@link SparkBase}, or the default if the value is invalid.
    *
