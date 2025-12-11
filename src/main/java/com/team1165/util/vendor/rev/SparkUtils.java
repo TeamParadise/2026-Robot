@@ -21,7 +21,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 /** Class containing various utilities to interface with SPARK motor controllers. */
-public class SparkUtils {
+public final class SparkUtils {
   /** Private constructor in order to prevent instantiation. */
   private SparkUtils() {}
 
