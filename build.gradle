@@ -1,3 +1,6 @@
+import edu.wpi.first.gradlerio.GradleRIOPlugin
+import groovy.json.JsonSlurper
+
 // Gradle plugins for building the code, and general quality-of-life features
 plugins {
   // Built-in Gradle plugins
@@ -115,7 +118,7 @@ dependencies {
   testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.1"
 
   // Setup AdvantageKit
-  def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
+  def akitJson = new JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
   annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 }
 
@@ -127,7 +130,7 @@ jar {
     }
   }
   from sourceSets.main.allSource
-  manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(robotMainClass)
+  manifest GradleRIOPlugin.javaManifest(robotMainClass)
   duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
@@ -186,12 +189,12 @@ tasks.register("eventDeploy") {
       def commitMessage = "Update at '${new Date().toString()}'"
 
       if (branch.startsWith(branchPrefix)) {
-        exec {
+        project.services.get(ExecOperations).exec {
           workingDir(projectDir)
           executable "git"
           args "add", "-A"
         }
-        exec {
+        project.services.get(ExecOperations).exec {
           workingDir(projectDir)
           executable "git"
           args "commit", "-m", commitMessage

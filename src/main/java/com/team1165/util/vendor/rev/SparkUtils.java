@@ -32,7 +32,6 @@ public final class SparkUtils {
    * @param config The full config for the SPARK motor controller.
    * @return The new {@link SparkBase} created.
    */
-  @SuppressWarnings("resource")
   public static SparkBase createNewSpark(SparkConfig config) {
     // Create the SPARK based on the model provided
     final var spark =

@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 
 /** Class containing various utilities to interface with CTR Electronics Phoenix 6 devices. */
-@SuppressWarnings("resource")
 public final class PhoenixDeviceUtils {
   /** Number of times to attempt configuration before failing. */
   private static final int configAttempts = 5;
