@@ -11,7 +11,7 @@ plugins {
   id "edu.wpi.first.GradleRIO" version "2026.1.1-beta-1"
 
   // Quality-of-life plugins
-  id "com.diffplug.spotless" version "8.0.0"
+  id "com.diffplug.spotless" version "8.1.0"
   id "com.peterabeles.gversion" version "1.10.3"
   id "net.ltgt.errorprone" version "4.3.0"
 }
@@ -111,8 +111,8 @@ dependencies {
   nativeRelease wpi.java.vendor.jniRelease(wpi.platforms.desktop)
   simulationRelease wpi.sim.enableRelease()
 
-  implementation "com.google.errorprone:error_prone_annotations:2.44.0"
-  errorprone("com.google.errorprone:error_prone_core:2.44.0")
+  implementation "com.google.errorprone:error_prone_annotations:2.42.0"
+  errorprone("com.google.errorprone:error_prone_core:2.42.0")
 
   testImplementation "org.junit.jupiter:junit-jupiter:6.0.1"
   testRuntimeOnly "org.junit.platform:junit-platform-launcher:6.0.1"
@@ -236,14 +236,6 @@ spotless {
     trimTrailingWhitespace()
     leadingTabsToSpaces(2)
     endWithNewline()
-  }
-  json {
-    target fileTree(".") {
-      include "**/*.json"
-      exclude "**/build/**", "**/build-*/**", "**/vision_backup/**"
-    }
-    trimTrailingWhitespace()
-    gson().indentWithSpaces(2)
   }
   format "misc", {
     target fileTree(".") {
