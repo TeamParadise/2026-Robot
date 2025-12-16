@@ -9,4 +9,22 @@ package com.team1165.util.statemachine.v2;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class StateMachine<M extends StateMachine<M, S>, S extends State<M>> extends SubsystemBase {}
+public abstract class StateMachine<S extends Enum<S>> extends SubsystemBase {
+  protected final String name;
+  private S currentState;
+  private boolean initialized = false;
+  private double lastStateChangeTimestamp = 0.0;
+
+  protected StateMachine(S initialState) {
+    currentState = initialState;
+    name = getName();
+  }
+
+  protected void beforeTransition(S newState) {}
+
+  protected void afterTransition() {}
+
+  protected void whileInState() {}
+
+  protected void setState(S newState) {}
+}
