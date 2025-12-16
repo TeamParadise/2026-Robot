@@ -27,7 +27,7 @@ public final class PhoenixDeviceUtils {
   /** Number of times to attempt configuration before failing. */
   private static final int configAttempts = 5;
 
-  /** Private constructor in order to prevent instantiation. */
+  /** Private constructor to prevent instantiation. */
   private PhoenixDeviceUtils() {}
 
   /**

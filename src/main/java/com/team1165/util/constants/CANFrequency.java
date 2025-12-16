@@ -9,7 +9,7 @@ package com.team1165.util.constants;
 
 import com.ctre.phoenix6.CANBus;
 
-/** Enum to provide preset CAN bus frequencies, for both CAN FD and CAN 2.0. */
+/** Enum to provide preset CAN bus frequencies for both CAN FD and CAN 2.0. */
 public enum CANFrequency {
   /** Fast frequency for values actually used in the code. */
   FAST(250, 100),

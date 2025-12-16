@@ -16,7 +16,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 
 /** Class to store record-based configs for CTR Electronics Phoenix 6 devices. */
 public final class PhoenixDeviceConfigs {
-  /** Private constructor in order to prevent instantiation. */
+  /** Private constructor to prevent instantiation. */
   private PhoenixDeviceConfigs() {}
 
   /**

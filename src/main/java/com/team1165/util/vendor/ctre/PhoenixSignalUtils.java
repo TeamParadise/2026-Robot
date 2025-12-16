@@ -61,7 +61,7 @@ public final class PhoenixSignalUtils {
   /** Array of all {@link BusSignals} created by registering signals. */
   private static BusSignals[] busSignals = new BusSignals[0];
 
-  /** Private constructor in order to prevent instantiation. */
+  /** Private constructor to prevent instantiation. */
   private PhoenixSignalUtils() {}
 
   /** Refreshes all signals registered through this class. */

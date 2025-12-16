@@ -22,7 +22,7 @@ import java.util.function.Supplier;
 
 /** Class containing various utilities to interface with SPARK motor controllers. */
 public final class SparkUtils {
-  /** Private constructor in order to prevent instantiation. */
+  /** Private constructor to prevent instantiation. */
   private SparkUtils() {}
 
   /**
