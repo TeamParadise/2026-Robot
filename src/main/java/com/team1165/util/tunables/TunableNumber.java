@@ -36,6 +36,16 @@ public class TunableNumber extends Tunable {
   }
 
   /**
+   * Returns whether the value has changed since the last check.
+   *
+   * @param id Unique identifier for the caller to avoid conflicts when shared between multiple
+   *     objects. The recommended approach is to pass the result of {@code hashCode()}.
+   */
+  public boolean hasChanged(int id) {
+    return value.hasChanged(id);
+  }
+
+  /**
    * Updates the tuning mode status using the status from {@link TuningManager}.
    *
    * @param value The value to provide to the new {@link NumberWrapper}.

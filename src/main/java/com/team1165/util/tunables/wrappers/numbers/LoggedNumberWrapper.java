@@ -7,6 +7,8 @@
 
 package com.team1165.util.tunables.wrappers.numbers;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 /**
@@ -15,6 +17,9 @@ import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
  * @see LoggedNetworkNumber
  */
 public class LoggedNumberWrapper extends LoggedNetworkNumber implements NumberWrapper {
+  /** Map to store if the number has changed since the last check from any individual Object. */
+  private final Map<Integer, Double> lastValues = new HashMap<>();
+
   /**
    * Creates a new {@link LoggedNumberWrapper}
    *
@@ -24,5 +29,18 @@ public class LoggedNumberWrapper extends LoggedNetworkNumber implements NumberWr
    */
   public LoggedNumberWrapper(String key, double defaultValue) {
     super(key, defaultValue);
+  }
+
+  public boolean hasChanged(int id) {
+    double currentValue = get();
+    Double lastValue = lastValues.get(id);
+
+    // Check if the method has never been run with given ID or if the value has changed
+    if (lastValue == null || currentValue != lastValue) {
+      lastValues.put(id, currentValue);
+      return true;
+    }
+
+    return false;
   }
 }

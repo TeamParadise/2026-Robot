@@ -15,7 +15,7 @@ public class StaticNumberWrapper implements NumberWrapper {
   /**
    * Creates a {@link StaticNumberWrapper}.
    *
-   * @param value The default value for the number.
+   * @param value The value of the number.
    */
   public StaticNumberWrapper(double value) {
     this.value = value;

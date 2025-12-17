@@ -13,4 +13,14 @@ import com.team1165.util.tunables.TunableNumber;
 public interface NumberWrapper {
   /** Returns the current value. */
   double get();
+
+  /**
+   * Returns whether the value has changed since the last check.
+   *
+   * @param id Unique identifier for the caller to avoid conflicts when shared between multiple
+   *     objects. The recommended approach is to pass the result of {@code hashCode()}.
+   */
+  default boolean hasChanged(int id) {
+    return false;
+  }
 }
