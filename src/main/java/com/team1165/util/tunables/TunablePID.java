@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
+ * Copyright (c) 2025-2026 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
  *
  * Use of this source code is governed by the MIT License, which can be found in the LICENSE file at
  * the root directory of this project.
@@ -16,7 +16,8 @@ import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
 import edu.wpi.first.math.controller.PIDController;
 
 /**
- * Class for a set of tunable PID constants, which can be adjusted in real time while the robot is running, if {@link TuningManager} is enabled, or return a static value otherwise.
+ * Class for a set of tunable PID values, which can be adjusted in real time while the robot is
+ * running, if {@link TuningManager} is enabled, or return a static value otherwise.
  */
 public class TunablePID extends Tunable {
   protected final String key;
@@ -68,44 +69,27 @@ public class TunablePID extends Tunable {
     this(key, gains.kP, gains.kI, gains.kD);
   }
 
-  /**
-   * Returns the current {@code kP} (proportional gain) value.
-   */
+  /** Returns the current {@code kP} (proportional gain) value. */
   public double getP() {
     return kP.get();
   }
 
-  /**
-   * Returns the current {@code kI} (integral gain) value.
-   */
+  /** Returns the current {@code kI} (integral gain) value. */
   public double getI() {
     return kI.get();
   }
 
-  /**
-   * Returns the current {@code kD} (derivative gain) value.
-   */
+  /** Returns the current {@code kD} (derivative gain) value. */
   public double getD() {
     return kD.get();
   }
 
-  /**
-   * Returns a new {@link ClosedLoopConfig} with the current PID values.
-   */
-  public ClosedLoopConfig getClosedLoopConfig() {
-    return new ClosedLoopConfig().pid(kP.get(), kI.get(), kD.get());
-  }
-
-  /**
-   * Returns a new {@link Slot0Configs} with the current PID values.
-   */
+  /** Returns a new {@link Slot0Configs} with the current PID values. */
   public Slot0Configs getSlot0Configs() {
     return new Slot0Configs().withKP(kP.get()).withKI(kI.get()).withKD(kD.get());
   }
 
-  /**
-   * Returns a new {@link SlotConfigs} with the current PID values.
-   */
+  /** Returns a new {@link SlotConfigs} with the current PID values. */
   public SlotConfigs getSlotConfigs() {
     return new SlotConfigs().withKP(kP.get()).withKI(kI.get()).withKD(kD.get());
   }
