@@ -12,8 +12,8 @@ import com.team1165.util.tunables.wrappers.numbers.NumberWrapper;
 import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
 
 /**
- * Class for a tunable number, which is a number that can be adjusted in real time while the
- * robot is running, if {@link TuningManager} is enabled, or return a static value otherwise.
+ * Class for a tunable number, which is a number that can be adjusted in real time while the robot
+ * is running, if {@link TuningManager} is enabled, or return a static value otherwise.
  */
 public class TunableNumber extends Tunable {
   private final String key;
@@ -27,6 +27,7 @@ public class TunableNumber extends Tunable {
    */
   public TunableNumber(String key, double value) {
     this.key = TuningManager.tuningKey + key;
+    // Create initial NumberWrapper
     updateTuningMode(value);
   }
 
@@ -51,7 +52,8 @@ public class TunableNumber extends Tunable {
    * @param value The value to provide to the new {@link NumberWrapper}.
    */
   private void updateTuningMode(double value) {
-    this.value = TuningManager.get() ? new LoggedNumberWrapper(key, value) : new StaticNumberWrapper(value);
+    this.value =
+        TuningManager.get() ? new LoggedNumberWrapper(key, value) : new StaticNumberWrapper(value);
   }
 
   void updateTuningMode() {
