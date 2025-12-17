@@ -10,25 +10,41 @@ package com.team1165.util.tunables;
 import com.team1165.util.tunables.wrappers.numbers.LoggedNumberWrapper;
 import com.team1165.util.tunables.wrappers.numbers.NumberWrapper;
 import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
+/**
+ * Class for a tunable number, which is a number that can be adjusted in real time while the
+ * robot is running, if {@link TuningManager} is enabled, or return a static value otherwise.
+ */
 public class TunableNumber extends Tunable {
-  private String key;
+  private final String key;
   private NumberWrapper value;
 
   /**
-   * Constructs a new {@link TunableNumber}.
+   * Creates a new {@link TunableNumber}.
    *
-   * @param key The key to put the value under in NetworkTables and the log.
+   * @param key The key to put the value under in the "Tuning" key on the dashboard.
    * @param value The default value for the number.
    */
   public TunableNumber(String key, double value) {
-    // Assign values
-    this.key = "/Tuning/" + key;
-    this.value = new StaticNumberWrapper(value);
+    this.key = TuningManager.tuningKey + key;
+    updateTuningMode(value);
+  }
+
+  /**
+   * Updates the tuning mode status using the status from {@link TuningManager}.
+   *
+   * @param value The value to provide to the new {@link NumberWrapper}.
+   */
+  private void updateTuningMode(double value) {
+    this.value = TuningManager.get() ? new LoggedNumberWrapper(key, value) : new StaticNumberWrapper(value);
   }
 
   protected void updateTuningMode() {
-    value = TunableManager.get() ? new LoggedNumberWrapper(key, value.get()) : new StaticNumberWrapper(value.get());
+    updateTuningMode(value.get());
+  }
+
+  /** Returns the current value. */
+  public double get() {
+    return value.get();
   }
 }
