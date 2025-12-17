@@ -7,14 +7,14 @@
 
 package com.team1165.util.tunables;
 
+import com.team1165.util.tunables.wrappers.numbers.LoggedNumberWrapper;
+import com.team1165.util.tunables.wrappers.numbers.NumberWrapper;
+import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
 import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 public class TunableNumber extends Tunable {
-  private final String key;
-
-  private double baseValue;
-  private LoggedNetworkNumber number;
-  private boolean tuningMode;
+  private String key;
+  private NumberWrapper value;
 
   /**
    * Constructs a new {@link TunableNumber}.
@@ -25,21 +25,10 @@ public class TunableNumber extends Tunable {
   public TunableNumber(String key, double value) {
     // Assign values
     this.key = "/Tuning/" + key;
-    this.baseValue = value;
-
-    // Register tunable with TuningMode
-    TuningMode.registerTunables(this);
+    this.value = new StaticNumberWrapper(value);
   }
 
-  protected void updateTuningMode(boolean enabled) {
-    if (tuningMode != enabled) {
-      tuningMode = enabled;
-
-      if (tuningMode && number == null) {
-        number = new LoggedNetworkNumber(key, baseValue);
-      } else if (!tuningMode && number != null) {
-        baseValue = number.get();
-      }
-    }
+  protected void updateTuningMode() {
+    value = TunableManager.get() ? new LoggedNumberWrapper(key, value.get()) : new StaticNumberWrapper(value.get());
   }
 }

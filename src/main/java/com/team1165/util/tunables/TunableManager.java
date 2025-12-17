@@ -11,13 +11,13 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
-public final class TuningMode {
+public final class TunableManager {
   private static final LoggedNetworkBoolean enabled =
       new LoggedNetworkBoolean("Tuning/Enabled", false);
   private static Tunable[] tunables;
 
-  /** Private constructor in order to prevent instantization. */
-  private TuningMode() {}
+  /** Private constructor to prevent instantization. */
+  private TunableManager() {}
 
   /**
    * Returns whether the code is currently in tuning mode.

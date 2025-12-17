@@ -9,17 +9,20 @@ package com.team1165.util.tunables;
 
 /**
  * Abstract class for a tunable value, which is a value that can be adjusted in real time while the
- * robot is running, provided that {@link TuningMode} is enabled.
+ * robot is running, provided that {@link TunableManager} is enabled.
  */
 public abstract class Tunable {
+  protected Tunable() {
+    // Register Tunable with TunableManager
+    TunableManager.registerTunables(this);
+  }
+
   /**
-   * Updates the tuning mode status for this value.
+   * Updates the tuning mode status using the status from {@link TunableManager}.
    *
    * <p>When tuning mode is enabled for the first time, this tunable will begin logging and
    * outputting its default value and allow tuning. Disabling tuning mode will not stop
    * logging/output, but instead will just ignore any new values provided by the user.
-   *
-   * @param enabled {@code true} to enable tuning mode, {@code false} to disable tuning mode.
    */
-  protected abstract void updateTuningMode(boolean enabled);
+  protected abstract void updateTuningMode();
 }
