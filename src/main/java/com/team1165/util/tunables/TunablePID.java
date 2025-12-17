@@ -122,6 +122,7 @@ public class TunablePID extends Tunable {
     }
   }
 
+  @Override
   void updateTuningMode() {
     updateTuningMode(kP.get(), kI.get(), kD.get());
   }

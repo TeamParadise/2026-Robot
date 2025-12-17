@@ -23,7 +23,8 @@ public class LoggedNumberWrapper extends LoggedNetworkNumber implements NumberWr
   /**
    * Creates a new {@link LoggedNumberWrapper}
    *
-   * @param key The key for the number, published to the root table of NT or "/DashboardInputs/{key}" when logged.
+   * @param key The key for the number, published to the root table of NT or
+   *     "/DashboardInputs/{key}" when logged.
    * @param defaultValue The default value if no value in NT is found.
    * @see LoggedNetworkNumber#LoggedNetworkNumber(String, double)
    */
@@ -31,6 +32,7 @@ public class LoggedNumberWrapper extends LoggedNetworkNumber implements NumberWr
     super(key, defaultValue);
   }
 
+  @Override
   public boolean hasChanged(int id) {
     double currentValue = get();
     Double lastValue = lastValues.get(id);

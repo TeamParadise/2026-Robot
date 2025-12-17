@@ -56,6 +56,7 @@ public class TunableNumber extends Tunable {
         TuningManager.get() ? new LoggedNumberWrapper(key, value) : new StaticNumberWrapper(value);
   }
 
+  @Override
   void updateTuningMode() {
     updateTuningMode(value.get());
   }

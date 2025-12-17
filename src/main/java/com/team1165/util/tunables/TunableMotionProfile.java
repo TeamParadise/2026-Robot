@@ -16,7 +16,7 @@ import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
  * Class for a set of tunable motion profiling values, which can be adjusted in real time while the
  * robot is running, if {@link TuningManager} is enabled, or return a static value otherwise.
  */
-public class TunableMotionProfile {
+public class TunableMotionProfile extends Tunable {
   protected final String key;
   private NumberWrapper cruiseVelocity;
   private NumberWrapper acceleration;
@@ -53,8 +53,13 @@ public class TunableMotionProfile {
    * @param configs The {@link MotionMagicConfigs} to get the default values from.
    */
   public TunableMotionProfile(String key, MotionMagicConfigs configs) {
-    this(key, configs.MotionMagicCruiseVelocity, configs.MotionMagicAcceleration, configs.MotionMagicJerk, configs.MotionMagicExpo_kV, configs.MotionMagicExpo_kA
-        );
+    this(
+        key,
+        configs.MotionMagicCruiseVelocity,
+        configs.MotionMagicAcceleration,
+        configs.MotionMagicJerk,
+        configs.MotionMagicExpo_kV,
+        configs.MotionMagicExpo_kA);
   }
 
   /** Returns the current cruise velocity value. */
@@ -84,7 +89,12 @@ public class TunableMotionProfile {
 
   /** Returns a new {@link MotionMagicConfigs} with the current motion profiling values. */
   public MotionMagicConfigs getConfigs() {
-    return new MotionMagicConfigs().withMotionMagicCruiseVelocity(cruiseVelocity.get()).withMotionMagicAcceleration(acceleration.get()).withMotionMagicJerk(jerk.get()).withMotionMagicExpo_kV(exponentialV.get()).withMotionMagicExpo_kA(exponentialA.get());
+    return new MotionMagicConfigs()
+        .withMotionMagicCruiseVelocity(cruiseVelocity.get())
+        .withMotionMagicAcceleration(acceleration.get())
+        .withMotionMagicJerk(jerk.get())
+        .withMotionMagicExpo_kV(exponentialV.get())
+        .withMotionMagicExpo_kA(exponentialA.get());
   }
 
   /**
@@ -94,7 +104,11 @@ public class TunableMotionProfile {
    *     objects. The recommended approach is to pass the result of {@code hashCode()}.
    */
   public boolean hasChanged(int id) {
-    return cruiseVelocity.hasChanged(id) || acceleration.hasChanged(id) || jerk.hasChanged(id) || exponentialV.hasChanged(id) || exponentialA.hasChanged(id);
+    return cruiseVelocity.hasChanged(id)
+        || acceleration.hasChanged(id)
+        || jerk.hasChanged(id)
+        || exponentialV.hasChanged(id)
+        || exponentialA.hasChanged(id);
   }
 
   /**
@@ -106,7 +120,12 @@ public class TunableMotionProfile {
    * @param exponentialV The new target kV value to use.
    * @param exponentialA The new target kA value to use.
    */
-  private void updateTuningMode(double cruiseVelocity, double acceleration, double jerk, double exponentialV, double exponentialA) {
+  private void updateTuningMode(
+      double cruiseVelocity,
+      double acceleration,
+      double jerk,
+      double exponentialV,
+      double exponentialA) {
     if (TuningManager.get()) {
       this.cruiseVelocity = new LoggedNumberWrapper(key + "/CruiseVelocity", cruiseVelocity);
       this.acceleration = new LoggedNumberWrapper(key + "/Acceleration", acceleration);
@@ -122,7 +141,13 @@ public class TunableMotionProfile {
     }
   }
 
+  @Override
   void updateTuningMode() {
-    updateTuningMode(cruiseVelocity.get(), acceleration.get(), jerk.get(), exponentialV.get(), exponentialA.get());
+    updateTuningMode(
+        cruiseVelocity.get(),
+        acceleration.get(),
+        jerk.get(),
+        exponentialV.get(),
+        exponentialA.get());
   }
 }

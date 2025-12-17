@@ -21,6 +21,7 @@ public class StaticNumberWrapper implements NumberWrapper {
     this.value = value;
   }
 
+  @Override
   public double get() {
     return value;
   }

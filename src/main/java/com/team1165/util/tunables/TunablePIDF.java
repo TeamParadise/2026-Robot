@@ -37,7 +37,8 @@ public class TunablePIDF extends TunablePID {
    * @param kA The default value for kA (acceleration feedforward gain).
    * @param kG The default value for kG (gravity feedforward/feedback gain).
    */
-  public TunablePIDF(String key, double kP, double kI, double kD, double kS,  double kV, double kA, double kG) {
+  public TunablePIDF(
+      String key, double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
     super(key, kP, kI, kD);
     // Create initial NumberWrappers
     updateTuningMode(kS, kV, kA, kG);
@@ -51,7 +52,15 @@ public class TunablePIDF extends TunablePID {
    * @param feedforward The {@link SimpleMotorFeedforward} to get the default values from.
    */
   public TunablePIDF(String key, PIDController controller, SimpleMotorFeedforward feedforward) {
-    this(key, controller.getP(), controller.getI(), controller.getD(), feedforward.getKs(), feedforward.getKv(), feedforward.getKa(), 0.0);
+    this(
+        key,
+        controller.getP(),
+        controller.getI(),
+        controller.getD(),
+        feedforward.getKs(),
+        feedforward.getKv(),
+        feedforward.getKa(),
+        0.0);
   }
 
   /**
@@ -95,13 +104,23 @@ public class TunablePIDF extends TunablePID {
   }
 
   /** Returns a new {@link Slot0Configs} with the current PID and feedforward values. */
+  @Override
   public Slot0Configs getSlot0Configs() {
-    return super.getSlot0Configs().withKS(kS.get()).withKV(kV.get()).withKA(kA.get()).withKG(kG.get());
+    return super.getSlot0Configs()
+        .withKS(kS.get())
+        .withKV(kV.get())
+        .withKA(kA.get())
+        .withKG(kG.get());
   }
 
   /** Returns a new {@link SlotConfigs} with the current PID and feedforward values. */
+  @Override
   public SlotConfigs getSlotConfigs() {
-    return super.getSlotConfigs().withKS(kS.get()).withKV(kV.get()).withKA(kA.get()).withKG(kG.get());
+    return super.getSlotConfigs()
+        .withKS(kS.get())
+        .withKV(kV.get())
+        .withKA(kA.get())
+        .withKG(kG.get());
   }
 
   /**
@@ -110,8 +129,13 @@ public class TunablePIDF extends TunablePID {
    * @param id Unique identifier for the caller to avoid conflicts when shared between multiple
    *     objects. The recommended approach is to pass the result of {@code hashCode()}.
    */
+  @Override
   public boolean hasChanged(int id) {
-    return super.hasChanged(id) || kS.hasChanged(id) || kV.hasChanged(id) || kA.hasChanged(id) || kG.hasChanged(id);
+    return super.hasChanged(id)
+        || kS.hasChanged(id)
+        || kV.hasChanged(id)
+        || kA.hasChanged(id)
+        || kG.hasChanged(id);
   }
 
   /**
@@ -136,6 +160,7 @@ public class TunablePIDF extends TunablePID {
     }
   }
 
+  @Override
   void updateTuningMode() {
     // Update base PID values then feedforward values
     super.updateTuningMode();
