@@ -20,5 +20,5 @@ public abstract class Tunable {
   /**
    * Updates the tuning mode status using the status from {@link TuningManager}.
    */
-  protected abstract void updateTuningMode();
+  abstract void updateTuningMode();
 }

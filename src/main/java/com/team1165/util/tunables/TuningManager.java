@@ -11,24 +11,39 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
+/** Class to manage all {@link Tunable} values. */
 public final class TuningManager {
+  /** Base dashboard key for all Tunables. */
   public static final String tuningKey = "/Tuning/";
+
   private static final LoggedNetworkBoolean enabled =
       new LoggedNetworkBoolean("Tuning/Enabled", false);
+  private static boolean previous = enabled.get();
   private static Tunable[] tunables;
 
   /** Private constructor to prevent instantization. */
   private TuningManager() {}
 
-  /**
-   * Returns whether the code is currently in tuning mode.
-   *
-   * @return If tuning mode is enabled.
-   */
+  /** Returns whether the code is currently in tuning mode. */
   public static boolean get() {
     return enabled.get();
   }
 
+  /** Updates the tuning mode across all Tunables using the current dashboard status. */
+  public static void updateTuningMode() {
+    if (previous != enabled.get()) {
+      for (Tunable tunable : tunables) {
+        tunable.updateTuningMode();
+      }
+      previous = enabled.get();
+    }
+  }
+
+  /**
+   * Registers {@link Tunable} values with the manager.
+   *
+   * @param newTunables The new {@link Tunable} values to register.
+   */
   static void registerTunables(Tunable... newTunables) {
     tunables =
         Stream.concat(Arrays.stream(tunables), Arrays.stream(newTunables))

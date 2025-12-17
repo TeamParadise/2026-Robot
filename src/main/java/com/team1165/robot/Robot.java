@@ -14,6 +14,8 @@
 package com.team1165.robot;
 
 import com.team1165.robot.globalconstants.BuildConstants;
+import com.team1165.util.tunables.TuningManager;
+import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -75,7 +77,13 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during all modes. */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    // Refresh all Phoenix signals
+    PhoenixSignalUtils.refreshAll();
+
+    // Update tuning mode
+    TuningManager.updateTuningMode();
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

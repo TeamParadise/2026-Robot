@@ -30,6 +30,11 @@ public class TunableNumber extends Tunable {
     updateTuningMode(value);
   }
 
+  /** Returns the current value. */
+  public double get() {
+    return value.get();
+  }
+
   /**
    * Updates the tuning mode status using the status from {@link TuningManager}.
    *
@@ -39,12 +44,7 @@ public class TunableNumber extends Tunable {
     this.value = TuningManager.get() ? new LoggedNumberWrapper(key, value) : new StaticNumberWrapper(value);
   }
 
-  protected void updateTuningMode() {
+  void updateTuningMode() {
     updateTuningMode(value.get());
-  }
-
-  /** Returns the current value. */
-  public double get() {
-    return value.get();
   }
 }
