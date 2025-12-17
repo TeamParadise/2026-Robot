@@ -9,7 +9,6 @@ package com.team1165.util.tunables;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.SlotConfigs;
-import com.revrobotics.spark.config.ClosedLoopConfig;
 import com.team1165.util.tunables.wrappers.numbers.LoggedNumberWrapper;
 import com.team1165.util.tunables.wrappers.numbers.NumberWrapper;
 import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;

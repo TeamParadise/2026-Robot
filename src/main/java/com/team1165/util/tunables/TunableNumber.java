@@ -16,7 +16,7 @@ import com.team1165.util.tunables.wrappers.numbers.StaticNumberWrapper;
  * is running, if {@link TuningManager} is enabled, or return a static value otherwise.
  */
 public class TunableNumber extends Tunable {
-  private final String key;
+  protected final String key;
   private NumberWrapper value;
 
   /**
