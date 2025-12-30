@@ -7,10 +7,13 @@
 
 package com.team1165.util.logging.motordata;
 
+import org.littletonrobotics.junction.LogTable;
+import org.littletonrobotics.junction.inputs.LoggableInputs;
+
 /**
  * Class that provides easy collection of most standard values collected from a motor (controller) through an IO class.
  */
-public class MotorData {
+public class MotorData implements LoggableInputs {
   /** The applied voltage to the motor (controller). */
   public double appliedVolts = 0.0;
 
@@ -50,4 +53,40 @@ public class MotorData {
    * controller.
    */
   public double velocity = 0.0;
+
+  /**
+   * Updates a LogTable with the data to log.
+   *
+   * @param table The table to which data should be written.
+   */
+  public void toLog(LogTable table) {
+    table.put("AppliedVolts", appliedVolts);
+    table.put("Connected", connected);
+    table.put("FaultActive", faultActive);
+    table.put("Faults", faults);
+    table.put("MotorTemperatureCelsius", motorTemperatureCelsius);
+    table.put("OutputCurrentAmps", outputCurrentAmps);
+    table.put("Position", position);
+    table.put("ProcessorTemperatureCelsius", processorTemperatureCelsius);
+    table.put("SupplyCurrentAmps", supplyCurrentAmps);
+    table.put("Velocity", velocity);
+  }
+
+  /**
+   * Updates data based on a LogTable.
+   *
+   * @param table The table from which data should be read.
+   */
+  public void fromLog(LogTable table) {
+    appliedVolts = table.get("AppliedVolts", appliedVolts);
+    connected = table.get("Connected", connected);
+    faultActive = table.get("FaultActive", faultActive);
+    faults = table.get("Faults", faults);
+    motorTemperatureCelsius = table.get("MotorTemperatureCelsius", motorTemperatureCelsius);
+    outputCurrentAmps = table.get("OutputCurrentAmps", outputCurrentAmps);
+    position = table.get("Position", position);
+    processorTemperatureCelsius = table.get("ProcessorTemperatureCelsius", processorTemperatureCelsius);
+    supplyCurrentAmps = table.get("SupplyCurrentAmps", supplyCurrentAmps);
+    velocity = table.get("Velocity", velocity);
+  }
 }
