@@ -55,6 +55,7 @@ deploy {
             project.logger.lifecycle("Performance profiling mode is enabled!")
             project.logger.lifecycle("Connect JMX client to roborio-" + team + "-frc.local:1198 or " + "10." + (team / 100) + ".2" + ":1198 for roboRIO performance profiling.")
             jvmArgs.addAll([
+              "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8349",
               "-Dcom.sun.management.jmxremote=true",
               "-Dcom.sun.management.jmxremote.port=1198",
               "-Dcom.sun.management.jmxremote.local.only=false",
