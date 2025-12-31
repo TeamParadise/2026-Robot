@@ -144,26 +144,26 @@ public class TalonMotorData extends MotorData {
 
   @Override
   void setFrequency(MotorField field) {
-    // Set the update frequency of motor field
     PhoenixSignalUtils.setUpdateFrequency(
         canBus,
         CANFrequency.FAST,
+        true,
         switch (field) {
-          case APPLIED_VOLTS -> appliedVoltsSignal;
+          case APPLIED_VOLTS -> new BaseStatusSignal[] {appliedVoltsSignal};
           case FAULT_ACTIVE, FAULTS ->
-              new StatusSignal<?>[] {
+              new BaseStatusSignal[] {
                 faultFieldSignal,
                 bootDuringEnableFaultSignal,
                 deviceTempFaultSignal,
                 hardwareFaultSignal,
                 procTempFaultSignal
               };
-          case MOTOR_TEMP -> motorTemperatureSignal;
-          case OUTPUT_CURRENT -> outputCurrentSignal;
-          case POSITION -> positionSignal;
-          case PROCESSOR_TEMP -> processorTemperatureSignal;
-          case SUPPLY_CURRENT -> supplyCurrentSignal;
-          case VELOCITY -> velocitySignal;
+          case MOTOR_TEMP -> new BaseStatusSignal[] {motorTemperatureSignal};
+          case OUTPUT_CURRENT -> new BaseStatusSignal[] {outputCurrentSignal};
+          case POSITION -> new BaseStatusSignal[] {positionSignal};
+          case PROCESSOR_TEMP -> new BaseStatusSignal[] {processorTemperatureSignal};
+          case SUPPLY_CURRENT -> new BaseStatusSignal[] {supplyCurrentSignal};
+          case VELOCITY -> new BaseStatusSignal[] {velocitySignal};
         });
   }
 }
