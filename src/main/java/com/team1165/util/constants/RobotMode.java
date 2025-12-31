@@ -12,15 +12,8 @@ import edu.wpi.first.wpilibj.RobotBase;
 /** Reusable class to determine the robot {@link Mode}, between REAL, SIM, and REPLAY. */
 public final class RobotMode {
   /** The running mode of the robot (REAL, SIM, or REPLAY). */
-  private static final Mode robotMode;
-
-  // Static initialization block
-  static {
-    robotMode =
-        RobotBase.isReal()
-            ? Mode.REAL
-            : (Boolean.getBoolean("replayMode") ? Mode.REPLAY : Mode.SIM);
-  }
+  private static final Mode robotMode =
+      RobotBase.isReal() ? Mode.REAL : (Boolean.getBoolean("replayMode") ? Mode.REPLAY : Mode.SIM);
 
   /** Private constructor to prevent instantiation. */
   private RobotMode() {}
