@@ -113,7 +113,7 @@ public abstract class MotorData implements LoggableInputs {
    *
    * @param field The {@link MotorField} to set the frequency for.
    */
-  private void setFrequency(MotorField field) {}
+  void setFrequency(MotorField field) {}
 
   /** Get the applied voltage to the motor. */
   public double getAppliedVolts() {
