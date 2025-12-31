@@ -116,7 +116,8 @@ public class TalonMotorData extends MotorData {
    */
   public void update() {
     // Check if there are any active faults, if there are, activate an alert and save the faults
-    faultAlert.set(faultActive = faultFieldSignal.getValue() != 0);
+    faultActive = faultFieldSignal.getValue() != 0;
+    faultAlert.set(faultActive);
     if (faultActive) {
       faults =
           (bootDuringEnableFaultSignal.getValue() ? "BootDuringEnable " : "")
@@ -137,9 +138,8 @@ public class TalonMotorData extends MotorData {
     velocity = velocitySignal.getValueAsDouble();
 
     // After updating everything, check if there are any reported connection issues
-    connectedAlert.set(
-        !(connected =
-            connectedDebouncer.calculate(BaseStatusSignal.isAllGood(appliedVoltsSignal))));
+    connected = connectedDebouncer.calculate(BaseStatusSignal.isAllGood(appliedVoltsSignal));
+    connectedAlert.set(!connected);
   }
 
   @Override

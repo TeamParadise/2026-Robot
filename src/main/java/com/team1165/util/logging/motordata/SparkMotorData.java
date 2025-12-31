@@ -82,8 +82,8 @@ public class SparkMotorData extends MotorData {
    */
   public void update() {
     // Check if there are any active faults, if there are, activate an alert and save the faults
-    faultAlert.set(
-        faultActive = SparkUtils.ifOkOrDefault(spark, spark::hasActiveFault, faultActive));
+    faultActive = SparkUtils.ifOkOrDefault(spark, spark::hasActiveFault, faultActive);
+    faultAlert.set(faultActive);
     if (faultActive) {
       Faults sparkFaults = spark.getFaults();
       faults =
@@ -114,8 +114,8 @@ public class SparkMotorData extends MotorData {
     velocity = SparkUtils.ifOkOrDefault(spark, encoder::getVelocity, velocity);
 
     // Update connected debouncer if there is a sticky error from previous call to the SPARK
-    connectedAlert.set(
-        !(connected = connectedDebouncer.calculate(spark.getLastError() == REVLibError.kOk)));
+    connected = connectedDebouncer.calculate(spark.getLastError() == REVLibError.kOk);
+    connectedAlert.set(!connected);
   }
 
   @Override

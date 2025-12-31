@@ -63,6 +63,7 @@ public abstract class MotorData implements LoggableInputs {
    *
    * @param table The table to which data should be written.
    */
+  @Override
   public void toLog(LogTable table) {
     table.put("AppliedVolts", appliedVolts);
     table.put("Connected", connected);
@@ -81,6 +82,7 @@ public abstract class MotorData implements LoggableInputs {
    *
    * @param table The table from which data should be read.
    */
+  @Override
   public void fromLog(LogTable table) {
     appliedVolts = table.get("AppliedVolts", appliedVolts);
     connected = table.get("Connected", connected);
@@ -100,6 +102,7 @@ public abstract class MotorData implements LoggableInputs {
    *
    * @param field The {@link MotorField} to check.
    */
+  @SuppressWarnings("EnumOrdinal")
   private void markAccessed(MotorField field) {
     int oldAccessed = accessed;
     accessed |= (1 << field.ordinal());
