@@ -132,17 +132,7 @@ public abstract class MotorData implements LoggableInputs {
 
   /** Get whether the motor (controller) is connected. Might be unreliable with a SPARK. */
   public boolean getConnected() {
-    markAccessed(MotorField.CONNECTED);
     return connected;
-  }
-
-  /**
-   * Get whether the motor (controller) is connected.
-   *
-   * @param raiseFrequency If true, raise the update frequency for the value.
-   */
-  public boolean getConnected(boolean raiseFrequency) {
-    return raiseFrequency ? getConnected() : connected;
   }
 
   /** Get whether a fault is currently active on the motor (controller). */

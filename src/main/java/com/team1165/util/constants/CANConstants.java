@@ -9,6 +9,8 @@ package com.team1165.util.constants;
 
 import com.ctre.phoenix6.CANBus;
 
-public class CANConstants {
+public final class CANConstants {
+  private CANConstants() {}
+
   public static final CANBus rio = CANBus.roboRIO();
 }

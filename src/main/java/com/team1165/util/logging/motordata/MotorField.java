@@ -10,7 +10,6 @@ package com.team1165.util.logging.motordata;
 /** Enum representing the fields collected by {@link MotorData}. */
 enum MotorField {
   APPLIED_VOLTS,
-  CONNECTED,
   FAULT_ACTIVE,
   FAULTS,
   MOTOR_TEMP,
