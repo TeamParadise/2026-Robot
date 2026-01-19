@@ -14,6 +14,7 @@ plugins {
   id "com.diffplug.spotless" version "8.1.0"
   id "com.peterabeles.gversion" version "1.10.3"
   id "net.ltgt.errorprone" version "4.3.0"
+  id 'org.jetbrains.kotlin.jvm'
 }
 
 def final javaVersion = JavaVersion.VERSION_17
@@ -24,8 +25,6 @@ def final isDeployBuild = gradle.startParameter.taskNames.any { it.toLowerCase()
 
 // Set the version of Java that the code is compatible with
 java {
-  sourceCompatibility = javaVersion
-  targetCompatibility = javaVersion
 }
 
 // Task to deploy to the RIO
@@ -121,6 +120,7 @@ dependencies {
   // Setup AdvantageKit
   def akitJson = new JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
   annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 // Add libraries into the jar file
@@ -253,4 +253,10 @@ spotless {
 test {
   useJUnitPlatform()
   systemProperty "junit.jupiter.extensions.autodetection.enabled", "true"
+}
+repositories {
+  mavenCentral()
+}
+kotlin {
+  jvmToolchain(17)
 }

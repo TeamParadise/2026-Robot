@@ -77,6 +77,19 @@ public abstract class MotorData implements LoggableInputs {
     table.put("Velocity", velocity);
   }
 
+  public void toLog(LogTable table, String deviceName) {
+    table.put(deviceName + "> AppliedVolts", appliedVolts);
+    table.put(deviceName + "> Connected", connected);
+    table.put(deviceName + "> FaultActive", faultActive);
+    table.put(deviceName + "> Faults", faults);
+    table.put(deviceName + "> MotorTemperatureCelsius", motorTemperatureCelsius);
+    table.put(deviceName + "> OutputCurrentAmps", outputCurrentAmps);
+    table.put(deviceName + "> Position", position);
+    table.put(deviceName + "> ProcessorTemperatureCelsius", processorTemperatureCelsius);
+    table.put(deviceName + "> SupplyCurrentAmps", supplyCurrentAmps);
+    table.put(deviceName + "> Velocity", velocity);
+  }
+
   /**
    * Updates data based on a LogTable.
    *
