@@ -44,6 +44,10 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driverController
         .a()
-        .onTrue(GroundIntake.ON());
+        .onTrue(
+            groundIntake
+                .overrideState(GroundIntakeState.ON)
+                .alongWith(groundIntake.overrideState(GroundIntakeState.ON))
+                .withName("Controller - A - Full Power"));
   }
 }
