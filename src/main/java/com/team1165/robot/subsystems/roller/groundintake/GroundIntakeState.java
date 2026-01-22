@@ -17,11 +17,12 @@ public enum GroundIntakeState implements State {
 
   private final double voltage;
 
-  GroundIntakeState(double voltage) {this.voltage = voltage;}
+  GroundIntakeState(double voltage) {
+    this.voltage = voltage;
+  }
 
   @Override
   public OptionalDouble get() {
     return OptionalDouble.of(voltage);
   }
 }
-
