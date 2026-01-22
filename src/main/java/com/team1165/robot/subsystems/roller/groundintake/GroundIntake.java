@@ -7,20 +7,10 @@
 
 package com.team1165.robot.subsystems.roller.groundintake;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
+import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.robot.subsystems.roller.io.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.util.statemachine.v2.StateUtils;
-import com.team1165.robot.subsystems.roller.io.RollerIOSpark;
-import com.team1165.util.vendor.rev.SparkConfig;
-import com.team1165.util.vendor.rev.SparkModel;
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
-
-
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
 
@@ -48,5 +38,4 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   protected void transition() {
     io.runVolts(tunableMap.get(getCurrentState()).get());
   }
-
 }
