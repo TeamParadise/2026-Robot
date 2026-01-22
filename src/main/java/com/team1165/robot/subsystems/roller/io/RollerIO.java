@@ -27,7 +27,7 @@ public interface RollerIO {
     public MotorData primaryMotor = new GenericMotorData();
 
     /** Data from the secondary motor of the subsystem. */
-//    public MotorData secondaryMotor = new GenericMotorData();
+    //    public MotorData secondaryMotor = new GenericMotorData();
   }
 
   /**
@@ -51,7 +51,7 @@ public interface RollerIO {
    * @param primaryVoltage The voltage to run the primary motor at.
    * @param secondaryVoltage The voltage to run the secondary motor at.
    */
-//  default void runVolts(double primaryVoltage, double secondaryVoltage */) {}
+  //  default void runVolts(double primaryVoltage, double secondaryVoltage */) {}
 
   /** Stops both of the motors (sets the output to zero). */
   default void stop() {}
