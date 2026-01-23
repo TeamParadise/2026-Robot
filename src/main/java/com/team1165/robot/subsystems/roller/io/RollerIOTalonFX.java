@@ -7,12 +7,17 @@
 
 package com.team1165.robot.subsystems.roller.io;
 
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.team1165.util.logging.motordata.SparkMotorData;
+import com.team1165.util.logging.motordata.TalonMotorData;
+import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
+import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
@@ -21,30 +26,28 @@ import com.team1165.util.vendor.rev.SparkUtils;
  * motors attached to SPARK MAX/FLEX motor controllers. These two motors are usually controlled
  * together, but they can be controlled separately if needed.
  */
-public class RollerIOSpark implements RollerIO {
+public class RollerIOTalonFX implements RollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later
-  private final SparkBase primaryMotor;
-  //  private final SparkBase secondaryMotor;
-  private final SparkBaseConfig primaryConfiguration;
-  //  private final SparkBaseConfig secondaryConfiguration;
+  private final TalonFX primaryMotor;
+  private final TalonFX secondaryMotor;
+  private final TalonFXConfiguration primaryConfiguration;
+  private final TalonFXConfiguration secondaryConfiguration;
 
   // Motor data to log
-  private final SparkMotorData primaryMotorData;
+  private final TalonMotorData primaryMotorData;
+  private final TalonMotorData secondaryMotorData;
 
-  //  private final SparkMotorData secondaryMotorData;
-
-  public RollerIOSpark(SparkConfig primaryConfig) {
+  public RollerIOTalonFX(TalonFXConfig primaryConfig, TalonFXConfig secondaryConfig) {
     // Assign motor variables
-    primaryMotor = SparkUtils.createNewSpark(primaryConfig);
-    //    secondaryMotor = SparkUtils.createNewSpark(secondaryConfig);
-
+    primaryMotor = PhoenixDeviceUtils.createNewTalonFX(primaryConfig);
+    secondaryMotor = PhoenixDeviceUtils.createNewTalonFX(secondaryConfig);
     // Assign the configurations to variables
     primaryConfiguration = primaryConfig.configuration();
-    //    secondaryConfiguration = secondaryConfig.configuration();
+    secondaryConfiguration = secondaryConfig.configuration();
 
     // Create MotorData instances to log motors
-    primaryMotorData = new SparkMotorData(primaryMotor, primaryConfig);
-    //    secondaryMotorData = new SparkMotorData(secondaryMotor, secondaryConfig);
+    primaryMotorData = new TalonMotorData(primaryMotor, primaryConfig);
+    secondaryMotorData = new TalonMotorData(secondaryMotor, secondaryConfig);
   }
 
   /**
@@ -56,11 +59,11 @@ public class RollerIOSpark implements RollerIO {
   public void updateInputs(RollerIOInputs inputs) {
     // Update the motor data
     primaryMotorData.update();
-    //    secondaryMotorData.update();
+    secondaryMotorData.update();
 
     // Put the motor data values in inputs
     inputs.primaryMotor = primaryMotorData;
-    //    inputs.secondaryMotor = secondaryMotorData;
+    inputs.secondaryMotor = secondaryMotorData;
   }
 
   /**
@@ -71,7 +74,7 @@ public class RollerIOSpark implements RollerIO {
   @Override
   public void runVolts(double voltage) {
     primaryMotor.setVoltage(voltage);
-    //    secondaryMotor.setVoltage(voltage);
+    secondaryMotor.setVoltage(voltage);
   }
 
   /**
@@ -83,14 +86,14 @@ public class RollerIOSpark implements RollerIO {
    */
   public void runVolts(double primaryVoltage, double secondaryVoltage) {
     primaryMotor.setVoltage(primaryVoltage);
-    //    secondaryMotor.setVoltage(secondaryVoltage);
+    secondaryMotor.setVoltage(secondaryVoltage);
   }
 
   /** Stops ONE of the motors (sets the output to zero). */
   @Override
   public void stop() {
     primaryMotor.set(0);
-    //    secondaryMotor.set(0);
+    secondaryMotor.set(0);
   }
 
   /**
@@ -102,15 +105,14 @@ public class RollerIOSpark implements RollerIO {
   public void setBrakeMode(boolean enabled) {
     new Thread(
             () -> {
-              primaryMotor.configure(
+              primaryMotor.se(
                   primaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
                   ResetMode.kNoResetSafeParameters,
                   PersistMode.kNoPersistParameters);
-              //              secondaryMotor.configure(
-              //                  secondaryConfiguration.idleMode(enabled ? IdleMode.kBrake :
-              // IdleMode.kCoast),
-              //                  ResetMode.kNoResetSafeParameters,
-              //                  PersistMode.kNoPersistParameters);
+              secondaryMotor.configure(
+                  secondaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
+                               ResetMode.kNoResetSafeParameters,
+                               PersistMode.kNoPersistParameters);
             })
         .start();
   }

@@ -25,9 +25,11 @@ public interface RollerIO {
      * grabbed from here.
      */
     public MotorData primaryMotor = new GenericMotorData();
-
     /** Data from the secondary motor of the subsystem. */
-    //    public MotorData secondaryMotor = new GenericMotorData();
+
+    public MotorData secondaryMotor = new GenericMotorData();
+
+
   }
 
   /**
