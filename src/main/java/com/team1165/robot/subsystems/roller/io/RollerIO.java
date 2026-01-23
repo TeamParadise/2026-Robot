@@ -42,7 +42,7 @@ public interface RollerIO {
    *
    * @param voltage The voltage to run the rollers at.
    */
-  default void runVolts(double voltage) {}
+  default void runRollerVolts(double voltage) {}
 
   /**
    * Run the motors separately at different voltages. This should only be used if the motors are not

@@ -7,11 +7,11 @@
 
 package com.team1165.robot;
 
-import static com.team1165.util.constants.RobotMode.Mode.REAL;
-
 import com.team1165.robot.subsystems.roller.groundintake.GroundIntake;
 import com.team1165.robot.subsystems.roller.groundintake.GroundIntakeConstants;
 import com.team1165.robot.subsystems.roller.groundintake.GroundIntakeState;
+import com.team1165.robot.subsystems.roller.io.PivotIO;
+import com.team1165.robot.subsystems.roller.io.PivotIOSpark;
 import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.robot.subsystems.roller.io.RollerIOSpark;
 import com.team1165.util.constants.RobotMode;
@@ -27,11 +27,11 @@ public class RobotContainer {
     switch (RobotMode.get()) {
       case REAL -> {
         groundIntake =
-            new GroundIntake(new RollerIOSpark(GroundIntakeConstants.primaryMotorConfig));
+            new GroundIntake(new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig), new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig));
       }
       default -> {
         // start scremaing bc i havent coded this part yet
-        groundIntake = new GroundIntake(new RollerIO() {});
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {});
       }
     }
   }
@@ -41,8 +41,13 @@ public class RobotContainer {
         .a()
         .onTrue(
             groundIntake
-                .overrideState(GroundIntakeState.ON)
-                .alongWith(groundIntake.overrideState(GroundIntakeState.ON))
-                .withName("Controller - A - Full Power"));
+                .overrideState(GroundIntakeState.IDLE)
+                .withName("Controller - A - Idle State"));
+    driverController
+        .b()
+        .onTrue(
+            groundIntake
+                .overrideState(GroundIntakeState.DEPLOY)
+                .withName("Controller - B - blahblahblor as my friend myles would say"));
   }
 }

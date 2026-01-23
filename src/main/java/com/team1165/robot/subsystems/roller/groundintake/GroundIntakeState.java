@@ -11,13 +11,15 @@ import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;
 
 public enum GroundIntakeState implements State {
-  ON(1.0),
-  OFF(0.0),
-  CUSTOM_MANUAL(0.0);
+  IDLE (false, 0),
+  DEPLOY (true, 0),
+  DEPLOY_AND_RUN (true, 1),
+  DEPLOY_AND_REVERSE (true, -1);
 
   private final double voltage;
+  private final boolean pivotDeployed = false;
 
-  GroundIntakeState(double voltage) {
+  GroundIntakeState(boolean pivotDeployed, double voltage) {
     this.voltage = voltage;
   }
 

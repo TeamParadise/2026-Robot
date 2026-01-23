@@ -7,6 +7,8 @@
 
 package com.team1165.robot.subsystems.roller.groundintake;
 
+import com.team1165.robot.subsystems.roller.io.PivotIO;
+import com.team1165.robot.subsystems.roller.io.PivotIO.PivotIOInputs;
 import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.robot.subsystems.roller.io.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
@@ -14,28 +16,31 @@ import com.team1165.util.statemachine.v2.StateUtils;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
 
-  private final RollerIO io;
-  private final RollerIOInputs inputs = new RollerIOInputs();
+  private final RollerIO rollerio;
+  private final RollerIOInputs rollerinputs = new RollerIOInputs();
+  private final PivotIO pivotio;
+  private final PivotIOInputs pivotioinputs = new PivotIOInputs();
 
   private final EnumMap<GroundIntakeState, LoggedTunableNumber> tunableMap =
       StateUtils.createTunableNumberMap(name + "/Voltages", GroundIntakeState.class);
 
-  public GroundIntake(RollerIO io) {
-    super(GroundIntakeState.OFF);
-    this.io = io;
+  public GroundIntake(RollerIO rollerio, PivotIO pivotio) {
+    super(GroundIntakeState.IDLE);
+    this.rollerio = rollerio;
+    this.pivotio = pivotio;
   }
 
-  public double getCurrent() {
-    return inputs.primaryMotor.getOutputCurrentAmps();
+  public double getRollerCurrent() {
+    return rollerinputs.primaryMotor.getOutputCurrentAmps();
   }
 
   @Override
   protected void update() {
-    io.updateInputs(inputs);
+    rollerio.updateInputs(rollerinputs);
   }
 
   @Override
   protected void transition() {
-    io.runVolts(tunableMap.get(getCurrentState()).get());
+    rollerio.runRollerVolts(tunableMap.get(getCurrentState()).get());
   }
 }
