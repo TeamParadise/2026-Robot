@@ -14,12 +14,16 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.vendor.rev.SparkConfig;
 
 public class GroundIntakeConstants {
-  public static final SparkBaseConfig elmotor =
+  public static final SparkBaseConfig rollerMotorBaseConfig =
+      new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
+  public static final SparkBaseConfig pivotMotorBaseConfig =
       new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
 
   // Individual SPARK MAX configurations
-  public static final SparkConfig primaryMotorConfig =
-      SparkConfig.sparkMax("GroundIntakePrimary", 1, MotorType.kBrushless, elmotor);
+  public static final SparkConfig rollerMotorConfig =
+      SparkConfig.sparkMax("GroundIntakePrimary", 1, MotorType.kBrushless, rollerMotorBaseConfig);
+  public static final SparkConfig pivotMotorConfig =
+      SparkConfig.sparkMax("PivotMotor", 3, MotorType.kBrushless, pivotMotorBaseConfig);
 
   /**
    * Sim configs that im too lazy to add rn as they "arent needed" public static final
