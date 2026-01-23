@@ -31,7 +31,7 @@ public class Spindexer extends OverridableStateMachine<SpindexerState> {
       StateUtils.createTunableNumberMap(name + "/Voltages", SpindexerState.class);
 
   public Spindexer(RollerIO io) {
-    super(SpindexerState.OFF);
+    super(SpindexerState.IDLE);
     this.io = io;
   }
 

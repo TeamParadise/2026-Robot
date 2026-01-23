@@ -10,6 +10,7 @@ package com.team1165.robot.subsystems.roller.spindexer;
 import com.team1165.util.statemachine.v1.State;
 
 public enum SpindexerState implements State {
-  ON(),
-  OFF()
+  IDLE(),
+  TRANSFER(),
+  REVERSE();
 }
