@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.team1165.robot.subsystems.roller.io.RollerIO.RollerIOInputs;
 import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
@@ -47,9 +46,14 @@ public class PivotIOSpark implements PivotIO {
   }
 
   @Override
+  public void setPivotPosition(boolean flipped) { pivotMotor.getEncoder().setPosition(flipped ? 1.5 : 0);}
+
+  @Override
+  public void resetPivot() { pivotMotor.getEncoder().setPosition(0); }
+
+  @Override
   public void stop() {
     pivotMotor.set(0);
-    //    secondaryMotor.set(0);
   }
 
   @Override

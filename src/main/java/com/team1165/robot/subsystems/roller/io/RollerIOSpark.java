@@ -53,7 +53,7 @@ public class RollerIOSpark implements RollerIO {
    * @param inputs A {@link RollerIOInputs} instance to update.
    */
   @Override
-  public void updateInputs(RollerIOInputs inputs) {
+  public void updateRollerInputs(RollerIOInputs inputs) {
     // Update the motor data
     primaryMotorData.update();
     //    secondaryMotorData.update();
@@ -88,7 +88,7 @@ public class RollerIOSpark implements RollerIO {
 
   /** Stops ONE of the motors (sets the output to zero). */
   @Override
-  public void stop() {
+  public void stopRoller() {
     primaryMotor.set(0);
     //    secondaryMotor.set(0);
   }
@@ -99,7 +99,7 @@ public class RollerIOSpark implements RollerIO {
    * @param enabled Whether to enable brake mode.
    */
   @Override
-  public void setBrakeMode(boolean enabled) {
+  public void setRollerBrakeMode(boolean enabled) {
     new Thread(
             () -> {
               primaryMotor.configure(

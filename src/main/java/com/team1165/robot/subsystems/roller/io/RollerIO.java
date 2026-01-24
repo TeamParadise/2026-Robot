@@ -35,7 +35,7 @@ public interface RollerIO {
    *
    * @param inputs A {@link RollerIOInputs} instance to update.
    */
-  default void updateInputs(RollerIOInputs inputs) {}
+  default void updateRollerInputs(RollerIOInputs inputs) {}
 
   /**
    * Run the motors together at a specific voltage.
@@ -54,12 +54,12 @@ public interface RollerIO {
   //  default void runVolts(double primaryVoltage, double secondaryVoltage */) {}
 
   /** Stops both of the motors (sets the output to zero). */
-  default void stop() {}
+  default void stopRoller() {}
 
   /**
    * Enables or disables brake mode on both of the roller motors.
    *
    * @param enabled Whether to enable brake mode.
    */
-  default void setBrakeMode(boolean enabled) {}
+  default void setRollerBrakeMode(boolean enabled) {}
 }

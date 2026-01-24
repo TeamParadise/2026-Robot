@@ -17,10 +17,11 @@ public enum GroundIntakeState implements State {
   DEPLOY_AND_REVERSE (true, -1);
 
   private final double voltage;
-  private final boolean pivotDeployed = false;
+  private final boolean pivotDeployed;
 
   GroundIntakeState(boolean pivotDeployed, double voltage) {
     this.voltage = voltage;
+    this.pivotDeployed = pivotDeployed;
   }
 
   @Override

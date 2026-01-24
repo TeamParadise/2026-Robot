@@ -19,7 +19,7 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   private final RollerIO rollerio;
   private final RollerIOInputs rollerinputs = new RollerIOInputs();
   private final PivotIO pivotio;
-  private final PivotIOInputs pivotioinputs = new PivotIOInputs();
+  private final PivotIOInputs pivotinputs = new PivotIOInputs();
 
   private final EnumMap<GroundIntakeState, LoggedTunableNumber> tunableMap =
       StateUtils.createTunableNumberMap(name + "/Voltages", GroundIntakeState.class);
@@ -33,10 +33,12 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   public double getRollerCurrent() {
     return rollerinputs.primaryMotor.getOutputCurrentAmps();
   }
+  public double getPivotCurrent() { return pivotinputs.pivotMotor.getOutputCurrentAmps(); }
 
   @Override
   protected void update() {
-    rollerio.updateInputs(rollerinputs);
+    rollerio.updateRollerInputs(rollerinputs);
+    pivotio.updatePivotInputs(pivotinputs);
   }
 
   @Override
