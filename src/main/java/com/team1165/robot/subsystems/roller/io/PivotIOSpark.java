@@ -7,6 +7,8 @@
 
 package com.team1165.robot.subsystems.roller.io;
 
+import static com.team1165.robot.subsystems.roller.groundintake.GroundIntakeConstants.pivotMotorActivePos;
+
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -46,7 +48,7 @@ public class PivotIOSpark implements PivotIO {
   }
 
   @Override
-  public void setPivotPosition(boolean flipped) { pivotMotor.getEncoder().setPosition(flipped ? 1.5 : 0);}
+  public void setPivotPosition(boolean flipped) { pivotMotor.getEncoder().setPosition(flipped ? pivotMotorActivePos : 0);}
 
   @Override
   public void resetPivot() { pivotMotor.getEncoder().setPosition(0); }
