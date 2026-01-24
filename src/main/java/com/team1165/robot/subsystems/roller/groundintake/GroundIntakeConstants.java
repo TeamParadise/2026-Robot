@@ -25,6 +25,9 @@ public class GroundIntakeConstants {
   public static final SparkConfig pivotMotorConfig =
       SparkConfig.sparkMax("PivotMotor", 3, MotorType.kBrushless, pivotMotorBaseConfig);
 
+  // Position to put the pivot motor to to be able to reach the floor.
+  public static final double pivotMotorActivePos = 1.5;
+
   /**
    * Sim configs that im too lazy to add rn as they "arent needed" public static final
    * SimMotorConfigs simConfig = new SimMotorConfigs(DCMotor.getNEO(1), 1,
