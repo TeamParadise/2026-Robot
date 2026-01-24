@@ -11,6 +11,6 @@ import com.team1165.util.statemachine.v1.State;
 
 public enum SpindexerState implements State {
   IDLE(),
-  TRANSFER(),
+  FORWARD(),
   REVERSE();
 }
