@@ -12,21 +12,22 @@ import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
 
 /**
- * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by ONE*
- * motors.
- * <br><br>
- * *This IO interface was formerly a 2-motor class, and so will emphasize primary or plural motors. This is a misnomer that I cannot be bothered to fix.
+ * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by two
+ * motors. These two motors are usually controlled together, but they can be controlled separately
+ * if needed.
  */
 public interface RollerIO {
   /** Class used to store the IO values of a basic roller subsystem. */
   @AutoLog
   class RollerIOInputs {
     /**
-     * Data from the  motor of the subsystem. Most of the time, any data needed should be
+     * Data from the primary motor of the subsystem. Most of the time, any data needed should be
      * grabbed from here.
      */
     public MotorData primaryMotor = new GenericMotorData();
 
+    /** Data from the secondary motor of the subsystem. */
+    //    public MotorData secondaryMotor = new GenericMotorData();
   }
 
   /**
@@ -42,6 +43,15 @@ public interface RollerIO {
    * @param voltage The voltage to run the rollers at.
    */
   default void runVolts(double voltage) {}
+
+  /**
+   * Run the motors separately at different voltages. This should only be used if the motors are not
+   * physically coupled by any means.
+   *
+   * @param primaryVoltage The voltage to run the primary motor at.
+   * @param secondaryVoltage The voltage to run the secondary motor at.
+   */
+  //  default void runVolts(double primaryVoltage, double secondaryVoltage */) {}
 
   /** Stops both of the motors (sets the output to zero). */
   default void stop() {}

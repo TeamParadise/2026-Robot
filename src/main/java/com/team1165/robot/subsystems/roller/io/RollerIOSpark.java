@@ -24,26 +24,27 @@ import com.team1165.util.vendor.rev.SparkUtils;
 public class RollerIOSpark implements RollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later
   private final SparkBase primaryMotor;
-  private final SparkBase secondaryMotor;
+  //  private final SparkBase secondaryMotor;
   private final SparkBaseConfig primaryConfiguration;
-  private final SparkBaseConfig secondaryConfiguration;
+  //  private final SparkBaseConfig secondaryConfiguration;
 
   // Motor data to log
   private final SparkMotorData primaryMotorData;
-  private final SparkMotorData secondaryMotorData;
 
-  public RollerIOSpark(SparkConfig primaryConfig, SparkConfig secondaryConfig) {
+  //  private final SparkMotorData secondaryMotorData;
+
+  public RollerIOSpark(SparkConfig primaryConfig) {
     // Assign motor variables
     primaryMotor = SparkUtils.createNewSpark(primaryConfig);
-    secondaryMotor = SparkUtils.createNewSpark(secondaryConfig);
+    //    secondaryMotor = SparkUtils.createNewSpark(secondaryConfig);
 
     // Assign the configurations to variables
     primaryConfiguration = primaryConfig.configuration();
-    secondaryConfiguration = secondaryConfig.configuration();
+    //    secondaryConfiguration = secondaryConfig.configuration();
 
     // Create MotorData instances to log motors
     primaryMotorData = new SparkMotorData(primaryMotor, primaryConfig);
-    secondaryMotorData = new SparkMotorData(secondaryMotor, secondaryConfig);
+    //    secondaryMotorData = new SparkMotorData(secondaryMotor, secondaryConfig);
   }
 
   /**
@@ -55,11 +56,11 @@ public class RollerIOSpark implements RollerIO {
   public void updateInputs(RollerIOInputs inputs) {
     // Update the motor data
     primaryMotorData.update();
-    secondaryMotorData.update();
+    //    secondaryMotorData.update();
 
     // Put the motor data values in inputs
     inputs.primaryMotor = primaryMotorData;
-    inputs.secondaryMotor = secondaryMotorData;
+    //    inputs.secondaryMotor = secondaryMotorData;
   }
 
   /**
@@ -70,7 +71,7 @@ public class RollerIOSpark implements RollerIO {
   @Override
   public void runVolts(double voltage) {
     primaryMotor.setVoltage(voltage);
-    secondaryMotor.setVoltage(voltage);
+    //    secondaryMotor.setVoltage(voltage);
   }
 
   /**
@@ -80,21 +81,20 @@ public class RollerIOSpark implements RollerIO {
    * @param primaryVoltage The voltage to run the primary motor at.
    * @param secondaryVoltage The voltage to run the secondary motor at.
    */
-  @Override
   public void runVolts(double primaryVoltage, double secondaryVoltage) {
     primaryMotor.setVoltage(primaryVoltage);
-    secondaryMotor.setVoltage(secondaryVoltage);
+    //    secondaryMotor.setVoltage(secondaryVoltage);
   }
 
-  /** Stops both of the motors (sets the output to zero). */
+  /** Stops ONE of the motors (sets the output to zero). */
   @Override
   public void stop() {
     primaryMotor.set(0);
-    secondaryMotor.set(0);
+    //    secondaryMotor.set(0);
   }
 
   /**
-   * Enables or disables brake mode on both of the roller motors.
+   * Enables or disables brake mode on the ONE roller motor.
    *
    * @param enabled Whether to enable brake mode.
    */
@@ -106,10 +106,11 @@ public class RollerIOSpark implements RollerIO {
                   primaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
                   ResetMode.kNoResetSafeParameters,
                   PersistMode.kNoPersistParameters);
-              secondaryMotor.configure(
-                  secondaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                  ResetMode.kNoResetSafeParameters,
-                  PersistMode.kNoPersistParameters);
+              //              secondaryMotor.configure(
+              //                  secondaryConfiguration.idleMode(enabled ? IdleMode.kBrake :
+              // IdleMode.kCoast),
+              //                  ResetMode.kNoResetSafeParameters,
+              //                  PersistMode.kNoPersistParameters);
             })
         .start();
   }
