@@ -7,4 +7,10 @@
 
 package com.team1165.robot.subsystems.roller.flywheel;
 
-public enum FlywheelState {}
+public enum FlywheelState {
+  IDLE(0.0);
+  T1(0.0);
+  T2(0.0);
+  T3(0.0);
+  FIXED(0.0);
+}

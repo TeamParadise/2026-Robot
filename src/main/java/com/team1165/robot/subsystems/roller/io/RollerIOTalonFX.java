@@ -7,19 +7,15 @@
 
 package com.team1165.robot.subsystems.roller.io;
 
+import static com.team1165.util.vendor.ctre.PhoenixSignalUtils.tryUntilOk;
+
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.team1165.util.logging.motordata.SparkMotorData;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
-import com.team1165.util.vendor.rev.SparkConfig;
-import com.team1165.util.vendor.rev.SparkUtils;
 
 /**
  * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by two
@@ -30,8 +26,6 @@ public class RollerIOTalonFX implements RollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later
   private final TalonFX primaryMotor;
   private final TalonFX secondaryMotor;
-  private final TalonFXConfiguration primaryConfiguration;
-  private final TalonFXConfiguration secondaryConfiguration;
 
   // Motor data to log
   private final TalonMotorData primaryMotorData;
@@ -42,8 +36,8 @@ public class RollerIOTalonFX implements RollerIO {
     primaryMotor = PhoenixDeviceUtils.createNewTalonFX(primaryConfig);
     secondaryMotor = PhoenixDeviceUtils.createNewTalonFX(secondaryConfig);
     // Assign the configurations to variables
-    primaryConfiguration = primaryConfig.configuration();
-    secondaryConfiguration = secondaryConfig.configuration();
+    secondaryMotor.setControl(new Follower(primaryMotor.getDeviceID(), true));
+
 
     // Create MotorData instances to log motors
     primaryMotorData = new TalonMotorData(primaryMotor, primaryConfig);
@@ -104,16 +98,9 @@ public class RollerIOTalonFX implements RollerIO {
   @Override
   public void setBrakeMode(boolean enabled) {
     new Thread(
-            () -> {
-              primaryMotor.se(
-                  primaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                  ResetMode.kNoResetSafeParameters,
-                  PersistMode.kNoPersistParameters);
-              secondaryMotor.configure(
-                  secondaryConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                               ResetMode.kNoResetSafeParameters,
-                               PersistMode.kNoPersistParameters);
-            })
+        () ->
+            this.primaryMotor.setNeutralMode(
+                enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
         .start();
   }
 }
