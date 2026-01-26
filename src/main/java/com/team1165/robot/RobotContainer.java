@@ -69,5 +69,7 @@ public class RobotContainer {
             hoodSubsystem
                 .setAngle(60));
 
+    groundIntake.setDefaultCommand(groundIntake.overrideState(GroundIntakeState.IDLE));
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.setAngle(40));
   }
 }
