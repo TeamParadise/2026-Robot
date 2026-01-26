@@ -14,7 +14,7 @@ import org.littletonrobotics.junction.inputs.LoggableInputs;
  * Class that provides easy collection of most standard values collected from a motor (controller)
  * through an IO class.
  */
-public abstract class MotorData implements LoggableInputs {
+public class MotorData implements LoggableInputs {
   /** The applied voltage to the motor. */
   protected double appliedVolts = 0.0;
 
@@ -34,7 +34,7 @@ public abstract class MotorData implements LoggableInputs {
    * The output current of the motor. This is the general output current on a SPARK and the torque
    * current on a Talon.
    */
-  protected double outputCurrentAmps = 0.0;
+  public double outputCurrentAmps = 0.0;
 
   /**
    * The position reported by the motor (controller). Typically motor rotations, but could be

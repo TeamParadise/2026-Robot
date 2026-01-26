@@ -7,11 +7,9 @@
 
 package com.team1165.robot.subsystems.roller.io;
 
-import static com.team1165.util.vendor.ctre.PhoenixSignalUtils.tryUntilOk;
-
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
@@ -36,8 +34,8 @@ public class RollerIOTalonFX implements RollerIO {
     primaryMotor = PhoenixDeviceUtils.createNewTalonFX(primaryConfig);
     secondaryMotor = PhoenixDeviceUtils.createNewTalonFX(secondaryConfig);
     // Assign the configurations to variables
-    secondaryMotor.setControl(new Follower(primaryMotor.getDeviceID(), true));
-
+    secondaryMotor.setControl(
+        new Follower(primaryMotor.getDeviceID(), MotorAlignmentValue.Opposed));
 
     // Create MotorData instances to log motors
     primaryMotorData = new TalonMotorData(primaryMotor, primaryConfig);
@@ -71,18 +69,6 @@ public class RollerIOTalonFX implements RollerIO {
     secondaryMotor.setVoltage(voltage);
   }
 
-  /**
-   * Run the motors separately at different voltages. This should only be used if the motors are not
-   * physically coupled by any means.
-   *
-   * @param primaryVoltage The voltage to run the primary motor at.
-   * @param secondaryVoltage The voltage to run the secondary motor at.
-   */
-  public void runVolts(double primaryVoltage, double secondaryVoltage) {
-    primaryMotor.setVoltage(primaryVoltage);
-    secondaryMotor.setVoltage(secondaryVoltage);
-  }
-
   /** Stops ONE of the motors (sets the output to zero). */
   @Override
   public void stop() {
@@ -98,9 +84,14 @@ public class RollerIOTalonFX implements RollerIO {
   @Override
   public void setBrakeMode(boolean enabled) {
     new Thread(
-        () ->
-            this.primaryMotor.setNeutralMode(
-                enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
+            () ->
+                this.primaryMotor.setNeutralMode(
+                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
+        .start();
+    new Thread(
+            () ->
+                this.secondaryMotor.setNeutralMode(
+                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
         .start();
   }
 }

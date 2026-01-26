@@ -7,10 +7,21 @@
 
 package com.team1165.robot.subsystems.roller.flywheel;
 
-public enum FlywheelState {
+import com.team1165.util.statemachine.v1.State;
+import java.util.OptionalDouble;
+
+// We add this later after deciding it
+public enum FlywheelState implements State {
   IDLE(0.0);
-  T1(0.0);
-  T2(0.0);
-  T3(0.0);
-  FIXED(0.0);
+
+  private final double voltage;
+
+  FlywheelState(double voltage) {
+    this.voltage = voltage;
+  }
+
+  @Override
+  public OptionalDouble get() {
+    return OptionalDouble.of(voltage);
+  }
 }

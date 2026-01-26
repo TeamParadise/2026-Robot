@@ -7,17 +7,18 @@
 
 package com.team1165.robot.globalconstants;
 
+import com.ctre.phoenix6.CANBus;
+
 /**
  * Class containing constants for the CAN bus(ses) of the robot, mainly consisting of the IDs for
  * all the different mechanisms.
  */
 public class CANConstants {
   public static final class IDs {
-    public static final class RIO {
-    }
+    public static final class RIO {}
 
     public static final class CANivore {
-      public static final String name = "canivore";
+      public static final CANBus bus = new CANBus("canivore");
       public static final int flywheelPrimary = 14;
       public static final int flywheelSecondary = 15;
     }
