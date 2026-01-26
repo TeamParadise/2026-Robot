@@ -10,7 +10,7 @@ package com.team1165.robot.subsystems.roller.flywheel;
 import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;
 
-// We add this later after deciding it
+// We add to this later after deciding it
 public enum FlywheelState implements State {
   IDLE(0.0);
 

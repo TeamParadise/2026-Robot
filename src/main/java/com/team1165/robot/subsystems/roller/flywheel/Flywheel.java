@@ -9,8 +9,8 @@ package com.team1165.robot.subsystems.roller.flywheel;
 
 import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.robot.subsystems.roller.io.RollerIO.RollerIOInputs;
-import com.team1165.util.logging.LoggedTunableNumber;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import com.team1165.util.tunables.Tunable;
 import java.util.EnumMap;
 import org.littletonrobotics.junction.Logger;
 
@@ -19,7 +19,7 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   private final RollerIO io;
   private final RollerIOInputs inputs = new RollerIOInputs();
   // Will resolve after StateUtils is created
-  private final EnumMap<FlywheelState, LoggedTunableNumber> tunableMap =
+  private final EnumMap<FlywheelState, Tunable> tunableMap =
       StateUtils.createTunableNumberMap(name + "/Voltages", FlywheelState.class);
 
   public Flywheel(RollerIO io) {

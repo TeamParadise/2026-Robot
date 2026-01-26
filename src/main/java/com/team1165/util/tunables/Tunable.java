@@ -17,6 +17,7 @@ public abstract class Tunable {
     TuningManager.registerTunables(this);
   }
 
+
   /** Updates the tuning mode status using the status from {@link TuningManager}. */
   abstract void updateTuningMode();
 }
