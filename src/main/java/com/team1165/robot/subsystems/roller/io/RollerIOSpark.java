@@ -69,7 +69,7 @@ public class RollerIOSpark implements RollerIO {
    * @param voltage The voltage to run the rollers at.
    */
   @Override
-  public void runVolts(double voltage) {
+  public void runRollerVolts(double voltage) {
     primaryMotor.setVoltage(voltage);
     //    secondaryMotor.setVoltage(voltage);
   }
@@ -81,7 +81,7 @@ public class RollerIOSpark implements RollerIO {
    * @param primaryVoltage The voltage to run the primary motor at.
    * @param secondaryVoltage The voltage to run the secondary motor at.
    */
-  public void runVolts(double primaryVoltage, double secondaryVoltage) {
+  public void runRollerVolts(double primaryVoltage, double secondaryVoltage) {
     primaryMotor.setVoltage(primaryVoltage);
     //    secondaryMotor.setVoltage(secondaryVoltage);
   }
