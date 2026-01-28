@@ -8,7 +8,7 @@ plugins {
   id "idea"
 
   // GradleRIO to deploy/push code, etc
-  id "edu.wpi.first.GradleRIO" version "2026.1.1-beta-1"
+  id "edu.wpi.first.GradleRIO" version "2026.2.1"
 
   // Quality-of-life plugins
   id "com.diffplug.spotless" version "8.1.0"
