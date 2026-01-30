@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.groundintake;
+package com.team1165.robot.subsystems.groundintake;
 
 import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;

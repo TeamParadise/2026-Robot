@@ -5,13 +5,13 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.io;
+package com.team1165.robot.subsystems.groundintake.io;
 
-import static com.team1165.robot.subsystems.roller.groundintake.GroundIntakeConstants.pivotMotorActivePos;
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.pivotMotorActivePos;
 
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.team1165.util.logging.motordata.SparkMotorData;

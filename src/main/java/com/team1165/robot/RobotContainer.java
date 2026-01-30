@@ -7,14 +7,14 @@
 
 package com.team1165.robot;
 
-import com.team1165.robot.subsystems.roller.groundintake.GroundIntake;
-import com.team1165.robot.subsystems.roller.groundintake.GroundIntakeConstants;
-import com.team1165.robot.subsystems.roller.groundintake.GroundIntakeState;
-import com.team1165.robot.subsystems.roller.io.PivotIO;
-import com.team1165.robot.subsystems.roller.io.PivotIOSpark;
-import com.team1165.robot.subsystems.roller.io.RollerIO;
-import com.team1165.robot.subsystems.roller.io.RollerIOSpark;
+import com.team1165.robot.subsystems.groundintake.GroundIntake;
+import com.team1165.robot.subsystems.groundintake.GroundIntakeConstants;
+import com.team1165.robot.subsystems.groundintake.GroundIntakeState;
+import com.team1165.robot.subsystems.groundintake.io.PivotIO;
+import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
 import com.team1165.util.constants.RobotMode;
+import com.team1165.util.io.roller.RollerIO;
+import com.team1165.util.io.roller.RollerIOSpark;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {

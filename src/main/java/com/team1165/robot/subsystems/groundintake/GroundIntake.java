@@ -5,14 +5,13 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.groundintake;
+package com.team1165.robot.subsystems.groundintake;
 
-import com.team1165.robot.subsystems.roller.io.PivotIO;
-import com.team1165.robot.subsystems.roller.io.PivotIO.PivotIOInputs;
-import com.team1165.robot.subsystems.roller.io.RollerIO;
-import com.team1165.robot.subsystems.roller.io.RollerIO.RollerIOInputs;
+import com.team1165.robot.subsystems.groundintake.io.PivotIO;
+import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
+import com.team1165.util.io.roller.RollerIO;
+import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.util.statemachine.v2.StateUtils;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
 
@@ -31,18 +30,18 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   }
 
   public double getRollerCurrent() {
-    return rollerinputs.primaryMotor.getOutputCurrentAmps();
+    return rollerinputs.motor.getOutputCurrentAmps();
   }
   public double getPivotCurrent() { return pivotinputs.pivotMotor.getOutputCurrentAmps(); }
 
   @Override
   protected void update() {
-    rollerio.updateRollerInputs(rollerinputs);
+    rollerio.updateInputs(rollerinputs);
     pivotio.updatePivotInputs(pivotinputs);
   }
 
   @Override
   protected void transition() {
-    rollerio.runRollerVolts(tunableMap.get(getCurrentState()).get());
+    rollerio.runVolts(tunableMap.get(getCurrentState()).get());
   }
 }
