@@ -36,6 +36,17 @@ public interface PivotIO {
    */
   default void runPivotVolts(double voltage) {}
 
+
+  /**
+   * Wow my first ever comment. Sets the pivot to either flipped or not flipped.
+   *
+   * @param flipped Flipped or not, with true being flipped and false being backwards.
+   */
+  default void setPivotPosition(boolean flipped) {}
+
+  /** Resets the Pivot to its original position. Doesn't have any reset measures thoughhh :P :D */
+  default void resetPivot() {}
+
   /** Stops the pivot motor (sets the output to zero). */
   default void stop() {}
 
