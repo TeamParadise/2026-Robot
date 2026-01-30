@@ -1,11 +1,11 @@
 /*
- * Copyright (c) 2025 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
+ * Copyright (c) 2025-2026 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
  *
  * Use of this source code is governed by the MIT License, which can be found in the LICENSE file at
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.io;
+package com.team1165.util.io.dualroller;
 
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
@@ -16,7 +16,7 @@ import org.littletonrobotics.junction.AutoLog;
  * motors. These two motors are usually controlled together, but they can be controlled separately
  * if needed.
  */
-public interface RollerIO {
+public interface DualRollerIO {
   /** Class used to store the IO values of a basic roller subsystem. */
   @AutoLog
   class RollerIOInputs {
@@ -31,7 +31,7 @@ public interface RollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link RollerIO}.
+   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link DualRollerIO}.
    *
    * @param inputs A {@link RollerIOInputs} instance to update.
    */
