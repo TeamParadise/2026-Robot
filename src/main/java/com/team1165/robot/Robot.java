@@ -31,7 +31,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
   public Robot() {
-    // Record metadata
+    // Record metadata ASAP
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
