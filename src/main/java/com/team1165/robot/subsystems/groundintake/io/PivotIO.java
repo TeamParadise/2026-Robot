@@ -40,9 +40,9 @@ public interface PivotIO {
   /**
    * Wow my first ever comment. Sets the pivot to either flipped or not flipped.
    *
-   * @param flipped Flipped or not, with true being flipped and false being backwards.
+   * @param pivotPosition Flipped or not, with true being flipped and false being backwards.
    */
-  default void setPivotPosition(boolean flipped) {}
+  default void runPivotPosition(double pivotPosition) {}
 
   /** Resets the Pivot to its original position. Doesn't have any reset measures thoughhh :P :D */
   default void resetPivot() {}

@@ -28,6 +28,11 @@ public class GroundIntakeConstants {
   // Position to put the pivot motor to to be able to reach the floor.
   public static final double pivotMotorActivePos = 1.5;
 
+  // I imPLORE that you change these values before testing
+  public static final double kP = 99999;
+  public static final double kI = 99999;
+  public static final double kD = 99999;
+
   /**
    * Sim configs that im too lazy to add rn as they "arent needed" public static final
    * SimMotorConfigs simConfig = new SimMotorConfigs(DCMotor.getNEO(1), 1,

@@ -7,13 +7,19 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kD;
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kI;
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kP;
 import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.pivotMotorActivePos;
 
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkFlexConfig;
 import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
@@ -22,8 +28,9 @@ public class PivotIOSpark implements PivotIO {
 
   private final SparkBase pivotMotor;
   private final SparkBaseConfig pivotConfigurashun;
-
   private final SparkMotorData pivotMotorData;
+  private final SparkClosedLoopController pivotController;
+  private final SparkFlexConfig pivotPIDConfig;
 
 
   public PivotIOSpark(SparkConfig pivotConfig) {
@@ -32,6 +39,10 @@ public class PivotIOSpark implements PivotIO {
     pivotConfigurashun = pivotConfig.configuration();
 
     pivotMotorData = new SparkMotorData(pivotMotor, pivotConfig);
+
+    pivotController = pivotMotor.getClosedLoopController();
+
+    pivotPIDConfig = new SparkFlexConfig();
   }
 
 
@@ -48,7 +59,7 @@ public class PivotIOSpark implements PivotIO {
   }
 
   @Override
-  public void setPivotPosition(boolean flipped) { pivotMotor.getEncoder().setPosition(flipped ? pivotMotorActivePos : 0);}
+  public void runPivotPosition(double pivotPosition) { pivotController.setSetpoint(pivotPosition, ControlType.kPosition);}
 
   @Override
   public void resetPivot() { pivotMotor.getEncoder().setPosition(0); }
