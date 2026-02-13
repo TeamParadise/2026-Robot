@@ -7,6 +7,7 @@
 
 package com.team1165.robot;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.subsystems.groundintake.GroundIntake;
 import com.team1165.robot.subsystems.groundintake.GroundIntakeConstants;
 import com.team1165.robot.subsystems.groundintake.GroundIntakeState;
@@ -27,11 +28,14 @@ public class RobotContainer {
     switch (RobotMode.get()) {
       case REAL -> {
         groundIntake =
-            new GroundIntake(new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig), new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig));
+            new GroundIntake(
+                new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
+                new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
+                new Slot0Configs(GroundIntakeConstants.pivotMotorPIDConfig));
       }
       default -> {
         // start scremaing bc i havent coded this part yet
-        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {});
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
       }
     }
   }

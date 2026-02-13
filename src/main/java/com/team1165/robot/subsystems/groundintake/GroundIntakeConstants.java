@@ -15,9 +15,9 @@ import com.team1165.util.vendor.rev.SparkConfig;
 
 public class GroundIntakeConstants {
   public static final SparkBaseConfig rollerMotorBaseConfig =
-      new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
+      new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kBrake);
   public static final SparkBaseConfig pivotMotorBaseConfig =
-      new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
+      new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kBrake);
 
   // Individual SPARK MAX configurations
   public static final SparkConfig rollerMotorConfig =
@@ -25,13 +25,10 @@ public class GroundIntakeConstants {
   public static final SparkConfig pivotMotorConfig =
       SparkConfig.sparkMax("PivotMotor", 3, MotorType.kBrushless, pivotMotorBaseConfig);
 
-  // Position to put the pivot motor to to be able to reach the floor.
-  public static final double pivotMotorActivePos = 1.5;
-
   // I imPLORE that you change these values before testing
-  public static final double kP = 99999;
-  public static final double kI = 99999;
-  public static final double kD = 99999;
+  public static final double kP = 0;
+  public static final double kI = 0;
+  public static final double kD = 0;
 
   /**
    * Sim configs that im too lazy to add rn as they "arent needed" public static final

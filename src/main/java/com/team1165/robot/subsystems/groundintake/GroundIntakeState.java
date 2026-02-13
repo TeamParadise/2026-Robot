@@ -11,21 +11,25 @@ import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;
 
 public enum GroundIntakeState implements State {
-  IDLE (false, 0),
-  DEPLOY (true, 0),
-  DEPLOY_AND_RUN (true, 1),
-  DEPLOY_AND_REVERSE (true, -1);
+  IDLE (0, 0),
+  DEPLOY (200, 0),
+  DEPLOY_AND_RUN (200, 1),
+  DEPLOY_AND_REVERSE (200, -1);
 
   private final double voltage;
-  private final boolean pivotDeployed;
+  private final double pivotPosition;
 
-  GroundIntakeState(boolean pivotDeployed, double voltage) {
+  GroundIntakeState(double pivotPosition, double voltage) {
     this.voltage = voltage;
-    this.pivotDeployed = pivotDeployed;
+    this.pivotPosition = pivotPosition;
   }
 
   @Override
   public OptionalDouble get() {
     return OptionalDouble.of(voltage);
+  }
+
+  public OptionalDouble getPivotPosition() {
+    return OptionalDouble.of(pivotPosition);
   }
 }

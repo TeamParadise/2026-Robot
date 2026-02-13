@@ -7,6 +7,11 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kD;
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kI;
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kP;
+
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
@@ -43,6 +48,9 @@ public interface PivotIO {
    * @param pivotPosition Flipped or not, with true being flipped and false being backwards.
    */
   default void runPivotPosition(double pivotPosition) {}
+
+  /** Sets the PID values for the pivot motor */
+  default void setPivotPID(Slot0Configs configs) {}
 
   /** Resets the Pivot to its original position. Doesn't have any reset measures thoughhh :P :D */
   default void resetPivot() {}
