@@ -16,6 +16,7 @@ package com.team1165.robot;
 import com.team1165.robot.globalconstants.BuildConstants;
 import com.team1165.util.tunables.TuningManager;
 import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -30,6 +31,9 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * project.
  */
 public class Robot extends LoggedRobot {
+
+  private final RobotContainer robotContainer;
+
   public Robot() {
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
@@ -56,12 +60,10 @@ public class Robot extends LoggedRobot {
         Logger.addDataReceiver(new WPILOGWriter());
         Logger.addDataReceiver(new NT4Publisher());
         break;
-
       case SIM:
         // Running a physics simulator, log to NT
         Logger.addDataReceiver(new NT4Publisher());
         break;
-
       case REPLAY:
         // Replaying a log, set up replay source
         setUseTiming(false); // Run as fast as possible
@@ -73,6 +75,9 @@ public class Robot extends LoggedRobot {
 
     // Start AdvantageKit logger
     Logger.start();
+
+    // Wire up container/subsystems/commands
+    robotContainer = new RobotContainer();
   }
 
   /** This function is called periodically during all modes. */
@@ -83,6 +88,9 @@ public class Robot extends LoggedRobot {
 
     // Update tuning mode
     TuningManager.updateTuningMode();
+
+    // Run command scheduler
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called once when the robot is disabled. */
@@ -95,7 +103,9 @@ public class Robot extends LoggedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {}
+  public void autonomousInit() {
+    // Placeholder until autonomous command wiring is added in RobotContainer
+  }
 
   /** This function is called periodically during autonomous. */
   @Override
@@ -111,7 +121,9 @@ public class Robot extends LoggedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
+  }
 
   /** This function is called periodically during test mode. */
   @Override
