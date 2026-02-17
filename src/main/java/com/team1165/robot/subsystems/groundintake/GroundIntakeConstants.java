@@ -7,6 +7,7 @@
 
 package com.team1165.robot.subsystems.groundintake;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -26,9 +27,8 @@ public class GroundIntakeConstants {
       SparkConfig.sparkMax("PivotMotor", 3, MotorType.kBrushless, pivotMotorBaseConfig);
 
   // I imPLORE that you change these values before testing
-  public static final double kP = 0;
-  public static final double kI = 0;
-  public static final double kD = 0;
+  public static final Slot0Configs pivotMotorPIDConfig =
+      new Slot0Configs().withKP(1).withKI(1).withKD(1).withKS(1).withKV(1).withKA(1);
 
   /**
    * Sim configs that im too lazy to add rn as they "arent needed" public static final

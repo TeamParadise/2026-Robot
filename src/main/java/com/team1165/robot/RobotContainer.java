@@ -31,10 +31,9 @@ public class RobotContainer {
             new GroundIntake(
                 new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
                 new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
-                new Slot0Configs(GroundIntakeConstants.pivotMotorPIDConfig));
+                GroundIntakeConstants.pivotMotorPIDConfig);
       }
       default -> {
-        // start scremaing bc i havent coded this part yet
         groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
       }
     }

@@ -11,10 +11,12 @@ import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;
 
 public enum GroundIntakeState implements State {
-  IDLE (0, 0),
-  DEPLOY (200, 0),
-  DEPLOY_AND_RUN (200, 1),
-  DEPLOY_AND_REVERSE (200, -1);
+  // random placeholder values used that should be changed later
+
+  IDLE(0, 0),
+  DEPLOY(200, 0),
+  DEPLOY_AND_RUN(200, 1),
+  DEPLOY_AND_REVERSE(200, -1);
 
   private final double voltage;
   private final double pivotPosition;

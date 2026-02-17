@@ -7,10 +7,6 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kD;
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kI;
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kP;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
@@ -28,7 +24,7 @@ public interface PivotIO {
   }
 
   /**
-   * Updates a {@link PivotIOInputs} instance with the latest updates from this {@link RollerIO}.
+   * Updates a {@link PivotIOInputs} instance with the latest updates from this {@link PivotIO}.
    *
    * @param inputs A {@link PivotIOInputs} instance to update.
    */
@@ -40,7 +36,6 @@ public interface PivotIO {
    * @param voltage The voltage to run the rollers at.
    */
   default void runPivotVolts(double voltage) {}
-
 
   /**
    * Wow my first ever comment. Sets the pivot to either flipped or not flipped.

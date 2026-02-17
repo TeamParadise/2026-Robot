@@ -7,6 +7,8 @@
 
 package com.team1165.robot.subsystems.groundintake;
 
+import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.pivotMotorConfig;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
@@ -14,12 +16,10 @@ import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import com.team1165.util.tunables.TunablePID;
-import com.team1165.util.tunables.TunablePIDF;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
 
-
-  private final Slot0Configs tunablepid;
+  private final TunablePID tunablepid;
   private final RollerIO rollerio;
   private final RollerIOInputs rollerinputs = new RollerIOInputs();
   private final PivotIO pivotio;
@@ -28,28 +28,32 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   private final EnumMap<GroundIntakeState, LoggedTunableNumber> tunableMap =
       StateUtils.createTunableNumberMap(name + "/Voltages", GroundIntakeState.class);
 
-  public GroundIntake(RollerIO rollerio, PivotIO pivotio, Slot0Configs tunablepid) {
+  public GroundIntake(RollerIO rollerio, PivotIO pivotio, Slot0Configs slot0Configs) {
     super(GroundIntakeState.IDLE);
     this.rollerio = rollerio;
     this.pivotio = pivotio;
-    this.tunablepid = tunablepid;
+    this.tunablepid = new TunablePID(name + "/PivotPID", slot0Configs);
   }
 
   public double getRollerCurrent() {
     return rollerinputs.motor.getOutputCurrentAmps();
   }
-  public double getPivotCurrent() { return pivotinputs.pivotMotor.getOutputCurrentAmps(); }
+
+  public double getPivotCurrent() {
+    return pivotinputs.pivotMotor.getOutputCurrentAmps();
+  }
 
   @Override
   protected void update() {
     rollerio.updateInputs(rollerinputs);
     pivotio.updatePivotInputs(pivotinputs);
-    tunablepid.;
+    if (tunablepid.hasChanged(pivotMotorConfig.canId()))
+      pivotio.setPivotPID(tunablepid.getSlot0Configs());
   }
 
   @Override
   protected void transition() {
     rollerio.runVolts(getCurrentState().get().getAsDouble());
-    pivotio.runPivotPosition(getCurrentState().get().getAsDouble());
+    pivotio.runPivotPosition(getCurrentState().getPivotPosition().getAsDouble());
   }
 }

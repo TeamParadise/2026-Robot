@@ -47,7 +47,8 @@ public class DualRollerIOSpark implements DualRollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link DualRollerIO}.
+   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link
+   * DualRollerIO}.
    *
    * @param inputs A {@link RollerIOInputs} instance to update.
    */

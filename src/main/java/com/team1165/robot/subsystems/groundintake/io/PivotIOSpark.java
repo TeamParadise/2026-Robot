@@ -7,13 +7,7 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kD;
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kI;
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.kP;
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.pivotMotorBaseConfig;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
@@ -21,7 +15,6 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.vendor.rev.SparkConfig;
@@ -34,7 +27,6 @@ public class PivotIOSpark implements PivotIO {
   private final SparkMotorData pivotMotorData;
   private final SparkClosedLoopController pivotController;
 
-
   public PivotIOSpark(SparkConfig pivotConfig) {
     pivotMotor = SparkUtils.createNewSpark(pivotConfig);
 
@@ -44,7 +36,6 @@ public class PivotIOSpark implements PivotIO {
 
     pivotController = pivotMotor.getClosedLoopController();
   }
-
 
   @Override
   public void updatePivotInputs(PivotIOInputs inputs) {
@@ -59,7 +50,9 @@ public class PivotIOSpark implements PivotIO {
   }
 
   @Override
-  public void runPivotPosition(double pivotPosition) { pivotController.setSetpoint(pivotPosition, ControlType.kPosition);}
+  public void runPivotPosition(double pivotPosition) {
+    pivotController.setSetpoint(pivotPosition, ControlType.kPosition);
+  }
 
   @Override
   public void setPivotPID(Slot0Configs configs) {
@@ -67,11 +60,11 @@ public class PivotIOSpark implements PivotIO {
             () -> {
               SparkBaseConfig tempConfig = new SparkMaxConfig();
               tempConfig
-                .closedLoop
+                  .closedLoop
                   .p(configs.kP)
                   .i(configs.kI)
                   .d(configs.kD)
-                .feedForward
+                  .feedForward
                   .kS(configs.kS)
                   .kA(configs.kA)
                   .kV(configs.kV);
@@ -82,7 +75,9 @@ public class PivotIOSpark implements PivotIO {
   }
 
   @Override
-  public void resetPivot() { pivotMotor.getEncoder().setPosition(0); }
+  public void resetPivot() {
+    pivotMotor.getEncoder().setPosition(0);
+  }
 
   @Override
   public void stop() {
@@ -92,12 +87,12 @@ public class PivotIOSpark implements PivotIO {
   @Override
   public void setBrakeMode(boolean enabled) {
     new Thread(
-        () -> {
-          pivotMotor.configure(
-            pivotConfigurashun.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-            ResetMode.kNoResetSafeParameters,
-            PersistMode.kNoPersistParameters);
-        })
+            () -> {
+              pivotMotor.configure(
+                  pivotConfigurashun.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
+                  ResetMode.kNoResetSafeParameters,
+                  PersistMode.kNoPersistParameters);
+            })
         .start();
   }
 }
