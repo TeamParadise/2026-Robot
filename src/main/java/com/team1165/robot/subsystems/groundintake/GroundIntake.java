@@ -47,7 +47,7 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   protected void update() {
     rollerio.updateInputs(rollerinputs);
     pivotio.updatePivotInputs(pivotinputs);
-    if (tunablepid.hasChanged(pivotMotorConfig.canId()))
+    if (tunablepid.hasChanged(hashCode()))
       pivotio.setPivotPID(tunablepid.getSlot0Configs());
   }
 
