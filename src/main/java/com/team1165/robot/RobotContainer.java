@@ -21,6 +21,7 @@ import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 /** RobotContainer that wires up both drive and ground intake subsystems. */
@@ -33,48 +34,45 @@ public class RobotContainer {
 
     /** Creates subsystems and IO implementations based on current runtime mode. */
     public RobotContainer() {
-        Drive selectedDrive;
-        GroundIntake selectedGroundIntake;
-
         switch (Constants.currentMode) {
             case REAL -> {
-                selectedDrive = new Drive(
+                drive = new Drive(
                     new DriveIOReal(
                         DriveConstants.drivetrainConstants,
                         DriveConstants.getModuleConstants()
                     )
                 );
-                selectedGroundIntake = new GroundIntake(
+                groundIntake = new GroundIntake(
                     new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
                     new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
                     GroundIntakeConstants.pivotMotorPIDConfig
                 );
             }
             case SIM -> {
-                selectedDrive = new Drive(
+                drive = new Drive(
                     new DriveIOMapleSim(
                         DriveConstants.drivetrainConstants,
                         DriveConstants.simConfig,
                         DriveConstants.getModuleConstants()
                     )
                 );
-                selectedGroundIntake = new GroundIntake(
+                groundIntake = new GroundIntake(
                     new RollerIO() {},
                     new PivotIO() {},
                     new Slot0Configs() {}
                 );
             }
             case REPLAY -> {
-                selectedDrive = new Drive(new DriveIO() {});
-                selectedGroundIntake = new GroundIntake(
+                drive = new Drive(new DriveIO() {});
+                groundIntake = new GroundIntake(
                     new RollerIO() {},
                     new PivotIO() {},
                     new Slot0Configs() {}
                 );
             }
             default -> {
-                selectedDrive = new Drive(new DriveIO() {});
-                selectedGroundIntake = new GroundIntake(
+                drive = new Drive(new DriveIO() {});
+                groundIntake = new GroundIntake(
                     new RollerIO() {},
                     new PivotIO() {},
                     new Slot0Configs() {}
@@ -82,10 +80,7 @@ public class RobotContainer {
             }
         }
 
-        drive = selectedDrive;
-        groundIntake = selectedGroundIntake;
-
-        // Optionally configure button bindings immediately if desired.
+        // Configure controller bindings (keeps the same behavior as before).
         configureButtonBindings();
     }
 
@@ -109,16 +104,6 @@ public class RobotContainer {
 
     /** Returns the autonomous command to run. */
     public Command getAutonomousCommand() {
-        return null;
-    }
-
-    /** Exposes drive for future command wiring and testing. */
-    public Drive getDrive() {
-        return drive;
-    }
-
-    /** Exposes ground intake for future command wiring and testing. */
-    public GroundIntake getGroundIntake() {
-        return groundIntake;
+        return Commands.none();
     }
 }
