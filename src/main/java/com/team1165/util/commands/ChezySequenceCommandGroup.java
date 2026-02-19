@@ -1,7 +1,7 @@
 /*
  * File originally made by: The Cheesy Poofs - FRC 254
- * Copyright (c) 2025 Team 254 (https://github.com/Team254)
- * Copyright (c) 2025-2026 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
+ * Copyright (c) 2026 Team 254 (https://github.com/Team254)
+ * Copyright (c) 2026-2026 Team Paradise - FRC 1165 (https://github.com/TeamParadise)
  *
  * Use of this source code is governed by the MIT License, which can be found in the LICENSE file at
  * the root directory of this project.
