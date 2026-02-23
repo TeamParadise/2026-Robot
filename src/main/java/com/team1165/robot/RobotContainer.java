@@ -27,83 +27,65 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 /** RobotContainer that wires up both drive and ground intake subsystems. */
 public class RobotContainer {
 
-    private final Drive drive;
-    private final GroundIntake groundIntake;
-    private final CommandXboxController driverController =
-        new CommandXboxController(0);
+  private final Drive drive;
+  private final GroundIntake groundIntake;
+  private final CommandXboxController driverController = new CommandXboxController(0);
 
-    /** Creates subsystems and IO implementations based on current runtime mode. */
-    public RobotContainer() {
-        switch (Constants.currentMode) {
-            case REAL -> {
-                drive = new Drive(
-                    new DriveIOReal(
-                        DriveConstants.drivetrainConstants,
-                        DriveConstants.getModuleConstants()
-                    )
-                );
-                groundIntake = new GroundIntake(
-                    new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
-                    new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
-                    GroundIntakeConstants.pivotMotorPIDConfig
-                );
-            }
-            case SIM -> {
-                drive = new Drive(
-                    new DriveIOMapleSim(
-                        DriveConstants.drivetrainConstants,
-                        DriveConstants.simConfig,
-                        DriveConstants.getModuleConstants()
-                    )
-                );
-                groundIntake = new GroundIntake(
-                    new RollerIO() {},
-                    new PivotIO() {},
-                    new Slot0Configs() {}
-                );
-            }
-            case REPLAY -> {
-                drive = new Drive(new DriveIO() {});
-                groundIntake = new GroundIntake(
-                    new RollerIO() {},
-                    new PivotIO() {},
-                    new Slot0Configs() {}
-                );
-            }
-            default -> {
-                drive = new Drive(new DriveIO() {});
-                groundIntake = new GroundIntake(
-                    new RollerIO() {},
-                    new PivotIO() {},
-                    new Slot0Configs() {}
-                );
-            }
-        }
-
-        // Configure controller bindings (keeps the same behavior as before).
-        configureButtonBindings();
+  /** Creates subsystems and IO implementations based on current runtime mode. */
+  public RobotContainer() {
+    switch (Constants.currentMode) {
+      case REAL -> {
+        drive =
+            new Drive(
+                new DriveIOReal(
+                    DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
+        groundIntake =
+            new GroundIntake(
+                new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
+                new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
+                GroundIntakeConstants.pivotMotorPIDConfig);
+      }
+      case SIM -> {
+        drive =
+            new Drive(
+                new DriveIOMapleSim(
+                    DriveConstants.drivetrainConstants,
+                    DriveConstants.simConfig,
+                    DriveConstants.getModuleConstants()));
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+      }
+      case REPLAY -> {
+        drive = new Drive(new DriveIO() {});
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+      }
+      default -> {
+        drive = new Drive(new DriveIO() {});
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+      }
     }
 
-    /** Configure driver button bindings for ground intake. */
-    private void configureButtonBindings() {
-        driverController
-            .a()
-            .onTrue(
-                groundIntake
-                    .overrideState(GroundIntakeState.IDLE)
-                    .withName("Controller - A - Idle State")
-            );
-        driverController
-            .b()
-            .onTrue(
-                groundIntake
-                    .overrideState(GroundIntakeState.DEPLOY)
-                    .withName("Controller - B - Deploy State")
-            );
-    }
+    // Configure controller bindings (keeps the same behavior as before).
+    configureButtonBindings();
+  }
 
-    /** Returns the autonomous command to run. */
-    public Command getAutonomousCommand() {
-        return Commands.none();
-    }
+  /** Configure driver button bindings for ground intake. */
+  private void configureButtonBindings() {
+    driverController
+        .a()
+        .onTrue(
+            groundIntake
+                .overrideState(GroundIntakeState.IDLE)
+                .withName("Controller - A - Idle State"));
+    driverController
+        .b()
+        .onTrue(
+            groundIntake
+                .overrideState(GroundIntakeState.DEPLOY)
+                .withName("Controller - B - Deploy State"));
+  }
+
+  /** Returns the autonomous command to run. */
+  public Command getAutonomousCommand() {
+    return Commands.none();
+  }
 }
