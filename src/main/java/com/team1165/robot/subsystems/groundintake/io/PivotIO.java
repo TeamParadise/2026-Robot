@@ -13,10 +13,7 @@ import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
 
-/**
- * A hardware interface/implementation layer for a basic pivot subsystem powered by two
- * motors.
- */
+/** A hardware interface/implementation layer for a basic pivot subsystem powered by two motors. */
 public interface PivotIO {
   @AutoLog
   class PivotIOInputs {
@@ -51,7 +48,8 @@ public interface PivotIO {
    */
   default void runPosition(double position) {}
 
-  /** Resets the current position to a specific value.
+  /**
+   * Resets the current position to a specific value.
    *
    * @param position The position to reset the position to.
    */

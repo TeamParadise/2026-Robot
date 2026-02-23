@@ -7,14 +7,13 @@
 
 package com.team1165.robot.subsystems.groundintake;
 
-import static com.team1165.robot.subsystems.groundintake.GroundIntakeConstants.pivotMotorConfig;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import com.team1165.util.statemachine.v1.StateUtils;
 import com.team1165.util.tunables.TunablePID;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
@@ -47,8 +46,7 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   protected void update() {
     rollerio.updateInputs(rollerinputs);
     pivotio.updatePivotInputs(pivotinputs);
-    if (tunablepid.hasChanged(hashCode()))
-      pivotio.setPivotPID(tunablepid.getSlot0Configs());
+    if (tunablepid.hasChanged(hashCode())) pivotio.setPivotPID(tunablepid.getSlot0Configs());
   }
 
   @Override
