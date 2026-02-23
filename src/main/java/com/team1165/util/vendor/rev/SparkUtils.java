@@ -7,10 +7,10 @@
 
 package com.team1165.util.vendor.rev;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.team1165.util.constants.AlertConstants;
