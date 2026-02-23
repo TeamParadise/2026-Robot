@@ -7,20 +7,27 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
 
+/**
+ * A hardware interface/implementation layer for a basic pivot subsystem powered by two
+ * motors.
+ */
 public interface PivotIO {
-
   @AutoLog
   class PivotIOInputs {
     /**
      * Data from the primary motor of the subsystem. Most of the time, any data needed should be
      * grabbed from here.
      */
-    public MotorData pivotMotor = new GenericMotorData();
+    public MotorData primaryMotor = new GenericMotorData();
+
+    /** Data from the secondary motor of the subsystem. */
+    public MotorData secondaryMotor = new GenericMotorData();
   }
 
   /**
@@ -28,33 +35,39 @@ public interface PivotIO {
    *
    * @param inputs A {@link PivotIOInputs} instance to update.
    */
-  default void updatePivotInputs(PivotIOInputs inputs) {}
+  default void updateInputs(PivotIOInputs inputs) {}
 
   /**
    * Run the motors together at a specific voltage.
    *
-   * @param voltage The voltage to run the rollers at.
+   * @param voltage The voltage to run the pivot at.
    */
-  default void runPivotVolts(double voltage) {}
+  default void runVolts(double voltage) {}
 
   /**
-   * Wow my first ever comment. Sets the pivot to either flipped or not flipped.
+   * Run the motors to a specific position using PID.
    *
-   * @param pivotPosition Flipped or not, with true being flipped and false being backwards.
+   * @param position The position to run to.
    */
-  default void runPivotPosition(double pivotPosition) {}
+  default void runPosition(double position) {}
 
-  /** Sets the PID values for the pivot motor */
-  default void setPivotPID(Slot0Configs configs) {}
+  /** Resets the current position to a specific value.
+   *
+   * @param position The position to reset the position to.
+   */
+  default void resetPosition(double position) {}
 
-  /** Resets the Pivot to its original position. Doesn't have any reset measures thoughhh :P :D */
-  default void resetPivot() {}
+  /** Sets the PIDF values for the motors. */
+  default void setPIDF(Slot0Configs configs) {}
 
-  /** Stops the pivot motor (sets the output to zero). */
+  /** Sets the motion profiling configuration for the motors. */
+  default void setMotionProfiling(MotionMagicConfigs configs) {}
+
+  /** Stops the pivot motors (sets the output to zero). */
   default void stop() {}
 
   /**
-   * Enables or disables brake mode on both of the roller motors.
+   * Enables or disables brake mode on both of the pivot motors.
    *
    * @param enabled Whether to enable brake mode.
    */

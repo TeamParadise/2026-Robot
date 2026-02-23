@@ -21,57 +21,68 @@ import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
 public class PivotIOSpark implements PivotIO {
+  // Motors
+  private final SparkBase primaryMotor;
+  private final SparkBase secondaryMotor;
 
-  private final SparkBase pivotMotor;
-  private final SparkBaseConfig pivotConfigurashun;
-  private final SparkMotorData pivotMotorData;
-  private final SparkClosedLoopController pivotController;
+  // Motor data to log
+  private final SparkMotorData primaryMotorData;
+  private final SparkMotorData secondaryMotorData;
 
-  public PivotIOSpark(SparkConfig pivotConfig) {
-    pivotMotor = SparkUtils.createNewSpark(pivotConfig);
+  // PID/closed loop controller
+  private final SparkClosedLoopController controller;
 
-    pivotConfigurashun = pivotConfig.configuration();
+  public PivotIOSpark(SparkConfig primaryConfig, SparkConfig secondaryConfig) {
+    // Assign motor variables
+    primaryMotor = SparkUtils.createNewSpark(primaryConfig);
+    secondaryMotor = SparkUtils.createNewSpark(secondaryConfig);
 
-    pivotMotorData = new SparkMotorData(pivotMotor, pivotConfig);
+    // Make sure the secondary motor follows the primary motor
+    secondaryMotor.configure(
+        new SparkMaxConfig().follow(primaryMotor),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters
+    );
 
-    pivotController = pivotMotor.getClosedLoopController();
+    // Create MotorData instances to log motors
+    primaryMotorData = new SparkMotorData(primaryMotor, primaryConfig);
+    secondaryMotorData = new SparkMotorData(secondaryMotor, secondaryConfig);
+
+    // Create closed loop controller
+    controller = primaryMotor.getClosedLoopController();
   }
 
   @Override
-  public void updatePivotInputs(PivotIOInputs inputs) {
-    pivotMotorData.update();
+  public void updateInputs(PivotIOInputs inputs) {
+    // Update the motor data
+    primaryMotorData.update();
+    secondaryMotorData.update();
 
-    inputs.pivotMotor = pivotMotorData;
+    // Put the motor data values in inputs
+    inputs.primaryMotor = primaryMotorData;
+    inputs.secondaryMotor = secondaryMotorData;
   }
 
   @Override
-  public void runPivotVolts(double voltage) {
-    pivotMotor.setVoltage(voltage);
+  public void runVolts(double voltage) {
+    primaryMotor.setVoltage(voltage);
   }
 
   @Override
-  public void runPivotPosition(double pivotPosition) {
-    pivotController.setSetpoint(pivotPosition, ControlType.kPosition);
+  public void runPosition(double pivotPosition) {
+    controller.setSetpoint(pivotPosition, ControlType.kMAXMotionPositionControl);
   }
 
   @Override
-  public void setPivotPID(Slot0Configs configs) {
-    new Thread(
-            () -> {
-              SparkBaseConfig tempConfig = new SparkMaxConfig();
-              tempConfig
-                  .closedLoop
-                  .p(configs.kP)
-                  .i(configs.kI)
-                  .d(configs.kD)
-                  .feedForward
-                  .kS(configs.kS)
-                  .kA(configs.kA)
-                  .kV(configs.kV);
-              pivotMotor.configure(
-                  tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-            })
-        .start();
+  public void resetPosition(double position) {
+    primaryMotor.getEncoder().setPosition(position);
+    secondaryMotor.getEncoder().setPosition(position);
+  }
+
+  @Override
+  public void setPIDF(Slot0Configs configs) {
+    SparkBaseConfig tempConfig = new SparkMaxConfig().closedLoop.pid(configs.kP, configs.kI, configs.kD);
+    tempConfig.sva(configs.kS, configs.kV, configs.kA);
   }
 
   @Override
