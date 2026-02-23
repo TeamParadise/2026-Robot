@@ -41,7 +41,7 @@ public class RobotContainer {
         .y()
         .onTrue(
             turret
-                .overrideState(TurretState.ROTATECW)
+                .overrideState(TurretState.IDLE)
                 .withName("Controller - Y - it rotates clockwise"));
   }
 }

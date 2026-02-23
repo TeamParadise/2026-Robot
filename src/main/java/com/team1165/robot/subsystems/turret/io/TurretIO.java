@@ -17,13 +17,6 @@ public interface TurretIO {
   class TurretIOInputs {
 
     public MotorData turretMotor = new GenericMotorData();
-
-    @Override
-    public TurretIOInputs clone() {
-      TurretIOInputs copy = new TurretIOInputs();
-      copy.turretMotor = this.turretMotor;
-      return copy;
-    }
   }
 
   default void updateInputs(TurretIOInputs inputs) {}

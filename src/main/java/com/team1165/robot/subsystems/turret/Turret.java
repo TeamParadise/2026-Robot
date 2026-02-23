@@ -11,13 +11,14 @@ import com.team1165.robot.subsystems.turret.io.TurretIO;
 import com.team1165.robot.subsystems.turret.io.TurretIO.TurretIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import java.util.EnumMap;
+import org.littletonrobotics.junction.Logger;
 
 public class Turret extends OverridableStateMachine<TurretState> {
 
   private final TurretIO io;
   private final TurretIOInputs inputs = new TurretIOInputs();
 
-  private final EnumMap<Turret, LoggedTunableNumber> tunableMap =
+  private final EnumMap<TurretState, LoggedTunableNumber> tunableMap =
       StateUtils.createTunableNumberMap(name + "/Voltages", TurretState.class);
 
   public Turret(TurretIO io) {
@@ -28,6 +29,7 @@ public class Turret extends OverridableStateMachine<TurretState> {
   @Override
   protected void update() {
     io.updateInputs(inputs);
+    Logger.processInputs(name, inputs.turretMotor);
   }
 
   @Override

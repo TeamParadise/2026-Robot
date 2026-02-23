@@ -11,11 +11,13 @@ import com.team1165.util.statemachine.v1.State;
 import java.util.OptionalDouble;
 
 public enum TurretState implements State {
-  IDLE(0.0),
+  IDLE(0),
 
-  ROTATECW(0.5),
+  ZERO(Double.NaN),
 
-  ROTATECCW(-0.5);
+  SIMPLE_TRACKING(Double.NaN),
+
+  SOTM_TRACKING(Double.NaN);
 
   private final double voltage;
 
@@ -24,7 +26,5 @@ public enum TurretState implements State {
   }
 
   @Override
-  public OptionalDouble get() {
-    return OptionalDouble.of(voltage);
-  }
+  public OptionalDouble get() { return OptionalDouble.of(voltage); }
 }
