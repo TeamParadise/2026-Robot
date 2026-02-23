@@ -19,7 +19,7 @@ import org.littletonrobotics.junction.AutoLog;
 public interface DualRollerIO {
   /** Class used to store the IO values of a basic roller subsystem. */
   @AutoLog
-  class RollerIOInputs {
+  class DualRollerIOInputs {
     /**
      * Data from the primary motor of the subsystem. Most of the time, any data needed should be
      * grabbed from here.
@@ -31,12 +31,12 @@ public interface DualRollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link
+   * Updates a {@link DualRollerIOInputs} instance with the latest updates from this {@link
    * DualRollerIO}.
    *
-   * @param inputs A {@link RollerIOInputs} instance to update.
+   * @param inputs A {@link DualRollerIOInputs} instance to update.
    */
-  default void updateInputs(RollerIOInputs inputs) {}
+  default void updateInputs(DualRollerIOInputs inputs) {}
 
   /**
    * Run the motors together at a specific voltage.
