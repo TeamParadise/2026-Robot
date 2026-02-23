@@ -7,7 +7,9 @@
 
 package com.team1165.robot.subsystems.groundintake.io;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
@@ -41,8 +43,7 @@ public class PivotIOSpark implements PivotIO {
     secondaryMotor.configure(
         new SparkMaxConfig().follow(primaryMotor),
         ResetMode.kNoResetSafeParameters,
-        PersistMode.kNoPersistParameters
-    );
+        PersistMode.kNoPersistParameters);
 
     // Create MotorData instances to log motors
     primaryMotorData = new SparkMotorData(primaryMotor, primaryConfig);
@@ -81,29 +82,63 @@ public class PivotIOSpark implements PivotIO {
 
   @Override
   public void setPIDF(Slot0Configs configs) {
-    SparkBaseConfig tempConfig = new SparkMaxConfig().closedLoop.pid(configs.kP, configs.kI, configs.kD);
-    tempConfig.sva(configs.kS, configs.kV, configs.kA);
+    // Create temporary config
+    SparkBaseConfig tempConfig = new SparkMaxConfig();
+
+    // Configure PID and feedforward
+    tempConfig
+        .closedLoop
+        .pid(configs.kP, configs.kI, configs.kD)
+        .feedForward
+        .sva(configs.kS, configs.kV, configs.kA);
+
+    // Configure kG/kCosRatio
+    if (configs.GravityType == GravityTypeValue.Elevator_Static) {
+      tempConfig.closedLoop.feedForward.kG(configs.kG);
+    } else {
+      tempConfig.closedLoop.feedForward.kCos(configs.kG);
+    }
+
+    // Configure motors
+    primaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    secondaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   @Override
-  public void resetPivot() {
-    pivotMotor.getEncoder().setPosition(0);
+  public void setMotionProfiling(MotionMagicConfigs configs) {
+    // Create temporary config
+    SparkBaseConfig tempConfig = new SparkMaxConfig();
+
+    // Configure motion profiling
+    tempConfig
+        .closedLoop
+        .maxMotion
+        .cruiseVelocity(configs.MotionMagicCruiseVelocity)
+        .maxAcceleration(configs.MotionMagicAcceleration);
+
+    // Configure motors
+    primaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    secondaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   @Override
   public void stop() {
-    pivotMotor.set(0);
+    primaryMotor.set(0);
+    secondaryMotor.set(0);
   }
 
   @Override
   public void setBrakeMode(boolean enabled) {
-    new Thread(
-            () -> {
-              pivotMotor.configure(
-                  pivotConfigurashun.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                  ResetMode.kNoResetSafeParameters,
-                  PersistMode.kNoPersistParameters);
-            })
-        .start();
+    // Create temporary config
+    SparkBaseConfig tempConfig =
+        new SparkMaxConfig().idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast);
+
+    // Configure motors
+    primaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 }
