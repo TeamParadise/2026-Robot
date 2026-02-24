@@ -83,21 +83,7 @@ public class PivotIOSpark implements PivotIO {
   @Override
   public void setPIDF(Slot0Configs configs) {
     // Create temporary config
-    SparkBaseConfig tempConfig = new SparkMaxConfig();
-
-    // Configure PID and feedforward
-    tempConfig
-        .closedLoop
-        .pid(configs.kP, configs.kI, configs.kD)
-        .feedForward
-        .sva(configs.kS, configs.kV, configs.kA);
-
-    // Configure kG/kCosRatio
-    if (configs.GravityType == GravityTypeValue.Elevator_Static) {
-      tempConfig.closedLoop.feedForward.kG(configs.kG);
-    } else {
-      tempConfig.closedLoop.feedForward.kCos(configs.kG);
-    }
+    SparkBaseConfig tempConfig = new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs));
 
     // Configure motors
     primaryMotor.configureAsync(

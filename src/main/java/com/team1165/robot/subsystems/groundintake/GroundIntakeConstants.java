@@ -11,6 +11,7 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -38,7 +39,13 @@ public final class GroundIntakeConstants {
     public static final MotionMagicConfigs motionProfile =
         new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
     private static final SparkBaseConfig baseConfig =
-        new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
+        new SparkMaxConfig()
+            .smartCurrentLimit(40)
+            .idleMode(IdleMode.kBrake)
+            .apply(
+                new EncoderConfig()
+                    .positionConversionFactor(1.0 / 9.0)
+                    .velocityConversionFactor(1.0 / 9.0));
     public static final SparkConfig primaryConfig =
         SparkConfig.sparkMax(
             "IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
@@ -52,7 +59,13 @@ public final class GroundIntakeConstants {
     private Roller() {}
 
     private static final SparkBaseConfig baseConfig =
-        new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kCoast);
+        new SparkMaxConfig()
+            .smartCurrentLimit(60)
+            .idleMode(IdleMode.kCoast)
+            .apply(
+                new EncoderConfig()
+                    .velocityConversionFactor(14.0 / 24.0)
+                    .positionConversionFactor(14.0 / 24.0));
     public static final SparkConfig config =
         SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
   }
