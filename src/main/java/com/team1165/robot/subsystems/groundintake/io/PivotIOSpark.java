@@ -9,7 +9,6 @@ package com.team1165.robot.subsystems.groundintake.io;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
@@ -82,32 +81,21 @@ public class PivotIOSpark implements PivotIO {
 
   @Override
   public void setPIDF(Slot0Configs configs) {
-    // Create temporary config
-    SparkBaseConfig tempConfig = new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs));
-
-    // Configure motors
+    // Configure primary motor
     primaryMotor.configureAsync(
-        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    secondaryMotor.configureAsync(
-        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)), ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   @Override
   public void setMotionProfiling(MotionMagicConfigs configs) {
     // Create temporary config
-    SparkBaseConfig tempConfig = new SparkMaxConfig();
+    var tempConfig = new SparkMaxConfig();
 
-    // Configure motion profiling
-    tempConfig
-        .closedLoop
-        .maxMotion
-        .cruiseVelocity(configs.MotionMagicCruiseVelocity)
-        .maxAcceleration(configs.MotionMagicAcceleration);
+    // Apply motion config to temporary config
+    tempConfig.closedLoop.apply(SparkUtils.createMotionConfig(configs));
 
-    // Configure motors
+    // Configure primary motor
     primaryMotor.configureAsync(
-        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-    secondaryMotor.configureAsync(
         tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
@@ -125,6 +113,8 @@ public class PivotIOSpark implements PivotIO {
 
     // Configure motors
     primaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+    secondaryMotor.configureAsync(
         tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 }

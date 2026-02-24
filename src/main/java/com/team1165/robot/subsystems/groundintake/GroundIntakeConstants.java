@@ -11,12 +11,12 @@ import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.EncoderConfig;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.robot.globalconstants.IDConstants.RIO;
 import com.team1165.util.vendor.rev.SparkConfig;
+import com.team1165.util.vendor.rev.SparkUtils;
 
 public final class GroundIntakeConstants {
   /** Private constructor to prevent instantiation. */
@@ -42,10 +42,7 @@ public final class GroundIntakeConstants {
         new SparkMaxConfig()
             .smartCurrentLimit(40)
             .idleMode(IdleMode.kBrake)
-            .apply(
-                new EncoderConfig()
-                    .positionConversionFactor(1.0 / 9.0)
-                    .velocityConversionFactor(1.0 / 9.0));
+            .apply(SparkUtils.createEncoderRatio(1.0 / 9.0));
     public static final SparkConfig primaryConfig =
         SparkConfig.sparkMax(
             "IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
@@ -60,12 +57,9 @@ public final class GroundIntakeConstants {
 
     private static final SparkBaseConfig baseConfig =
         new SparkMaxConfig()
-            .smartCurrentLimit(60)
+            .smartCurrentLimit(50)
             .idleMode(IdleMode.kCoast)
-            .apply(
-                new EncoderConfig()
-                    .velocityConversionFactor(14.0 / 24.0)
-                    .positionConversionFactor(14.0 / 24.0));
+            .apply(SparkUtils.createEncoderRatio(14.0 / 24.0));
     public static final SparkConfig config =
         SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
   }

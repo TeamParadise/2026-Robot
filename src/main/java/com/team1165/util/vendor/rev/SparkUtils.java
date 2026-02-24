@@ -17,6 +17,8 @@ import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.EncoderConfig;
+import com.revrobotics.spark.config.MAXMotionConfig;
 import com.team1165.util.constants.AlertConstants;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -108,6 +110,30 @@ public final class SparkUtils {
         .maxAcceleration(motionProfile.MotionMagicAcceleration);
 
     return config;
+  }
+
+  /**
+   * Create a {@link MAXMotionConfig} from a {@link MotionMagicConfigs}.
+   *
+   * @param motionProfile The {@link MotionMagicConfigs} to utilize as a base.
+   * @return A {@link MAXMotionConfig} with values from the gains and profile.
+   */
+  public static MAXMotionConfig createMotionConfig(MotionMagicConfigs motionProfile) {
+    return new MAXMotionConfig()
+        .cruiseVelocity(motionProfile.MotionMagicCruiseVelocity)
+        .maxAcceleration(motionProfile.MotionMagicAcceleration);
+  }
+
+  /**
+   * Create an {@link EncoderConfig} using a specific gear ratio.
+   *
+   * @param gearRatio The grea ratio to multiply the reported position/velocity by.
+   * @return A {@link EncoderConfig} with the provided gear ratio.
+   */
+  public static EncoderConfig createEncoderRatio(double gearRatio) {
+    return new EncoderConfig()
+        .positionConversionFactor(gearRatio)
+        .velocityConversionFactor(gearRatio);
   }
 
   // ifOkOrDefault() methods are used because of:
