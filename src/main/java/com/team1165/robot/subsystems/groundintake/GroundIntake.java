@@ -7,51 +7,41 @@
 
 package com.team1165.robot.subsystems.groundintake;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
-import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import com.team1165.util.statemachine.v1.StateUtils;
 import com.team1165.util.tunables.TunablePID;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
+  private final RollerIO roller;
+  private final RollerIOInputs rollerInputs = new RollerIOInputs();
+  private final PivotIO pivot;
+  private final PivotIOInputs pivotInputs = new PivotIOInputs();
+  private final TunablePIDF pidf;
+  private final TunableMotionProfile motionProfile;
 
-  private final TunablePID tunablepid;
-  private final RollerIO rollerio;
-  private final RollerIOInputs rollerinputs = new RollerIOInputs();
-  private final PivotIO pivotio;
-  private final PivotIOInputs pivotinputs = new PivotIOInputs();
-
-  private final EnumMap<GroundIntakeState, LoggedTunableNumber> tunableMap =
-      StateUtils.createTunableNumberMap(name + "/Voltages", GroundIntakeState.class);
-
-  public GroundIntake(RollerIO rollerio, PivotIO pivotio, Slot0Configs slot0Configs) {
+  public GroundIntake(PivotIO pivot, RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
     super(GroundIntakeState.IDLE);
-    this.rollerio = rollerio;
-    this.pivotio = pivotio;
-    this.tunablepid = new TunablePID(name + "/PivotPID", slot0Configs);
-  }
-
-  public double getRollerCurrent() {
-    return rollerinputs.motor.getOutputCurrentAmps();
-  }
-
-  public double getPivotCurrent() {
-    return pivotinputs.pivotMotor.getOutputCurrentAmps();
+    this.pivot = pivot;
+    this.roller = roller;
+    this.pidf = new TunablePIDF(name + "Pivot/PIDF", gains);
+    this.motionProfile = new TunableMotionProfile(name + "Pivot/MotionProfile", motionProfile);
   }
 
   @Override
   protected void update() {
-    rollerio.updateInputs(rollerinputs);
-    pivotio.updatePivotInputs(pivotinputs);
-    if (tunablepid.hasChanged(hashCode())) pivotio.setPivotPID(tunablepid.getSlot0Configs());
+    pivot.updateInputs(pivotInputs);
+    roller.updateInputs(rollerInputs);
+    if (pidf.hasChanged(hashCode())) pivot.setPIDF(pidf.getSlot0Configs());
+    if (motionProfile.hasChanged(hashCode())) pivot.setMotionProfiling(motionProfile.getConfigs());
   }
 
   @Override
   protected void transition() {
-    rollerio.runVolts(getCurrentState().get().getAsDouble());
-    pivotio.runPivotPosition(getCurrentState().getPivotPosition().getAsDouble());
+    pivot.runPosition(getCurrentState().getPivotPosition());
+    roller.runVolts(getCurrentState().getRollerVoltage());
   }
 }
