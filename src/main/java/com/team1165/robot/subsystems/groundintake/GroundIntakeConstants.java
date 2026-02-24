@@ -7,6 +7,7 @@
 
 package com.team1165.robot.subsystems.groundintake;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -34,10 +35,16 @@ public final class GroundIntakeConstants {
             .withKA(0)
             .withKG(0)
             .withGravityType(GravityTypeValue.Arm_Cosine);
+    public static final MotionMagicConfigs motionProfile =
+        new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
     private static final SparkBaseConfig baseConfig =
         new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
-    public static final SparkConfig primaryConfig = SparkConfig.sparkMax("IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
-    public static final SparkConfig secondaryConfig = SparkConfig.sparkMax("IntakePivotSecondary", RIO.intakePivotSecondary, MotorType.kBrushless, baseConfig);
+    public static final SparkConfig primaryConfig =
+        SparkConfig.sparkMax(
+            "IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
+    public static final SparkConfig secondaryConfig =
+        SparkConfig.sparkMax(
+            "IntakePivotSecondary", RIO.intakePivotSecondary, MotorType.kBrushless, baseConfig);
   }
 
   /** Roller constants. */

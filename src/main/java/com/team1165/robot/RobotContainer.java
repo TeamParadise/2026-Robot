@@ -29,9 +29,10 @@ public class RobotContainer {
       case REAL -> {
         groundIntake =
             new GroundIntake(
-                new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
-                new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
-                GroundIntakeConstants.pivotMotorPIDConfig);
+                new RollerIOSpark(GroundIntakeConstants.Roller.config),
+                new PivotIOSpark(GroundIntakeConstants.Pivot.primaryConfig, GroundIntakeConstants.Pivot.secondaryConfig),
+                GroundIntakeConstants.Pivot.gains,
+                GroundIntakeConstants.Pivot.motionProfile);
       }
       default -> {
         groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
