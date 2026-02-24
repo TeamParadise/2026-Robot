@@ -41,9 +41,10 @@ public class RobotContainer {
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
         groundIntake =
             new GroundIntake(
-                new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
-                new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
-                GroundIntakeConstants.pivotMotorPIDConfig);
+                new PivotIOSpark(GroundIntakeConstants.Pivot.primaryConfig, GroundIntakeConstants.Pivot.secondaryConfig),
+                new RollerIOSpark(GroundIntakeConstants.Roller.config),
+                GroundIntakeConstants.Pivot.gains,
+                GroundIntakeConstants.Pivot.motionProfile);
       }
       case SIM -> {
         drive =
