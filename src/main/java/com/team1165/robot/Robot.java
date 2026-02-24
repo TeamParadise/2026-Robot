@@ -31,7 +31,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * project.
  */
 public class Robot extends LoggedRobot {
-
   private final RobotContainer robotContainer;
 
   public Robot() {

@@ -18,22 +18,21 @@ import com.team1165.robot.subsystems.groundintake.GroundIntakeConstants;
 import com.team1165.robot.subsystems.groundintake.GroundIntakeState;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
+import com.team1165.util.constants.RobotMode;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-/** RobotContainer that wires up both drive and ground intake subsystems. */
 public class RobotContainer {
-
   private final Drive drive;
   private final GroundIntake groundIntake;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
-    switch (Constants.currentMode) {
+    switch (RobotMode.get()) {
       case REAL -> {
         drive =
             new Drive(
@@ -41,7 +40,9 @@ public class RobotContainer {
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
         groundIntake =
             new GroundIntake(
-                new PivotIOSpark(GroundIntakeConstants.Pivot.primaryConfig, GroundIntakeConstants.Pivot.secondaryConfig),
+                new PivotIOSpark(
+                    GroundIntakeConstants.Pivot.primaryConfig,
+                    GroundIntakeConstants.Pivot.secondaryConfig),
                 new RollerIOSpark(GroundIntakeConstants.Roller.config),
                 GroundIntakeConstants.Pivot.gains,
                 GroundIntakeConstants.Pivot.motionProfile);
@@ -65,7 +66,6 @@ public class RobotContainer {
       }
     }
 
-    // Configure controller bindings (keeps the same behavior as before).
     configureButtonBindings();
   }
 
