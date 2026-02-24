@@ -24,8 +24,12 @@ public enum GroundIntakeState implements State {
   private final TunableNumber rollerVoltage;
 
   GroundIntakeState(double pivotPosition, double rollerVoltage) {
-    this.pivotPosition = new TunableNumber("GroundIntake/PivotPosition/" + name(), pivotPosition);
-    this.rollerVoltage = new TunableNumber("GroundIntake/RollerVoltages/" + name(), rollerVoltage);
+    this.pivotPosition =
+        new TunableNumber(
+            GroundIntake.class.getName() + "/Pivot/Positions/" + name(), pivotPosition);
+    this.rollerVoltage =
+        new TunableNumber(
+            GroundIntake.class.getName() + "/Roller/Voltages/" + name(), rollerVoltage);
   }
 
   public double getPivotPosition() {
