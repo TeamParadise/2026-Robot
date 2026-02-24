@@ -13,5 +13,4 @@ package com.team1165.util.statemachine.v1;
  * <p>Each implementation of this interface should be an {@link Enum}, where each enum constant
  * represents a distinct state that the {@link StateMachine} can be in.
  */
-public interface State {
-}
+public interface State {}
