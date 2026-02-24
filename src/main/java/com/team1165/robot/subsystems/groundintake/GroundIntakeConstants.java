@@ -8,31 +8,45 @@
 package com.team1165.robot.subsystems.groundintake;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.team1165.robot.globalconstants.IDConstants.RIO;
 import com.team1165.util.vendor.rev.SparkConfig;
 
-public class GroundIntakeConstants {
-  public static final SparkBaseConfig rollerMotorBaseConfig =
-      new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kBrake);
-  public static final SparkBaseConfig pivotMotorBaseConfig =
-      new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kBrake);
+public final class GroundIntakeConstants {
+  /** Private constructor to prevent instantiation. */
+  private GroundIntakeConstants() {}
 
-  // Individual SPARK MAX configurations
-  public static final SparkConfig rollerMotorConfig =
-      SparkConfig.sparkMax("GroundIntakePrimary", 1, MotorType.kBrushless, rollerMotorBaseConfig);
-  public static final SparkConfig pivotMotorConfig =
-      SparkConfig.sparkMax("PivotMotor", 3, MotorType.kBrushless, pivotMotorBaseConfig);
+  /** Pivot constants. */
+  public static final class Pivot {
+    private Pivot() {}
 
-  // I imPLORE that you change these values before testing
-  public static final Slot0Configs pivotMotorPIDConfig =
-      new Slot0Configs().withKP(1).withKI(1).withKD(1).withKS(1).withKV(1).withKA(1);
+    public static final Slot0Configs gains =
+        new Slot0Configs()
+            .withKP(0)
+            .withKI(0)
+            .withKD(0)
+            .withKS(0)
+            .withKV(0)
+            .withKA(0)
+            .withKG(0)
+            .withGravityType(GravityTypeValue.Arm_Cosine);
+    private static final SparkBaseConfig baseConfig =
+        new SparkMaxConfig().smartCurrentLimit(40).idleMode(IdleMode.kBrake);
+    public static final SparkConfig primaryConfig = SparkConfig.sparkMax("IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
+    public static final SparkConfig secondaryConfig = SparkConfig.sparkMax("IntakePivotSecondary", RIO.intakePivotSecondary, MotorType.kBrushless, baseConfig);
+  }
 
-  /**
-   * Sim configs that im too lazy to add rn as they "arent needed" public static final
-   * SimMotorConfigs simConfig = new SimMotorConfigs(DCMotor.getNEO(1), 1,
-   * KilogramSquareMeters.of(0.002), Volts.of(0.05));
-   */
+  /** Roller constants. */
+  public static final class Roller {
+    private Roller() {}
+
+    private static final SparkBaseConfig baseConfig =
+        new SparkMaxConfig().smartCurrentLimit(60).idleMode(IdleMode.kCoast);
+    public static final SparkConfig config =
+        SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
+  }
 }
