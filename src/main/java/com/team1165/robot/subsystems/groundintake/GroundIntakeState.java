@@ -8,30 +8,31 @@
 package com.team1165.robot.subsystems.groundintake;
 
 import com.team1165.util.statemachine.v1.State;
-import java.util.OptionalDouble;
+import com.team1165.util.tunables.TunableNumber;
 
+/** State for the {@link GroundIntake}, including both roller voltage and pivot positions. */
 public enum GroundIntakeState implements State {
-  // random placeholder values used that should be changed later
-
   IDLE(0, 0),
-  DEPLOY(200, 0),
-  DEPLOY_AND_RUN(200, 1),
-  DEPLOY_AND_REVERSE(200, -1);
+  AGITATE(0, 0),
+  AGITATE_AND_RUN(0, 8),
+  DEPLOY(0, 0),
+  DEPLOY_AND_RUN(0, 8),
+  DEPLOY_AND_REVERSE(0, -8),
+  ;
 
-  private final double voltage;
-  private final double pivotPosition;
+  private final TunableNumber pivotPosition;
+  private final TunableNumber rollerVoltage;
 
-  GroundIntakeState(double pivotPosition, double voltage) {
-    this.voltage = voltage;
-    this.pivotPosition = pivotPosition;
+  GroundIntakeState(double pivotPosition, double rollerVoltage) {
+    this.pivotPosition = new TunableNumber("GroundIntake/PivotPosition/" + name(), pivotPosition);
+    this.rollerVoltage = new TunableNumber("GroundIntake/RollerVoltages/" + name(), rollerVoltage);
   }
 
-  @Override
-  public OptionalDouble get() {
-    return OptionalDouble.of(voltage);
+  public double getPivotPosition() {
+    return pivotPosition.get();
   }
 
-  public OptionalDouble getPivotPosition() {
-    return OptionalDouble.of(pivotPosition);
+  public double getRollerVoltage() {
+    return rollerVoltage.get();
   }
 }

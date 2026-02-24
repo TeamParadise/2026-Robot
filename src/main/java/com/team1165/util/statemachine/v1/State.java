@@ -7,8 +7,6 @@
 
 package com.team1165.util.statemachine.v1;
 
-import java.util.OptionalDouble;
-
 /**
  * An interface for an {@link Enum} used to define all possible states for a {@link StateMachine}.
  *
@@ -16,7 +14,4 @@ import java.util.OptionalDouble;
  * represents a distinct state that the {@link StateMachine} can be in.
  */
 public interface State {
-  default OptionalDouble get() {
-    return OptionalDouble.empty();
-  }
 }
