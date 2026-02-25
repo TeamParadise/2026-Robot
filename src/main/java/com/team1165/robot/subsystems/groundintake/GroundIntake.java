@@ -25,7 +25,8 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   private final TunablePIDF pidf;
   private final TunableMotionProfile motionProfile;
 
-  public GroundIntake(PivotIO pivot, RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
+  public GroundIntake(
+      PivotIO pivot, RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
     super(GroundIntakeState.IDLE);
     this.pivot = pivot;
     this.roller = roller;

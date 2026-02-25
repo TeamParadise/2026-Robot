@@ -83,7 +83,9 @@ public class PivotIOSpark implements PivotIO {
   public void setPIDF(Slot0Configs configs) {
     // Configure primary motor
     primaryMotor.configureAsync(
-        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)), ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
   }
 
   @Override
