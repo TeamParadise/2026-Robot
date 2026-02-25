@@ -11,7 +11,6 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.team1165.robot.subsystems.roller.io.RollerIO;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
@@ -21,7 +20,7 @@ import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
  * motors attached to SPARK MAX/FLEX motor controllers. These two motors are usually controlled
  * together, but they can be controlled separately if needed.
  */
-public class RollerIOTalonFX implements DualRollerIO {
+public class DualRollerIOTalonFX implements DualRollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later
   private final TalonFX primaryMotor;
   private final TalonFX secondaryMotor;
@@ -30,7 +29,7 @@ public class RollerIOTalonFX implements DualRollerIO {
   private final TalonMotorData primaryMotorData;
   private final TalonMotorData secondaryMotorData;
 
-  public RollerIOTalonFX(TalonFXConfig primaryConfig, TalonFXConfig secondaryConfig) {
+  public DualRollerIOTalonFX(TalonFXConfig primaryConfig, TalonFXConfig secondaryConfig) {
     // Assign motor variables
     primaryMotor = PhoenixDeviceUtils.createNewTalonFX(primaryConfig);
     secondaryMotor = PhoenixDeviceUtils.createNewTalonFX(secondaryConfig);
@@ -49,7 +48,7 @@ public class RollerIOTalonFX implements DualRollerIO {
    * @param inputs A {@link RollerIOInputs} instance to update.
    */
   @Override
-  public void updateInputs(RollerIOInputs inputs) {
+  public void updateInputs(DualRollerIOInputs inputs) {
     // Update the motor data
     primaryMotorData.update();
     secondaryMotorData.update();
