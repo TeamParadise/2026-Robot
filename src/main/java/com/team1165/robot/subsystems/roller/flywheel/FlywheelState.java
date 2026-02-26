@@ -14,7 +14,7 @@ import java.util.OptionalDouble;
 /** Possible states for the Flywheel subsystem. */
 public enum FlywheelState implements State {
   /** Coast to zero — motors are idle with no active output. */
-  IDLE(0.0),
+  IDLE(OptionalDouble.of(0.0)),
 
   /**
    * Adapt flywheel speed based on the distance to the hub. The voltage value here is a placeholder
@@ -27,7 +27,7 @@ public enum FlywheelState implements State {
    * Run the flywheel at a fixed voltage for shooting from a known, set distance away from the hub.
    * Acts as a reliable backup when tracking is unavailable or unnecessary.
    */
-  FIXED(8.0);
+  FIXED(OptionalDouble.of(8.0));
 
 
   private final TunableNumber dualRollerVoltage;
