@@ -8,6 +8,11 @@
 package com.team1165.robot;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.team1165.robot.subsystems.drive.Drive;
+import com.team1165.robot.subsystems.drive.constants.DriveConstants;
+import com.team1165.robot.subsystems.drive.io.DriveIO;
+import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
+import com.team1165.robot.subsystems.drive.io.DriveIOReal;
 import com.team1165.robot.subsystems.groundintake.GroundIntake;
 import com.team1165.robot.subsystems.groundintake.GroundIntakeConstants;
 import com.team1165.robot.subsystems.groundintake.GroundIntakeState;
@@ -16,29 +21,55 @@ import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
 import com.team1165.util.constants.RobotMode;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOSpark;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-  // Subsystems. im scared
-
+  private final Drive drive;
   private final GroundIntake groundIntake;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
+  /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
     switch (RobotMode.get()) {
       case REAL -> {
+        drive =
+            new Drive(
+                new DriveIOReal(
+                    DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
         groundIntake =
             new GroundIntake(
-                new RollerIOSpark(GroundIntakeConstants.rollerMotorConfig),
-                new PivotIOSpark(GroundIntakeConstants.pivotMotorConfig),
-                GroundIntakeConstants.pivotMotorPIDConfig);
+                new PivotIOSpark(
+                    GroundIntakeConstants.Pivot.primaryConfig,
+                    GroundIntakeConstants.Pivot.secondaryConfig),
+                new RollerIOSpark(GroundIntakeConstants.Roller.config),
+                GroundIntakeConstants.Pivot.gains,
+                GroundIntakeConstants.Pivot.motionProfile);
+      }
+      case SIM -> {
+        drive =
+            new Drive(
+                new DriveIOMapleSim(
+                    DriveConstants.drivetrainConstants,
+                    DriveConstants.simConfig,
+                    DriveConstants.getModuleConstants()));
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+      }
+      case REPLAY -> {
+        drive = new Drive(new DriveIO() {});
+        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
       }
       default -> {
+        drive = new Drive(new DriveIO() {});
         groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
       }
     }
+
+    configureButtonBindings();
   }
 
+  /** Configure driver button bindings for ground intake. */
   private void configureButtonBindings() {
     driverController
         .a()
@@ -51,6 +82,11 @@ public class RobotContainer {
         .onTrue(
             groundIntake
                 .overrideState(GroundIntakeState.DEPLOY)
-                .withName("Controller - B - blahblahblor as my friend myles would say"));
+                .withName("Controller - B - Deploy State"));
+  }
+
+  /** Returns the autonomous command to run. */
+  public Command getAutonomousCommand() {
+    return Commands.none();
   }
 }
