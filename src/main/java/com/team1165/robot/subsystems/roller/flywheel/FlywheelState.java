@@ -8,6 +8,7 @@
 package com.team1165.robot.subsystems.roller.flywheel;
 
 import com.team1165.util.statemachine.v1.State;
+import com.team1165.util.tunables.TunableNumber;
 import java.util.OptionalDouble;
 
 /** Possible states for the Flywheel subsystem. */
@@ -28,18 +29,19 @@ public enum FlywheelState implements State {
    */
   FIXED(8.0);
 
-  private final OptionalDouble voltage;
 
-  FlywheelState(double voltage) {
-    this.voltage = OptionalDouble.of(voltage);
+  private final TunableNumber dualRollerVoltage;
+
+  FlywheelState(OptionalDouble dualRollerVoltage) {
+    double voltage = dualRollerVoltage.orElse(0);
+    this.dualRollerVoltage =
+        new TunableNumber(
+            Flywheel.class.getName() + "/DualRoller/Voltages/" + name(), voltage);
   }
 
-  FlywheelState(OptionalDouble voltage) {
-    this.voltage = voltage;
-  }
 
-  @Override
-  public OptionalDouble get() {
-    return voltage;
+  public double getDualRollerVoltage() {
+    return dualRollerVoltage.get();
   }
 }
+
