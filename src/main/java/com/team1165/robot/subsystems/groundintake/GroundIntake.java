@@ -12,8 +12,6 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.util.statemachine.v1.StateUtils;
-import com.team1165.util.tunables.TunablePID;
 
 public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   private final RollerIO roller;
@@ -23,7 +21,8 @@ public class GroundIntake extends OverridableStateMachine<GroundIntakeState> {
   private final TunablePIDF pidf;
   private final TunableMotionProfile motionProfile;
 
-  public GroundIntake(PivotIO pivot, RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
+  public GroundIntake(
+      PivotIO pivot, RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
     super(GroundIntakeState.IDLE);
     this.pivot = pivot;
     this.roller = roller;

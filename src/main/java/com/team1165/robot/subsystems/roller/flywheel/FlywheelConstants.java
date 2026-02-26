@@ -33,12 +33,7 @@ public class FlywheelConstants {
 
     // Velocity PID gains for the flywheel — placeholder values to be tuned on the real mechanism
     baseMotorConfig.Slot0 =
-        new Slot0Configs().withKP(0.1)
-            .withKI(0.0)
-            .withKD(0.0)
-            .withKS(0.0)
-            .withKV(0.12)
-            .withKA(0.0);
+        new Slot0Configs().withKP(0.1).withKI(0.0).withKD(0.0).withKS(0.0).withKV(0.12).withKA(0.0);
   }
 
   public static final TalonFXConfig primaryMotorConfig =
