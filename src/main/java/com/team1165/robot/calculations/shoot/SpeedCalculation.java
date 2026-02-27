@@ -8,9 +8,9 @@
 package com.team1165.robot.calculations.shoot;
 
 import com.team1165.robot.calculations.PhysicsConstants;
+import java.util.OptionalDouble;
 
 public class SpeedCalculation {
-
 
   private static final double g = PhysicsConstants.gFeetPerSecond;
 
@@ -22,8 +22,13 @@ public class SpeedCalculation {
    * @param range       The desired range of the ball in <b>feet</b>
    * @return The necessary exit velocity of the ball in <b>feet per second</b>
    */
-  static double calculate(double shootAngle, double height, double range) {
+  static double calculateBallSpeed(double shootAngle, double height, double range) {
     return Math.sqrt( (g * range * range) / ( 2 * Math.pow(Math.cos(shootAngle), 2) * (range * Math.tan(shootAngle) + height) ) );
   }
 
+  // below assumes angle of 40 degrees
+
+  public static OptionalDouble calculateMotorVoltage(double range) {
+    return OptionalDouble.of(0.356285 * calculateBallSpeed(Math.toRadians(40), 17.0/12.0, range) - 1.49632);
+  }
 }
