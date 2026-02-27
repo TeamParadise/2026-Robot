@@ -21,7 +21,14 @@ public class IDConstants {
     public static final int intakePivotSecondary = 2;
     public static final int intakeRoller = 3;
     public static final int spindexer = 4;
-    public static final int turretMotor = 5;
-    public static final int turretEncoder = 6;
+  }
+
+  public static final class CANivore {
+    private CANivore() {}
+
+    public static final CANBus bus = new CANBus("canivore");
+
+    public static final int flywheelPrimary = 14;
+    public static final int flywheelSecondary = 15;
   }
 }

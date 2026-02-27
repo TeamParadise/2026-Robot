@@ -18,12 +18,10 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
 
-  // private final EnumMap<FlywheelState, TunableNumber> tunableMap =
-  // StateUtils.createTunableNumberMap(name + "/Voltages", FlywheelState.class);
-
   public Flywheel(DualRollerIO io) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
     super(FlywheelState.IDLE);
+
     this.io = io;
   }
 
@@ -57,8 +55,8 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
       case IDLE -> io.stop();
       case TRACKING ->
           // TODO: Implement distance-based speed calculation with other shooter components
-          io.runVolts(0.0);
-      case FIXED -> io.runVolts(0.0);
+          io.runVolts(getCurrentState().getDualRollerVoltage());
+      case FIXED -> io.runVolts(getCurrentState().getDualRollerVoltage());
     }
   }
 }
