@@ -26,9 +26,7 @@ public class SpeedCalculation {
     return Math.sqrt( (g * range * range) / ( 2 * Math.pow(Math.cos(shootAngle), 2) * (range * Math.tan(shootAngle) + height) ) );
   }
 
-  // below assumes angle of 40 degrees
-
-  public static OptionalDouble calculateMotorVoltage(double range) {
-    return OptionalDouble.of(0.356285 * calculateBallSpeed(Math.toRadians(40), 17.0/12.0, range) - 1.49632);
+  public static OptionalDouble calculateMotorVoltage(double ballSpeed) {
+    return OptionalDouble.of(( ballSpeed + 1.49632 ) / 2.699 );
   }
 }
