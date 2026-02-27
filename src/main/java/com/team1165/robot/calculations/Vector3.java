@@ -7,22 +7,23 @@
 
 package com.team1165.robot.calculations;
 
-public class Vector2 {
-  public double x, y;
-  public Vector2(double x, double y) {
+public class Vector3 {
+  public double x, y, z;
+  public Vector3(double x, double y, double z) {
     this.x = x;
     this.y = y;
+    this.z = z;
   }
 
   public double getX() { return x; }
   public double getY() { return y; }
+  public double getZ() { return z; }
 
   public void setX(double x) { this.x = x; }
   public void setY(double y) { this.y = y; }
+  public void setZ(double z) { this.z = z; }
 
-  public double magnitude() { return Math.sqrt(x*x + y*y); }
-  public Vector2 normalize() { return new Vector2(x/magnitude(), y/magnitude()); }
+  public double magnitude() { return Math.sqrt(x*x + y*y + z*z); }
+  public Vector3 normalize() { return new Vector3(x/magnitude(), y/magnitude(), z/magnitude()); }
 
-  public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
-  public Vector2 minus(Vector2 v) { return new Vector2(x - v.x, y - v.y); }
 }

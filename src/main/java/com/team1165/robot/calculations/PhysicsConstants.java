@@ -7,6 +7,7 @@
 
 package com.team1165.robot.calculations;
 
-public class Constants {
-  public final static double gFeet = 32.174;
+public class PhysicsConstants {
+  /** The gravitational field constant on Earth in feet per second.*/
+  public final static double gFeetPerSecond = 32.174;
 }
