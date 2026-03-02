@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.flywheel;
+package com.team1165.robot.subsystems.shooter.flywheel;
 
 import static com.team1165.robot.globalconstants.CANConstants.IDs.CANivore;
 
