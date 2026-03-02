@@ -53,10 +53,18 @@ public class Vector3 {
     return new Vector3(x / magnitude(), y / magnitude(), z / magnitude());
   }
 
+  /** Adds the inputted vector to the parent of this method.
+   * @param v The vector to add to the first vector.
+   * @return The final sum vector
+   * */
   public Vector3 add(Vector3 v) {
     return new Vector3(x + v.x, y + v.y, z + v.z);
   }
 
+  /** Subtracts the inputted vector from the parent of this method.
+   * @param v The vector to subtract from the first vector.
+   * @return The final difference vector
+   * */
   public Vector3 minus(Vector3 v) {
     return new Vector3(x - v.x, y - v.y, z - v.z);
   }
