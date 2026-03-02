@@ -23,10 +23,12 @@ public class SpeedCalculation {
    * @return The necessary exit velocity of the ball in <b>feet per second</b>
    */
   static double calculateBallSpeed(double shootAngle, double height, double range) {
-    return Math.sqrt( (g * range * range) / ( 2 * Math.pow(Math.cos(shootAngle), 2) * (range * Math.tan(shootAngle) + height) ) );
+    return Math.sqrt(
+        (g * range * range)
+            / (2 * Math.pow(Math.cos(shootAngle), 2) * (range * Math.tan(shootAngle) + height)));
   }
 
   public static OptionalDouble calculateMotorVoltage(double ballSpeed) {
-    return OptionalDouble.of(( ballSpeed + 1.49632 ) / 2.699 );
+    return OptionalDouble.of((ballSpeed + 1.49632) / 2.699);
   }
 }

@@ -63,19 +63,13 @@ public class RobotContainer {
         drive = new Drive(new DriveIO() {});
         groundIntake =
             new GroundIntake(
-                new PivotIO() {},
-                new RollerIO() {},
-                new Slot0Configs() {},
-                new MotionMagicConfigs());
+                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
       default -> {
         drive = new Drive(new DriveIO() {});
         groundIntake =
             new GroundIntake(
-                new PivotIO() {},
-                new RollerIO() {},
-                new Slot0Configs() {},
-                new MotionMagicConfigs());
+                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
     }
 

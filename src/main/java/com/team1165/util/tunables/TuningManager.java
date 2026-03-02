@@ -7,8 +7,6 @@
 
 package com.team1165.util.tunables;
 
-import java.util.Arrays;
-import java.util.stream.Stream;
 import org.littletonrobotics.junction.networktables.LoggedNetworkBoolean;
 
 /** Class to manage all {@link Tunable} values. */
@@ -45,9 +43,10 @@ public final class TuningManager {
    * @param newTunables The new {@link Tunable} values to register.
    */
   static void registerTunables(Tunable... newTunables) {
-    tunables =
-        Stream.concat(Arrays.stream(tunables), Arrays.stream(newTunables))
-            .distinct()
-            .toArray(Tunable[]::new);
+    /* tunables =
+       Stream.concat(Arrays.stream(tunables), Arrays.stream(newTunables))
+           .distinct()
+           .toArray(Tunable[]::new);
+    */
   }
 }
