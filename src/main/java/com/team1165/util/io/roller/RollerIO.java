@@ -20,8 +20,8 @@ public interface RollerIO {
   @AutoLog
   class RollerIOInputs {
     /**
-     * Data from the motor of the subsystem. Most of the time, any data needed should be
-     * grabbed from here.
+     * Data from the motor of the subsystem. Most of the time, any data needed should be grabbed
+     * from here.
      */
     public MotorData motor = new GenericMotorData();
   }

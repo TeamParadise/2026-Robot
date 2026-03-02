@@ -47,12 +47,13 @@ public class DualRollerIOSpark implements DualRollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link DualRollerIO}.
+   * Updates a {@link DualRollerIOInputs} instance with the latest updates from this {@link
+   * DualRollerIO}.
    *
-   * @param inputs A {@link RollerIOInputs} instance to update.
+   * @param inputs A {@link DualRollerIOInputs} instance to update.
    */
   @Override
-  public void updateInputs(RollerIOInputs inputs) {
+  public void updateInputs(DualRollerIOInputs inputs) {
     // Update the motor data
     primaryMotorData.update();
     secondaryMotorData.update();

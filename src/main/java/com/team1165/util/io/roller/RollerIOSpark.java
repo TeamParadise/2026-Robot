@@ -17,8 +17,8 @@ import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
 /**
- * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by one
- * motor attached to a SPARK MAX/FLEX motor controller.
+ * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by one motor
+ * attached to a SPARK MAX/FLEX motor controller.
  */
 public class RollerIOSpark implements RollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later
