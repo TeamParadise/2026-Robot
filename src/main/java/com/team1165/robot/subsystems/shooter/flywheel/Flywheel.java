@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.roller.flywheel;
+package com.team1165.robot.subsystems.shooter.flywheel;
 
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
