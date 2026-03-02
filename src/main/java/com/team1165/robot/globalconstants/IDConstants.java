@@ -15,5 +15,6 @@ public class IDConstants {
     public static final int intakePivotPrimary = 1;
     public static final int intakePivotSecondary = 2;
     public static final int intakeRoller = 3;
+    public static final int spindexer = 4;
   }
 }
