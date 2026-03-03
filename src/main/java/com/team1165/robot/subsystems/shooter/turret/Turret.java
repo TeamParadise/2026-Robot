@@ -5,10 +5,10 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.turret;
+package com.team1165.robot.subsystems.shooter.turret;
 
-import com.team1165.robot.subsystems.turret.io.TurretIO;
-import com.team1165.robot.subsystems.turret.io.TurretIO.TurretIOInputs;
+import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
+import com.team1165.robot.subsystems.shooter.turret.io.TurretIO.TurretIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import java.util.EnumMap;
 import org.littletonrobotics.junction.Logger;
