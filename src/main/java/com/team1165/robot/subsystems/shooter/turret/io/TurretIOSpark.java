@@ -7,59 +7,80 @@
 
 package com.team1165.robot.subsystems.shooter.turret.io;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkBaseConfig;
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
 public class TurretIOSpark implements TurretIO {
+  private final SparkBase motor;
+  private final SparkMotorData motorData;
+  private final SparkClosedLoopController controller;
 
-  private final SparkBase turretMotor;
-  private final SparkBaseConfig turretConfiguration;
-
-  private final SparkMotorData turretMotorData;
-
-  public TurretIOSpark(SparkConfig turretConfig) {
-
-    turretMotor = SparkUtils.createNewSpark(turretConfig);
-
-    turretConfiguration = turretConfig.configuration();
-
-    turretMotorData = new SparkMotorData(turretMotor, turretConfig);
+  public TurretIOSpark(SparkConfig config) {
+    motor = SparkUtils.createNewSpark(config);
+    motorData = new SparkMotorData(motor, config);
+    controller = motor.getClosedLoopController();
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
     // Update the motor data
-    turretMotorData.update();
+    motorData.update();
 
-    // Put the motor data values in inputs
-    inputs.turretMotor = turretMotorData;
+    // Put the motor data value in inputs
+    inputs.motor = motorData;
   }
 
   @Override
   public void runVolts(double voltage) {
-    turretMotor.setVoltage(voltage);
+    motor.setVoltage(voltage);
   }
 
   @Override
-  public void stop() {
-    turretMotor.set(0);
+  public void runPosition(double position) {
+    controller.setSetpoint(position, ControlType.kMAXMotionPositionControl);
   }
+
+  @Override
+  public void resetPosition(double position) {
+    motor.getEncoder().setPosition(position);
+  }
+
+  @Override
+  public void setPIDF(Slot0Configs configs) {
+    motor.configureAsync(
+        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
+  }
+
+  @Override
+  public void setMotionProfiling(MotionMagicConfigs configs) {
+    // Create temporary config
+    var tempConfig = new SparkMaxConfig();
+
+    // Apply motion config to temporary config
+    tempConfig.closedLoop.apply(SparkUtils.createMotionConfig(configs));
+
+    // Configure motor
+    motor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+  }
+
 
   @Override
   public void setBrakeMode(boolean enabled) {
-    new Thread(
-            () -> {
-              turretMotor.configure(
-                  turretConfiguration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                  ResetMode.kNoResetSafeParameters,
-                  PersistMode.kNoPersistParameters);
-            })
-        .start();
+    // Configure motors
+    motor.configureAsync(
+        new SparkMaxConfig().idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast), ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 }
