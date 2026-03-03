@@ -7,12 +7,12 @@
 
 package com.team1165.util.logging.motordata;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.Faults;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SignalsConfig;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;

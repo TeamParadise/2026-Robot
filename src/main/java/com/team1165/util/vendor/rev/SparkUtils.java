@@ -7,12 +7,18 @@
 
 package com.team1165.util.vendor.rev;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.revrobotics.PersistMode;
 import com.revrobotics.REVLibError;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig;
+import com.revrobotics.spark.config.EncoderConfig;
+import com.revrobotics.spark.config.MAXMotionConfig;
 import com.team1165.util.constants.AlertConstants;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -63,6 +69,71 @@ public final class SparkUtils {
     }
 
     return spark;
+  }
+
+  /**
+   * Create a {@link ClosedLoopConfig} from a {@link Slot0Configs}.
+   *
+   * @param gains The {@link Slot0Configs} to utilize as a base.
+   * @return A {@link ClosedLoopConfig} with values from the gains.
+   */
+  public static ClosedLoopConfig createClosedLoopConfig(Slot0Configs gains) {
+    var config = new ClosedLoopConfig();
+
+    // Configure basic PID and feedforward
+    config.pid(gains.kP, gains.kI, gains.kD).feedForward.sva(gains.kS, gains.kV, gains.kA);
+
+    // Configure kG/kCosRatio
+    if (gains.GravityType == GravityTypeValue.Elevator_Static) {
+      config.feedForward.kG(gains.kG);
+    } else {
+      config.feedForward.kCos(gains.kG);
+    }
+
+    return config;
+  }
+
+  /**
+   * Create a {@link ClosedLoopConfig} from a {@link Slot0Configs} and {@link MotionMagicConfigs}.
+   *
+   * @param gains The {@link Slot0Configs} to utilize as a base.
+   * @param motionProfile The {@link MotionMagicConfigs} to utilize as a base.
+   * @return A {@link ClosedLoopConfig} with values from the gains and profile.
+   */
+  public static ClosedLoopConfig createClosedLoopConfig(
+      Slot0Configs gains, MotionMagicConfigs motionProfile) {
+    var config = createClosedLoopConfig(gains);
+
+    config
+        .maxMotion
+        .cruiseVelocity(motionProfile.MotionMagicCruiseVelocity)
+        .maxAcceleration(motionProfile.MotionMagicAcceleration);
+
+    return config;
+  }
+
+  /**
+   * Create a {@link MAXMotionConfig} from a {@link MotionMagicConfigs}.
+   *
+   * @param motionProfile The {@link MotionMagicConfigs} to utilize as a base.
+   * @return A {@link MAXMotionConfig} with values from the gains and profile.
+   */
+  public static MAXMotionConfig createMotionConfig(MotionMagicConfigs motionProfile) {
+    return new MAXMotionConfig()
+        .cruiseVelocity(motionProfile.MotionMagicCruiseVelocity)
+        .maxAcceleration(motionProfile.MotionMagicAcceleration);
+  }
+
+  /**
+   * Create an {@link EncoderConfig} using a specific gear ratio.
+   *
+   * @param gearRatio The grea ratio to multiply the reported position/velocity by.
+   * @return A {@link EncoderConfig} with the provided gear ratio.
+   */
+  public static EncoderConfig createEncoderRatio(double gearRatio) {
+    return new EncoderConfig()
+        .positionConversionFactor(gearRatio)
+        .velocityConversionFactor(gearRatio);
   }
 
   // ifOkOrDefault() methods are used because of:
