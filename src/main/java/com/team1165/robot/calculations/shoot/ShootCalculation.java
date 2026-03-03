@@ -16,6 +16,14 @@ public final class ShootCalculation {
 
   private ShootCalculation() {}
 
+  public static double calculateAngle(double range, double height) {
+    return range < 160 / 12f ? 62 / 12f : -3.69 * (Math.sqrt(range) + 108.675);
+  }
+
+  public static double calculateHoodAngle(double shootAngle) {
+    return shootAngle;
+  }
+
   /**
    * Returns the exit velocity the ball must have to conform to the given parameters
    *
@@ -24,7 +32,7 @@ public final class ShootCalculation {
    * @param range The desired range of the ball in <b>feet</b>
    * @return The necessary exit velocity of the ball in <b>feet per second</b>
    */
-  static double calculateBallSpeed(double shootAngle, double height, double range) {
+  public static double calculateBallSpeed(double shootAngle, double height, double range) {
     return Math.sqrt(
         (g * range * range)
             / (2 * Math.pow(Math.cos(shootAngle), 2) * (range * Math.tan(shootAngle) + height)));
