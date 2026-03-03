@@ -10,11 +10,11 @@ package com.team1165.robot.calculations.shoot;
 import com.team1165.robot.calculations.PhysicsConstants;
 import java.util.OptionalDouble;
 
-public final class SpeedCalculation {
+public final class ShootCalculation {
 
   private static final double g = PhysicsConstants.gFeetPerSecond;
 
-  private SpeedCalculation() {}
+  private ShootCalculation() {}
 
   /**
    * Returns the exit velocity the ball must have to conform to the given parameters
