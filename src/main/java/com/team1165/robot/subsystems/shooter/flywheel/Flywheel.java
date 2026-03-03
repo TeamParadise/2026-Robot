@@ -7,9 +7,12 @@
 
 package com.team1165.robot.subsystems.shooter.flywheel;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import com.team1165.util.tunables.TunableNumber;
+import com.team1165.util.tunables.TunablePIDF;
 import org.littletonrobotics.junction.Logger;
 
 /** State-machine-based Flywheel subsystem, powered by two motors. */
@@ -17,12 +20,14 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
 
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
+  private final TunablePIDF pidf;
 
-  public Flywheel(DualRollerIO io) {
+  public Flywheel(DualRollerIO io, Slot0Configs configs) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
     super(FlywheelState.IDLE);
 
     this.io = io;
+    this.pidf = new TunablePIDF(name + "FLywheel/PIDF", configs);
   }
 
   /**
