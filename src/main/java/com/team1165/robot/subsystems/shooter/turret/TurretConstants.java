@@ -7,6 +7,7 @@
 
 package com.team1165.robot.subsystems.shooter.turret;
 
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -14,6 +15,7 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.robot.globalconstants.IDConstants.RIO;
+import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.CANcoderConfig;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
@@ -21,22 +23,39 @@ public final class TurretConstants {
   /** Private constructor to prevent instantiation. */
   private TurretConstants() {}
 
-  public static final Slot0Configs gains =
-      new Slot0Configs()
-          .withKP(0)
-          .withKI(0)
-          .withKD(0)
-          .withKS(0)
-          .withKV(0)
-          .withKA(0);
-  public static final MotionMagicConfigs motionProfile =
-      new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
+  public static final class Motor {
+    /** Private constructor to prevent instantiation. */
+    private Motor() {}
 
-  private static final SparkBaseConfig baseConfig =
-      new SparkMaxConfig()
-          .smartCurrentLimit(60)
-          .idleMode(IdleMode.kBrake)
-          .apply(SparkUtils.createEncoderRatio((14.0/44.0) * (10.0/100.0)));
-  public static final SparkConfig config =
-      SparkConfig.sparkMax("Turret", RIO.turret, MotorType.kBrushless, baseConfig);
+    public static final Slot0Configs gains =
+        new Slot0Configs()
+            .withKP(0)
+            .withKI(0)
+            .withKD(0)
+            .withKS(0)
+            .withKV(0)
+            .withKA(0);
+    public static final MotionMagicConfigs motionProfile =
+        new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
+
+    private static final SparkBaseConfig baseConfig =
+        new SparkMaxConfig()
+            .smartCurrentLimit(60)
+            .idleMode(IdleMode.kBrake)
+            .apply(SparkUtils.createEncoderRatio((14.0/44.0) * (10.0/100.0)));
+    public static final SparkConfig config =
+        SparkConfig.sparkMax("TurretMotor", RIO.turretMotor, MotorType.kBrushless, baseConfig);
+  }
+
+  public static final class Encoder {
+    /** Private constructor to prevent instantiation. */
+    private Encoder() {}
+
+    private static final CANcoderConfiguration baseConfig = new CANcoderConfiguration();
+    public static final CANcoderConfig config = new CANcoderConfig("TurretEncoder", RIO.turretEncoder, RIO.bus, baseConfig);
+
+    static {
+      baseConfig.MagnetSensor.MagnetOffset = 0.0;
+    }
+  }
 }
