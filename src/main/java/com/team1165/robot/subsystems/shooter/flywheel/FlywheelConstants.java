@@ -7,8 +7,7 @@
 
 package com.team1165.robot.subsystems.shooter.flywheel;
 
-import static com.team1165.robot.globalconstants.CANConstants.IDs.CANivore;
-
+import com.team1165.robot.globalconstants.IDConstants.CANivore;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
