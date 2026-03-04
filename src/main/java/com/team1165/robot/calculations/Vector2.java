@@ -32,7 +32,10 @@ public class Vector2 {
 
   public Vector2 normalize() { return new Vector2(x / magnitude(), y / magnitude()); }
 
-
+  /** Adds the inputted vector to the parent of this method.
+   * @param v The vector to add to the first vector.
+   * @return The final sum vector
+   * */
   public Vector2 add(Vector2 v) { return new Vector2(x + v.x, y + v.y); }
 
   /** Subtracts the inputted vector from the parent of this method.
