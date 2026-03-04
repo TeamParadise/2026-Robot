@@ -7,10 +7,12 @@
 
 package com.team1165.robot.subsystems.shooter.flywheel;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import com.team1165.util.tunables.TunableMotionProfile;
 import com.team1165.util.tunables.TunableNumber;
 import com.team1165.util.tunables.TunablePIDF;
 import org.littletonrobotics.junction.Logger;
@@ -21,13 +23,16 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
   private final TunablePIDF pidf;
+  private final TunableMotionProfile motionProfile;
 
-  public Flywheel(DualRollerIO io, Slot0Configs configs) {
+  public Flywheel(DualRollerIO io, Slot0Configs configs, MotionMagicConfigs motionMagicConfigs) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
     super(FlywheelState.IDLE);
 
     this.io = io;
     this.pidf = new TunablePIDF(name + "FLywheel/PIDF", configs);
+    this.motionProfile = new TunableMotionProfile(name + "Pivot/MotionProfile", motionMagicConfigs);
+
   }
 
   /**
@@ -51,6 +56,8 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   @Override
   protected void update() {
     io.updateInputs(inputs);
+    if (pidf.hasChanged(hashCode())) io.setPIDF(pidf.getSlot0Configs());
+    if (motionProfile.hasChanged(hashCode())) io.setMotionProfiling(motionProfile.getConfigs());
     Logger.processInputs(name, inputs);
   }
 
