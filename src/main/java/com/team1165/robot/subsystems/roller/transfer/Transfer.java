@@ -9,8 +9,6 @@ package com.team1165.robot.subsystems.roller.transfer;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.team1165.robot.subsystems.groundintake.GroundIntakeState;
-import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
@@ -21,7 +19,6 @@ public class Transfer extends OverridableStateMachine<TransferState> {
   private final RollerIO roller;
   private final RollerIOInputs rollerInputs = new RollerIOInputs();
 
-  private final PivotIOInputs pivotInputs = new PivotIOInputs();
   private final TunablePIDF pidf;
   private final TunableMotionProfile motionProfile;
 
@@ -30,14 +27,15 @@ public class Transfer extends OverridableStateMachine<TransferState> {
     super(TransferState.IDLE);
 
     this.roller = roller;
-    this.pidf = new TunablePIDF(name + "Pivot/PIDF", gains);
-    this.motionProfile = new TunableMotionProfile(name + "Pivot/MotionProfile", motionProfile);
+    this.pidf = new TunablePIDF(name + "Transfer/PIDF", gains);
+    this.motionProfile = new TunableMotionProfile(name + "Transfer/MotionProfile", motionProfile);
   }
 
   @Override
   protected void update() {
-
     roller.updateInputs(rollerInputs);
+    if (pidf.hasChanged(hashCode())) roller.setPIDF(pidf.getSlot0Configs());
+    if (motionProfile.hasChanged(hashCode())) roller.setMotionProfiling(motionProfile.getConfigs());
   }
 
   @Override
