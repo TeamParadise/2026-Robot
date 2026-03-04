@@ -7,11 +7,14 @@
 
 package com.team1165.util.io.roller;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
@@ -56,6 +59,27 @@ public class RollerIOSpark implements RollerIO {
   @Override
   public void stop() {
     primaryMotor.set(0);
+  }
+
+  @Override
+  public void setPIDF(Slot0Configs configs) {
+    // Configure primary motor
+    primaryMotor.configureAsync(
+        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
+  }
+  @Override
+  public void setMotionProfiling(MotionMagicConfigs configs) {
+    // Create temporary config
+    var tempConfig = new SparkMaxConfig();
+
+    // Apply motion config to temporary config
+    tempConfig.closedLoop.apply(SparkUtils.createMotionConfig(configs));
+
+    // Configure primary motor
+    primaryMotor.configureAsync(
+        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   @Override
