@@ -45,4 +45,6 @@ public class Vector2 {
   public Vector2 minus(Vector2 v) {
     return new Vector2(x - v.x, y - v.y);
   }
+
+  public Vector2 multiply(double scalar) { return new Vector2(this.x * scalar, this.y * scalar); }
 }

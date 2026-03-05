@@ -71,7 +71,7 @@ public final class ShootCalculation {
    * @param drive The {@link Drive} for the robot. Used to calculate the speed and position.
    * @return The {@link Vector2} along the XY plane in which the ball should be shot.
    */
-  public static Vector2 calculateShootVector(Drive drive) {
+  public static Vector2 calculateShootVector(Drive drive) throws Exception {
     Vector2 robotPosition = new Vector2(drive.getPose().getX(), drive.getPose().getY());
 
     Vector3 hubPosition = new Vector3(Hub.topCenterPoint.getX(), Hub.topCenterPoint.getY(), 6.0);
@@ -82,8 +82,42 @@ public final class ShootCalculation {
             drive.getSpeeds().vxMetersPerSecond * 3.28084,
             drive.getSpeeds().vyMetersPerSecond * 3.28084);
     Vector2 vecToHub = robotPosition.minus(hubPosition2D);
+    if (vecToHub.magnitude() <= 4.5) {
+      throw new Exception("The distance was too short for the robot to shoot.");
+    }
+
     Vector2 shootVector = vecToHub.minus(robotSpeed);
 
     return shootVector;
+  }
+
+  /**
+   * Calculates the necessary values required for Shoot On The Move and returns them.
+   *
+   * @param drive The {@link Drive} object used to represent the robot's drivetrain. Used for
+   *     position and speed data.
+   * @param turretHeight The height of the turret off the ground in <b>feet</b>.
+   * @param desiredMaxPathHeight The desired maximum height of the ball's flight path in
+   *     <b>feet</b>. Can be overwritten if the robot is too close or far from the hub.
+   * @return A new {@link ShootReturnValue} object containing the necessary hood (shoot) angle,
+   *     speed of the shot, and direction of the shot.
+   * @throws Exception In the event that the robot is too close to or too far from the hub, the
+   *     method will return an Exception stating the issue.
+   */
+  public static ShootReturnValue calculateShoot(
+      Drive drive, double turretHeight, double desiredMaxPathHeight) throws Exception {
+    ShootReturnValue shootReturnValue = new ShootReturnValue(1.0, 1.0, 1.0);
+
+    Vector2 shootVelocityXY = calculateShootVector(drive);
+    shootReturnValue.setShootDirection(shootVelocityXY.direction());
+
+    double shootAngle =
+        calculateAngle(turretHeight, desiredMaxPathHeight, shootVelocityXY.magnitude());
+    shootReturnValue.setShootAngle(calculateHoodAngle(shootAngle));
+
+    double shootVelocityZ = shootVelocityXY.magnitude() * Math.sin(shootAngle);
+    shootReturnValue.setShootSpeed(new Vector3(shootVelocityXY, shootVelocityZ).magnitude());
+
+    return shootReturnValue;
   }
 }

@@ -13,5 +13,4 @@ public class ShooterConstants {
 
   /** the minimum angle the hood can obtain */
   public static final double hoodMinimumAngle = 28;
-
 }
