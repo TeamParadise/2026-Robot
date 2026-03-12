@@ -69,6 +69,7 @@ public class RollerIOSpark implements RollerIO {
         ResetMode.kNoResetSafeParameters,
         PersistMode.kNoPersistParameters);
   }
+
   @Override
   public void setMotionProfiling(MotionMagicConfigs configs) {
     // Create temporary config

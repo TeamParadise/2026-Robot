@@ -7,9 +7,6 @@
 
 package com.team1165.robot.subsystems.roller.transfer;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -22,12 +19,11 @@ public final class TransferConstants {
   /** Private constructor to prevent instantiation. */
   private TransferConstants() {}
 
-    private static final SparkBaseConfig baseConfig =
-        new SparkMaxConfig()
-            .smartCurrentLimit(50)
-            .idleMode(IdleMode.kCoast)
-            .apply(SparkUtils.createEncoderRatio(14.0 / 24.0));
-    public static final SparkConfig config =
-        SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
-
+  private static final SparkBaseConfig baseConfig =
+      new SparkMaxConfig()
+          .smartCurrentLimit(50)
+          .idleMode(IdleMode.kCoast)
+          .apply(SparkUtils.createEncoderRatio(14.0 / 24.0));
+  public static final SparkConfig config =
+      SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
 }

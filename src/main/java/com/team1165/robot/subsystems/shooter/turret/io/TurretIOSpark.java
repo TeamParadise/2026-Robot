@@ -76,11 +76,12 @@ public class TurretIOSpark implements TurretIO {
         tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
-
   @Override
   public void setBrakeMode(boolean enabled) {
     // Configure motors
     motor.configureAsync(
-        new SparkMaxConfig().idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast), ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        new SparkMaxConfig().idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
   }
 }

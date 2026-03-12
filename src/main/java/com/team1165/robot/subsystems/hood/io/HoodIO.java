@@ -22,7 +22,8 @@ public interface HoodIO {
   }
 
   /**
-   * Updates a {@link HoodIO.HoodIOInputs} instance with the latest updates from this {@link PivotIO}.
+   * Updates a {@link HoodIO.HoodIOInputs} instance with the latest updates from this {@link
+   * PivotIO}.
    *
    * @param inputs A {@link HoodIO.HoodIOInputs} instance to update.
    */
@@ -36,7 +37,8 @@ public interface HoodIO {
   default void runVolts(double voltage) {}
 
   /**
-   * Sets the hood to either flipped or not flipped.<br> this is definitely not my first comment
+   * Sets the hood to either flipped or not flipped.<br>
+   * this is definitely not my first comment
    *
    * @param hoodPosition Flipped or not, with true being flipped and false being backwards.
    */

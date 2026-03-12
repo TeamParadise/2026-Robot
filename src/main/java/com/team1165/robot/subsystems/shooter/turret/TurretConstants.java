@@ -28,13 +28,7 @@ public final class TurretConstants {
     private Motor() {}
 
     public static final Slot0Configs gains =
-        new Slot0Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKS(0)
-            .withKV(0)
-            .withKA(0);
+        new Slot0Configs().withKP(0).withKI(0).withKD(0).withKS(0).withKV(0).withKA(0);
     public static final MotionMagicConfigs motionProfile =
         new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
 
@@ -42,7 +36,7 @@ public final class TurretConstants {
         new SparkMaxConfig()
             .smartCurrentLimit(60)
             .idleMode(IdleMode.kBrake)
-            .apply(SparkUtils.createEncoderRatio((14.0/44.0) * (10.0/100.0)));
+            .apply(SparkUtils.createEncoderRatio((14.0 / 44.0) * (10.0 / 100.0)));
     public static final SparkConfig config =
         SparkConfig.sparkMax("TurretMotor", RIO.turretMotor, MotorType.kBrushless, baseConfig);
   }
@@ -52,7 +46,8 @@ public final class TurretConstants {
     private Encoder() {}
 
     private static final CANcoderConfiguration baseConfig = new CANcoderConfiguration();
-    public static final CANcoderConfig config = new CANcoderConfig("TurretEncoder", RIO.turretEncoder, RIO.bus, baseConfig);
+    public static final CANcoderConfig config =
+        new CANcoderConfig("TurretEncoder", RIO.turretEncoder, RIO.bus, baseConfig);
 
     static {
       baseConfig.MagnetSensor.MagnetOffset = 0.0;

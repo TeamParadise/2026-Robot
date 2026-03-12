@@ -44,13 +44,15 @@ public interface RollerIO {
 
   /** Stop the motor (sets the output to zero). */
   default void stop() {}
+
   default void setPIDF(Slot0Configs configs) {}
+
   default void setMotionProfiling(MotionMagicConfigs configs) {}
+
   /**
    * Enables or disables brake mode.
    *
    * @param enabled Whether to enable brake mode.
    */
   default void setBrakeMode(boolean enabled) {}
-
 }

@@ -22,8 +22,7 @@ public class Transfer extends OverridableStateMachine<TransferState> {
   private final TunablePIDF pidf;
   private final TunableMotionProfile motionProfile;
 
-  public Transfer(
-      RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
+  public Transfer(RollerIO roller, Slot0Configs gains, MotionMagicConfigs motionProfile) {
     super(TransferState.IDLE);
 
     this.roller = roller;
@@ -42,5 +41,4 @@ public class Transfer extends OverridableStateMachine<TransferState> {
   protected void transition() {
     roller.runVolts(getCurrentState().getVoltage());
   }
-
 }

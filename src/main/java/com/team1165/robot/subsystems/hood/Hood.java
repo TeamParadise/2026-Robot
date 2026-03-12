@@ -32,14 +32,11 @@ public class Hood extends OverridableStateMachine<HoodState> {
   @Override
   protected void update() {
     hoodIO.updateInputs(hoodInputs);
-    if (tunablepid.hasChanged(hashCode()))
-      hoodIO.setPID(tunablepid.getSlot0Configs());
+    if (tunablepid.hasChanged(hashCode())) hoodIO.setPID(tunablepid.getSlot0Configs());
   }
 
   @Override
   protected void transition() {
     hoodIO.runVolts(getCurrentState().getVoltage());
   }
-
-
 }

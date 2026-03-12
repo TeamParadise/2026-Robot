@@ -57,20 +57,20 @@ public class HoodIOSpark implements HoodIO {
   @Override
   public void setHoodPID(Slot0Configs configs) {
     new Thread(
-        () -> {
-          SparkBaseConfig tempConfig = new SparkMaxConfig();
-          tempConfig
-              .closedLoop
-              .p(configs.kP)
-              .i(configs.kI)
-              .d(configs.kD)
-              .feedForward
-              .kS(configs.kS)
-              .kA(configs.kA)
-              .kV(configs.kV);
-          motor.configure(
-              tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-        })
+            () -> {
+              SparkBaseConfig tempConfig = new SparkMaxConfig();
+              tempConfig
+                  .closedLoop
+                  .p(configs.kP)
+                  .i(configs.kI)
+                  .d(configs.kD)
+                  .feedForward
+                  .kS(configs.kS)
+                  .kA(configs.kA)
+                  .kV(configs.kV);
+              motor.configure(
+                  tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+            })
         .start();
   }
 
@@ -87,12 +87,12 @@ public class HoodIOSpark implements HoodIO {
   @Override
   public void setBrakeMode(boolean enabled) {
     new Thread(
-        () -> {
-          motor.configure(
-              configuration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-              ResetMode.kNoResetSafeParameters,
-              PersistMode.kNoPersistParameters);
-        })
+            () -> {
+              motor.configure(
+                  configuration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
+                  ResetMode.kNoResetSafeParameters,
+                  PersistMode.kNoPersistParameters);
+            })
         .start();
   }
 }
