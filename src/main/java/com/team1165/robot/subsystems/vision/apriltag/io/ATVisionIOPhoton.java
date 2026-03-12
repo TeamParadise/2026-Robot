@@ -137,14 +137,7 @@ public class ATVisionIOPhoton implements ATVisionIO {
           }
         } else {
           Optional<Pose3d> tagPose = Optional.empty();
-          if (tag.fiducialId != 14
-              && tag.fiducialId != 15
-              && tag.fiducialId != 4
-              && tag.fiducialId != 5
-              && tag.fiducialId != 3
-              && tag.fiducialId != 16) {
-            tagPose = ATVisionConstants.aprilTagLayout.getTagPose(tag.fiducialId);
-          }
+          tagPose = ATVisionConstants.aprilTagLayout.getTagPose(tag.fiducialId);
 
           // Check if the tag exists in the field layout, and if so, continue with calculation
           if (tagPose.isPresent()) {

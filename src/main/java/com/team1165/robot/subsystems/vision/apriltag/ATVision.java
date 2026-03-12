@@ -70,7 +70,7 @@ public class ATVision extends OverridableStateMachine<ATVisionState> {
     this.globalConsumer = globalConsumer;
     rotationSupplier = robotRotationSupplier;
 
-    // Initialize all arrays for each camera
+    // Initialize all arrays for each cameraa
     disconnectedAlerts = new Alert[config.length];
     io = new ATVisionIO[config.length];
     inputs = new ATVisionIOInputsAutoLogged[config.length];
@@ -124,10 +124,8 @@ public class ATVision extends OverridableStateMachine<ATVisionState> {
 
       // Add visible tag poses
       for (int tagId : inputs[cameraIndex].tagIds) {
-        if (tagId != 14 && tagId != 15 && tagId != 4 && tagId != 5 && tagId != 3 && tagId != 16) {
-          var tagPose = aprilTagLayout.getTagPose(tagId);
-          tagPose.ifPresent(tagPoses::add);
-        }
+        var tagPose = aprilTagLayout.getTagPose(tagId);
+        tagPose.ifPresent(tagPoses::add);
       }
 
       // Loop over pose observations
