@@ -36,7 +36,7 @@ public interface RollerIO {
   default void updateInputs(RollerIOInputs inputs) {}
 
   /**
-   * Run the motor together at a specific voltage.
+   * Run the motor at a specific voltage.
    *
    * @param voltage The voltage to run the roller at.
    */

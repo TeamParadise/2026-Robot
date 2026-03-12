@@ -7,14 +7,21 @@
 
 package com.team1165.robot.globalconstants;
 
+import com.ctre.phoenix6.CANBus;
+import com.team1165.util.constants.CANConstants;
+
 /** Class containing constants for the CAN IDs of the robot. */
 public class IDConstants {
   public static final class RIO {
     private RIO() {}
 
+    public static final CANBus bus = CANConstants.rio;
+
     public static final int intakePivotPrimary = 1;
     public static final int intakePivotSecondary = 2;
     public static final int intakeRoller = 3;
     public static final int spindexer = 4;
+    public static final int turretMotor = 5;
+    public static final int turretEncoder = 6;
   }
 }
