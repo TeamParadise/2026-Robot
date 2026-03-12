@@ -10,9 +10,6 @@ package com.team1165.robot.subsystems.roller.flywheel;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.util.statemachine.v1.StateUtils;
-import com.team1165.util.tunables.TunableNumber;
-import java.util.EnumMap;
 import org.littletonrobotics.junction.Logger;
 
 /** State-machine-based Flywheel subsystem, powered by two motors. */
@@ -20,8 +17,9 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
 
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
-  private final EnumMap<FlywheelState, TunableNumber> tunableMap =
-      StateUtils.createTunableNumberMap(name + "/Voltages", FlywheelState.class);
+
+  // private final EnumMap<FlywheelState, TunableNumber> tunableMap =
+  // StateUtils.createTunableNumberMap(name + "/Voltages", FlywheelState.class);
 
   public Flywheel(DualRollerIO io) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
@@ -59,8 +57,8 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
       case IDLE -> io.stop();
       case TRACKING ->
           // TODO: Implement distance-based speed calculation with other shooter components
-          io.runVolts(tunableMap.get(getCurrentState()).get());
-      case FIXED -> io.runVolts(tunableMap.get(getCurrentState()).get());
+          io.runVolts(0.0);
+      case FIXED -> io.runVolts(0.0);
     }
   }
 }

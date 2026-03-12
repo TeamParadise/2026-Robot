@@ -7,6 +7,7 @@
 
 package com.team1165.robot;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.drive.constants.DriveConstants;
@@ -54,15 +55,27 @@ public class RobotContainer {
                     DriveConstants.drivetrainConstants,
                     DriveConstants.simConfig,
                     DriveConstants.getModuleConstants()));
-        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+        groundIntake =
+            new GroundIntake(
+                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
       case REPLAY -> {
         drive = new Drive(new DriveIO() {});
-        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+        groundIntake =
+            new GroundIntake(
+                new PivotIO() {},
+                new RollerIO() {},
+                new Slot0Configs() {},
+                new MotionMagicConfigs());
       }
       default -> {
         drive = new Drive(new DriveIO() {});
-        groundIntake = new GroundIntake(new RollerIO() {}, new PivotIO() {}, new Slot0Configs() {});
+        groundIntake =
+            new GroundIntake(
+                new PivotIO() {},
+                new RollerIO() {},
+                new Slot0Configs() {},
+                new MotionMagicConfigs());
       }
     }
 

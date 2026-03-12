@@ -19,9 +19,9 @@ public class Hood extends OverridableStateMachine<HoodState> {
   private final HoodIO hoodIO;
   private final HoodIOInputs hoodInputs = new HoodIOInputs();
 
-  public Hood(HoodIO hoodio, Slot0Configs slot0Configs) {
+  public Hood(HoodIO hoodIO, Slot0Configs slot0Configs) {
     super(HoodState.IDLE);
-    this.hoodIO = hoodio;
+    this.hoodIO = hoodIO;
     this.tunablepid = new TunablePID(name + "/HoodPID", slot0Configs);
   }
 
