@@ -10,6 +10,9 @@ package com.team1165.robot;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.robot.commands.ShootOnTheMoveCommands;
+import com.team1165.robot.subsystems.base.spindexer.Spindexer;
+import com.team1165.robot.subsystems.base.spindexer.SpindexerConstants;
+import com.team1165.robot.subsystems.base.spindexer.SpindexerState;
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.drive.constants.DriveConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
@@ -22,11 +25,17 @@ import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
 import com.team1165.robot.subsystems.hood.Hood;
 import com.team1165.robot.subsystems.hood.io.HoodIO;
+import com.team1165.robot.subsystems.roller.transfer.Transfer;
+import com.team1165.robot.subsystems.roller.transfer.TransferConstants;
+import com.team1165.robot.subsystems.roller.transfer.TransferState;
 import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
+import com.team1165.robot.subsystems.shooter.flywheel.FlywheelConstants;
+import com.team1165.robot.subsystems.shooter.flywheel.FlywheelState;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.util.constants.RobotMode;
 import com.team1165.util.io.dualroller.DualRollerIO;
+import com.team1165.util.io.dualroller.DualRollerIOTalonFX;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,6 +48,8 @@ public class RobotContainer {
   private final Turret turret;
   private final Hood hood;
   private final Flywheel flywheel;
+  private final Transfer transfer;
+  private final Spindexer spindexer;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
@@ -60,7 +71,13 @@ public class RobotContainer {
         turret = new Turret(new TurretIO() {});
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
-            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+            new Flywheel(
+                new DualRollerIOTalonFX(
+                    FlywheelConstants.primaryMotorConfig, FlywheelConstants.secondaryMotorConfig),
+                new Slot0Configs(),
+                new MotionMagicConfigs());
+        transfer = new Transfer(new RollerIOSpark(TransferConstants.config));
+        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
       }
       case SIM -> {
         drive =
@@ -76,6 +93,8 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        transfer = new Transfer(new RollerIO() {});
+        spindexer = new Spindexer(new RollerIO() {});
       }
       case REPLAY -> {
         drive = new Drive(new DriveIO() {});
@@ -86,6 +105,8 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        transfer = new Transfer(new RollerIO() {});
+        spindexer = new Spindexer(new RollerIO() {});
       }
       default -> {
         drive = new Drive(new DriveIO() {});
@@ -96,6 +117,8 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        transfer = new Transfer(new RollerIO() {});
+        spindexer = new Spindexer(new RollerIO() {});
       }
     }
 
@@ -123,6 +146,30 @@ public class RobotContainer {
         .whileTrue(
             ShootOnTheMoveCommands.trackTarget(drive, turret, hood, flywheel)
                 .withName("Controller - RB - Shoot On The Move"));
+
+    // Flywheel control
+    driverController
+        .leftBumper()
+        .onTrue(
+            flywheel
+                .overrideState(FlywheelState.FIXED)
+                .withName("Controller - Left Bumper - Fixed State"));
+
+    // Transfer control
+    driverController
+        .y()
+        .onTrue(
+            transfer
+                .overrideState(TransferState.FIXED)
+                .withName("Controller - Y - Transfer Fixed State"));
+
+    // Spindexer control
+    driverController
+        .x()
+        .onTrue(
+            spindexer
+                .overrideState(SpindexerState.FAST_INDEX)
+                .withName("Controller - X - Spindexer"));
   }
 
   /** Returns the autonomous command to run. */
