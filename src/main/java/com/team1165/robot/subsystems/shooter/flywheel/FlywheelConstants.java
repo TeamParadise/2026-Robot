@@ -7,11 +7,11 @@
 
 package com.team1165.robot.subsystems.shooter.flywheel;
 
-import com.team1165.robot.globalconstants.IDConstants.CANivore;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.team1165.robot.globalconstants.IDConstants.CANivore;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 
 /** Constants for the Flywheel subsystem motor configuration. */
