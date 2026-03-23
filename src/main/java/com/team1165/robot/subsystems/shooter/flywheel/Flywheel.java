@@ -13,7 +13,6 @@ import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import com.team1165.util.tunables.TunableMotionProfile;
-import com.team1165.util.tunables.TunableNumber;
 import com.team1165.util.tunables.TunablePIDF;
 import org.littletonrobotics.junction.Logger;
 
@@ -32,7 +31,6 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
     this.io = io;
     this.pidf = new TunablePIDF(name + "FLywheel/PIDF", configs);
     this.motionProfile = new TunableMotionProfile(name + "Pivot/MotionProfile", motionMagicConfigs);
-
   }
 
   /**

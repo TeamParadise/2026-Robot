@@ -12,18 +12,14 @@ import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.MotorAlignmentValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
-import com.team1165.util.vendor.rev.SparkUtils;
 
 /**
  * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by two
- * motors powered by Talon FX motor controllers. These two motors are usually controlled
- * together, but they can be controlled separately if needed.
+ * motors powered by Talon FX motor controllers. These two motors are usually controlled together,
+ * but they can be controlled separately if needed.
  */
 public class DualRollerIOTalonFX implements DualRollerIO {
   // Save motors and configs, configs are saved for brake mode configuration later

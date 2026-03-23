@@ -20,8 +20,6 @@ import org.littletonrobotics.junction.AutoLog;
  */
 public interface DualRollerIO {
 
-
-
   /** Class used to store the IO values of a basic roller subsystem. */
   @AutoLog
   class DualRollerIOInputs {
@@ -72,7 +70,9 @@ public interface DualRollerIO {
   /** Stops both of the motors (sets the output to zero). */
   default void stop() {}
 
-  default void setMotionProfiling(MotionMagicConfigs configs) {};
+  default void setMotionProfiling(MotionMagicConfigs configs) {}
+  ;
+
   /**
    * Enables or disables brake mode on both of the roller motors.
    *

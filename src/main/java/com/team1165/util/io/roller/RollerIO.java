@@ -7,6 +7,8 @@
 
 package com.team1165.util.io.roller;
 
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
@@ -42,6 +44,12 @@ public interface RollerIO {
 
   /** Stop the motor (sets the output to zero). */
   default void stop() {}
+
+  /** Sets the PIDF values for the motor. */
+  default void setPIDF(Slot0Configs configs) {}
+
+  /** Sets the motion profiling values for the motor. */
+  default void setMotionProfiling(MotionMagicConfigs configs) {}
 
   /**
    * Enables or disables brake mode.
