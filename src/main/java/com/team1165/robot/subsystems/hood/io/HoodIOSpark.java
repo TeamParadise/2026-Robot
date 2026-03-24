@@ -38,24 +38,23 @@ public class HoodIOSpark implements HoodIO {
   }
 
   @Override
-  public void updateHoodInputs(HoodIOInputs inputs) {
+  public void updateInputs(HoodIOInputs inputs) {
     motorData.update();
-
     inputs.motor = motorData;
   }
 
   @Override
-  public void runHoodVolts(double voltage) {
+  public void runVolts(double voltage) {
     motor.setVoltage(voltage);
   }
 
   @Override
-  public void runHoodPosition(double hoodPosition) {
+  public void runPosition(double hoodPosition) {
     controller.setSetpoint(hoodPosition, ControlType.kPosition);
   }
 
   @Override
-  public void setHoodPID(Slot0Configs configs) {
+  public void setPID(Slot0Configs configs) {
     new Thread(
             () -> {
               SparkBaseConfig tempConfig = new SparkMaxConfig();
@@ -75,7 +74,7 @@ public class HoodIOSpark implements HoodIO {
   }
 
   @Override
-  public void resetHood() {
+  public void reset() {
     motor.getEncoder().setPosition(0);
   }
 

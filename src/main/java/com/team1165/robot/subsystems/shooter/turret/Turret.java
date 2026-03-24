@@ -17,9 +17,31 @@ public class Turret extends OverridableStateMachine<TurretState> {
   private final TurretIO io;
   private final TurretIOInputs inputs = new TurretIOInputs();
 
+  /** Target position for SOTM tracking (in rotations). */
+  private double sotmTargetPosition = 0.0;
+
   public Turret(TurretIO io) {
     super(TurretState.IDLE);
     this.io = io;
+  }
+
+  /**
+   * Sets the target position for Shoot On The Move tracking.
+   *
+   * @param position The target turret position in rotations.
+   */
+  public void setSotmTargetPosition(double position) {
+    this.sotmTargetPosition = position;
+    Logger.recordOutput(name + "/SOTMTargetPosition", position);
+  }
+
+  /**
+   * Gets the current turret position.
+   *
+   * @return The current position of the turret.
+   */
+  public double getPosition() {
+    return inputs.motor.getPosition();
   }
 
   @Override
@@ -30,6 +52,12 @@ public class Turret extends OverridableStateMachine<TurretState> {
 
   @Override
   protected void transition() {
-    // io.runVolts(tunableMap.get(getCurrentState()).get());
+    switch (getCurrentState()) {
+      case IDLE -> io.runVolts(0.0);
+      case SOTM_TRACKING -> io.runPosition(sotmTargetPosition);
+      default -> {
+        // Other states not yet implemented
+      }
+    }
   }
 }
