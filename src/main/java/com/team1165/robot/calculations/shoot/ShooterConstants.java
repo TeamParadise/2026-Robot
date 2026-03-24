@@ -7,10 +7,28 @@
 
 package com.team1165.robot.calculations.shoot;
 
-public class ShooterConstants {
-  /** the maximum angle the hood can obtain */
-  public static final double hoodMaximumAngle = 45;
+/** Constants for shooter calculations. */
+public final class ShooterConstants {
+  /** Conversion factor from meters to feet. */
+  public static final double METERS_TO_FEET = 3.28084;
 
-  /** the minimum angle the hood can obtain */
-  public static final double hoodMinimumAngle = 28;
+  /** The height of the hub target in feet. */
+  public static final double HUB_HEIGHT_FEET = 6.0;
+
+  /** Minimum distance from hub to shoot (in feet). */
+  public static final double MIN_SHOOT_DISTANCE_FEET = 4.5;
+
+  /** The maximum angle the hood can obtain (in degrees). */
+  public static final double HOOD_MAXIMUM_ANGLE_DEG = 45;
+
+  /** The minimum angle the hood can obtain (in degrees). */
+  public static final double HOOD_MINIMUM_ANGLE_DEG = 28;
+
+  /** Default turret height off the ground (in feet). */
+  public static final double DEFAULT_TURRET_HEIGHT_FEET = 2.5;
+
+  /** Default desired max path height for ball trajectory (in feet). */
+  public static final double DEFAULT_MAX_PATH_HEIGHT_FEET = 10.0;
+
+  private ShooterConstants() {}
 }

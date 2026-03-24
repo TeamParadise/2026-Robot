@@ -21,6 +21,7 @@ public class Vector3 {
     this.y = vector.getY();
     this.z = 0.0;
   }
+
   public Vector3(Vector2 vector, double z) {
     this.x = vector.getX();
     this.y = vector.getY();

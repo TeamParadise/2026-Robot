@@ -7,14 +7,12 @@
 
 package com.team1165.robot.calculations.shoot;
 
-public class ShootReturnValue
-{
+public class ShootReturnValue {
   double shootAngle;
   double shootSpeed;
   double shootDirection;
 
-  public ShootReturnValue(double shootAngle, double shootVelocity, double shootDirection)
-  {
+  public ShootReturnValue(double shootAngle, double shootVelocity, double shootDirection) {
     this.shootAngle = shootAngle;
     this.shootSpeed = shootVelocity;
     this.shootDirection = shootDirection;
@@ -44,4 +42,3 @@ public class ShootReturnValue
     this.shootDirection = shootDirection;
   }
 }
-
