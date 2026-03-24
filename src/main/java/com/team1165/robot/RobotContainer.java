@@ -22,7 +22,7 @@ import com.team1165.robot.subsystems.groundintake.io.PivotIO;
 import com.team1165.robot.subsystems.groundintake.io.PivotIOSpark;
 import com.team1165.robot.subsystems.hood.Hood;
 import com.team1165.robot.subsystems.hood.io.HoodIO;
-import com.team1165.robot.subsystems.roller.flywheel.Flywheel;
+import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.util.constants.RobotMode;
@@ -59,7 +59,8 @@ public class RobotContainer {
                 GroundIntakeConstants.Pivot.motionProfile);
         turret = new Turret(new TurretIO() {});
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel = new Flywheel(new DualRollerIO() {});
+        flywheel =
+            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
       case SIM -> {
         drive =
@@ -73,7 +74,8 @@ public class RobotContainer {
                 new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         turret = new Turret(new TurretIO() {});
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel = new Flywheel(new DualRollerIO() {});
+        flywheel =
+            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
       case REPLAY -> {
         drive = new Drive(new DriveIO() {});
@@ -82,7 +84,8 @@ public class RobotContainer {
                 new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         turret = new Turret(new TurretIO() {});
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel = new Flywheel(new DualRollerIO() {});
+        flywheel =
+            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
       default -> {
         drive = new Drive(new DriveIO() {});
@@ -91,7 +94,8 @@ public class RobotContainer {
                 new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         turret = new Turret(new TurretIO() {});
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel = new Flywheel(new DualRollerIO() {});
+        flywheel =
+            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
       }
     }
 
