@@ -8,10 +8,10 @@
 package com.team1165.robot.calculations.shoot;
 
 import com.team1165.robot.calculations.PhysicsConstants;
-import com.team1165.robot.calculations.Vector2;
-import com.team1165.robot.calculations.Vector3;
 import com.team1165.robot.globalconstants.FieldConstants.Hub;
 import com.team1165.robot.subsystems.drive.Drive;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import java.util.Optional;
 
 public final class ShootCalculation {
@@ -21,19 +21,19 @@ public final class ShootCalculation {
   private ShootCalculation() {}
 
   /**
-   * Calculates the angle relative to the horizon to shoot the ball
+   * Calculates the angle relative to the horizon to shoot the ball.
    *
    * @param height The height of the output of the shooter
    * @param dHeight The desired height for the vertex of the path of the ball
    * @param xyVelocity The velocity of the ball on the xy plane
-   * @return The angle to shoot the ball as a double in radians
+   * @return The angle to shoot the ball in radians
    */
   public static double calculateAngle(double height, double dHeight, double xyVelocity) {
     return Math.atan2(Math.sqrt(-2 * g * (dHeight - height)), xyVelocity);
   }
 
   /**
-   * Converts shootAngle in radians to a double 0 to 1, where 1 is one full rotation (2 pi)
+   * Converts shootAngle in radians to a double 0 to 1, where 1 is one full rotation (2 pi).
    *
    * @return A usable value for motor position
    */
@@ -42,7 +42,7 @@ public final class ShootCalculation {
   }
 
   /**
-   * Calculates the exit speed of the fuel
+   * Calculates the exit speed of the fuel.
    *
    * @param shootAngle The angle that the fuel is being shot at relative to the horizon in radians
    * @param height The height of the output of the shooter in feet
@@ -69,61 +69,56 @@ public final class ShootCalculation {
    * Calculates the vector at which a ball should be shot in order to make it into the hub.
    *
    * @param drive The {@link Drive} for the robot. Used to calculate the speed and position.
-   * @return An {@link Optional} containing the {@link Vector2} along the XY plane in which the ball
-   *     should be shot, or empty if too close to hub.
+   * @return An {@link Optional} containing the shoot vector, or empty if too close to hub.
    */
-  public static Optional<Vector2> calculateShootVector(Drive drive) {
-    Vector2 robotPosition = new Vector2(drive.getPose().getX(), drive.getPose().getY());
+  public static Optional<Translation2d> calculateShootVector(Drive drive) {
+    Translation2d robotPosition = drive.getPose().getTranslation();
 
-    Vector3 hubPosition =
-        new Vector3(
-            Hub.topCenterPoint.getX(), Hub.topCenterPoint.getY(), ShooterConstants.HUB_HEIGHT_FEET);
-    Vector2 hubPosition2D = new Vector2(hubPosition);
+    Translation2d hubPosition2D =
+        new Translation2d(Hub.topCenterPoint.getX(), Hub.topCenterPoint.getY());
 
-    Vector2 robotSpeed =
-        new Vector2(
+    Translation2d robotSpeed =
+        new Translation2d(
             drive.getSpeeds().vxMetersPerSecond * ShooterConstants.METERS_TO_FEET,
             drive.getSpeeds().vyMetersPerSecond * ShooterConstants.METERS_TO_FEET);
-    Vector2 vecToHub = robotPosition.minus(hubPosition2D);
-    if (vecToHub.magnitude() <= ShooterConstants.MIN_SHOOT_DISTANCE_FEET) {
+
+    Translation2d vecToHub = robotPosition.minus(hubPosition2D);
+    if (vecToHub.getNorm() <= ShooterConstants.MIN_SHOOT_DISTANCE_FEET) {
       return Optional.empty();
     }
 
-    Vector2 shootVector = vecToHub.minus(robotSpeed);
-
+    Translation2d shootVector = vecToHub.minus(robotSpeed);
     return Optional.of(shootVector);
   }
 
   /**
-   * Calculates the necessary values required for Shoot On The Move and returns them.
+   * Calculates the necessary values required for Shoot On The Move.
    *
-   * @param drive The {@link Drive} object used to represent the robot's drivetrain. Used for
-   *     position and speed data.
-   * @param turretHeight The height of the turret off the ground in <b>feet</b>.
-   * @param desiredMaxPathHeight The desired maximum height of the ball's flight path in
-   *     <b>feet</b>. Can be overwritten if the robot is too close or far from the hub.
-   * @return An {@link Optional} containing a {@link ShootReturnValue} object with the necessary
-   *     hood (shoot) angle, speed of the shot, and direction of the shot. Returns empty if the
-   *     robot is too close to the hub.
+   * @param drive The {@link Drive} object for position and speed data.
+   * @param turretHeight The height of the turret off the ground in feet.
+   * @param desiredMaxPathHeight The desired maximum height of the ball's flight path in feet.
+   * @return An {@link Optional} containing a {@link ShootReturnValue}, or empty if too close.
    */
   public static Optional<ShootReturnValue> calculateShoot(
       Drive drive, double turretHeight, double desiredMaxPathHeight) {
-    Optional<Vector2> shootVelocityXYOpt = calculateShootVector(drive);
+    Optional<Translation2d> shootVelocityXYOpt = calculateShootVector(drive);
     if (shootVelocityXYOpt.isEmpty()) {
       return Optional.empty();
     }
 
-    Vector2 shootVelocityXY = shootVelocityXYOpt.get();
+    Translation2d shootVelocityXY = shootVelocityXYOpt.get();
     ShootReturnValue shootReturnValue = new ShootReturnValue(1.0, 1.0, 1.0);
 
-    shootReturnValue.setShootDirection(shootVelocityXY.direction());
+    shootReturnValue.setShootDirection(shootVelocityXY.getAngle().getRadians());
 
     double shootAngle =
-        calculateAngle(turretHeight, desiredMaxPathHeight, shootVelocityXY.magnitude());
+        calculateAngle(turretHeight, desiredMaxPathHeight, shootVelocityXY.getNorm());
     shootReturnValue.setShootAngle(calculateHoodAngle(shootAngle));
 
-    double shootVelocityZ = shootVelocityXY.magnitude() * Math.sin(shootAngle);
-    shootReturnValue.setShootSpeed(new Vector3(shootVelocityXY, shootVelocityZ).magnitude());
+    double shootVelocityZ = shootVelocityXY.getNorm() * Math.sin(shootAngle);
+    Translation3d shootVelocity3D =
+        new Translation3d(shootVelocityXY.getX(), shootVelocityXY.getY(), shootVelocityZ);
+    shootReturnValue.setShootSpeed(shootVelocity3D.getNorm());
 
     return Optional.of(shootReturnValue);
   }
