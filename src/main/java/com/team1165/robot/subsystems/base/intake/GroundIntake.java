@@ -5,12 +5,12 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.groundintake;
+package com.team1165.robot.subsystems.base.intake;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.team1165.robot.subsystems.groundintake.io.PivotIO;
-import com.team1165.robot.subsystems.groundintake.io.PivotIO.PivotIOInputs;
+import com.team1165.robot.subsystems.base.intake.io.PivotIO;
+import com.team1165.robot.subsystems.base.intake.io.PivotIO.PivotIOInputs;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;

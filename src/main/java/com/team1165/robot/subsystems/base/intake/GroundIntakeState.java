@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.groundintake;
+package com.team1165.robot.subsystems.base.intake;
 
 import com.team1165.util.statemachine.v1.State;
 import com.team1165.util.tunables.TunableNumber;
@@ -14,10 +14,10 @@ import com.team1165.util.tunables.TunableNumber;
 public enum GroundIntakeState implements State {
   IDLE(0, 0),
   AGITATE(0, 0),
-  AGITATE_AND_RUN(0, 8),
+  AGITATE_AND_RUN(0,12 ),
   DEPLOY(0, 0),
-  DEPLOY_AND_RUN(0, 8),
-  DEPLOY_AND_REVERSE(0, -8),
+  DEPLOY_AND_RUN(0, 12),
+  DEPLOY_AND_REVERSE(0, -12),
   ;
 
   private final TunableNumber pivotPosition;

@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.groundintake;
+package com.team1165.robot.subsystems.base.intake;
 
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
@@ -40,9 +40,10 @@ public final class GroundIntakeConstants {
         new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
     private static final SparkBaseConfig baseConfig =
         new SparkMaxConfig()
-            .smartCurrentLimit(40)
+            .apply(SparkUtils.createEncoderRatio(1.0 / 9.0))
             .idleMode(IdleMode.kBrake)
-            .apply(SparkUtils.createEncoderRatio(1.0 / 9.0));
+            .openLoopRampRate(0.1)
+            .smartCurrentLimit(40);
     public static final SparkConfig primaryConfig =
         SparkConfig.sparkMax(
             "IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
@@ -57,9 +58,10 @@ public final class GroundIntakeConstants {
 
     private static final SparkBaseConfig baseConfig =
         new SparkMaxConfig()
-            .smartCurrentLimit(50)
+            .apply(SparkUtils.createEncoderRatio(14.0 / 24.0))
             .idleMode(IdleMode.kCoast)
-            .apply(SparkUtils.createEncoderRatio(14.0 / 24.0));
+            .openLoopRampRate(0.1)
+            .smartCurrentLimit(50);
     public static final SparkConfig config =
         SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);
   }

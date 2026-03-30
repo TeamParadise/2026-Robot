@@ -12,9 +12,10 @@ import com.team1165.util.tunables.TunableNumber;
 
 public enum SpindexerState implements State {
   IDLE(0.0),
-  SLOW_INDEX(3.0),
-  FAST_INDEX(6.0),
-  REVERSE(-3.0);
+  SLOW_CW(5.0),
+  FAST_CW(12.0),
+  SLOW_CCW(-5.0),
+  FAST_CCW(-12.0);
 
   private final TunableNumber voltage;
 

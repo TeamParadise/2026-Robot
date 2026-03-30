@@ -21,9 +21,10 @@ public final class SpindexerConstants {
 
   private static final SparkBaseConfig baseConfig =
       new SparkMaxConfig()
-          .smartCurrentLimit(60)
+          .apply(SparkUtils.createEncoderRatio(1.0 / 5.0))
           .idleMode(IdleMode.kCoast)
-          .apply(SparkUtils.createEncoderRatio(1.0 / 3.0));
+          .openLoopRampRate(0.5)
+          .smartCurrentLimit(40);
   public static final SparkConfig config =
       SparkConfig.sparkMax("Spindexer", RIO.spindexer, MotorType.kBrushless, baseConfig);
 }
