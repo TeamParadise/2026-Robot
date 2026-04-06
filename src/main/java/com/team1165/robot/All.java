@@ -77,7 +77,7 @@ public class All extends SubsystemBase {
     testAngle = SmartDashboard.getNumber("ShooterAngle", testAngle);
   }
 
-  public Command runTransfer(DoubleSupplier position) {
+  public Command runTransfer() {
     return Commands.run(
         () -> {
           spindexerMotor.set(0.8);
@@ -112,24 +112,14 @@ public class All extends SubsystemBase {
     return Commands.run(
         () -> {
           spindexerMotor.set(-0.8);
-          transferMotor.set(0.15);
+          transferMotor.set(0.4);
           main.setControl(dutyCycle.withOutput(0.2));
         });
   }
 
-  public Command runShooter(DoubleSupplier position) {
+  public Command runShooter() {
     return Commands.run(
         () -> {
-          controller.setSetpoint(testAngle, ControlType.kPosition);
-          setShooterSpeed(testRPM);
-        });
-  }
-
-  public Command runTrasnfer() {
-    return Commands.run(
-        () -> {
-          spindexerMotor.set(0.8);
-          transferMotor.set(-1);
           controller.setSetpoint(testAngle, ControlType.kPosition);
           setShooterSpeed(testRPM);
         });
@@ -166,6 +156,13 @@ public class All extends SubsystemBase {
     return Commands.run(
         () -> {
           mainPivot.set(0.3);
+        });
+  }
+
+  public Command stopIntake() {
+    return Commands.runOnce(
+        () -> {
+          mainPivot.set(0);
         });
   }
 

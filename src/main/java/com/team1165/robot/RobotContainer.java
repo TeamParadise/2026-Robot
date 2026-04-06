@@ -41,11 +41,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
   private final Drive drive;
-  private final GroundIntake groundIntake;
   private final Turret turret;
-  private final Hood hood;
-  private final Flywheel flywheel;
   private final ATVision vision;
+  private final All all;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
   public final RobotState robotState;
@@ -58,18 +56,7 @@ public class RobotContainer {
             new Drive(
                 new DriveIOReal(
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
-        groundIntake =
-            new GroundIntake(
-                new PivotIOSpark(
-                    GroundIntakeConstants.Pivot.primaryConfig,
-                    GroundIntakeConstants.Pivot.secondaryConfig),
-                new RollerIOSpark(GroundIntakeConstants.Roller.config),
-                GroundIntakeConstants.Pivot.gains,
-                GroundIntakeConstants.Pivot.motionProfile);
         turret = new Turret(new TurretIO() {});
-        hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel =
-            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         vision = new ATVision(drive::addVisionMeasurement, drive::getRotation, new CameraConfig(new ATVisionIOPhoton(
             RightCamera.name), RightCamera.robotToCamera), new CameraConfig(new ATVisionIOPhoton(
             LeftCamera.name), LeftCamera.robotToCamera));
@@ -81,13 +68,7 @@ public class RobotContainer {
                     DriveConstants.drivetrainConstants,
                     DriveConstants.simConfig,
                     DriveConstants.getModuleConstants()));
-        groundIntake =
-            new GroundIntake(
-                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         turret = new Turret(new TurretIO() {});
-        hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel =
-            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         vision =
             new ATVision(
                 drive::addVisionMeasurement,
@@ -97,13 +78,7 @@ public class RobotContainer {
       }
       default -> {
         drive = new Drive(new DriveIO() {});
-        groundIntake =
-            new GroundIntake(
-                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         turret = new Turret(new TurretIO() {});
-        hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel =
-            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
         vision =
             new ATVision(
                 drive::addVisionMeasurement,
@@ -113,32 +88,21 @@ public class RobotContainer {
       }
     }
 
-    robotState = new RobotState(drive);
+    all = new All();
+
+    robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
   }
 
   /** Configure driver button bindings for ground intake. */
   private void configureButtonBindings() {
-    driverController
-        .a()
-        .onTrue(
-            groundIntake
-                .overrideState(GroundIntakeState.IDLE)
-                .withName("Controller - A - Idle State"));
-    driverController
-        .b()
-        .onTrue(
-            groundIntake
-                .overrideState(GroundIntakeState.DEPLOY)
-                .withName("Controller - B - Deploy State"));
-
-    // Shoot On The Move - hold right bumper to track target while moving
-    driverController
-        .rightBumper()
-        .whileTrue(
-            ShootOnTheMoveCommands.trackTarget(drive, turret, hood, flywheel)
-                .withName("Controller - RB - Shoot On The Move"));
+    driverController.a().whileTrue(all.runShooter());
+    driverController.b().onTrue(all.stop());
+    driverController.x().whileTrue(all.runTransfer());
+    driverController.y().whileTrue(all.runIntake());
+    driverController.povUp().whileTrue(all.pullIntakeIn()).onFalse(all.stopIntake());
+    driverController.povDown().whileTrue(all.kickIntakeOut()).onFalse(all.stopIntake());
   }
 
   /** Returns the autonomous command to run. */

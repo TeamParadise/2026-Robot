@@ -17,7 +17,19 @@ public class BasicShooterLUT {
       InverseInterpolator.forDouble(), ShooterParameters.interpolator());
 
   static {
-    lut.put(0.0, new ShooterParameters(0.0, 0.0));
+    lut.put(0.5, new ShooterParameters(0.0, 0.0));
+    lut.put(1.0, new ShooterParameters(0.0, 0.0));
+    lut.put(1.5, new ShooterParameters(0.0, 0.0));
+    lut.put(2.0, new ShooterParameters(0.0, 0.0));
+    lut.put(2.5, new ShooterParameters(0.0, 0.0));
+    lut.put(3.0, new ShooterParameters(0.0, 0.0));
+    lut.put(3.5, new ShooterParameters(0.0, 0.0));
+    lut.put(4.0, new ShooterParameters(0.0, 0.0));
+    lut.put(4.5, new ShooterParameters(0.0, 0.0));
+    lut.put(5.0, new ShooterParameters(0.0, 0.0));
+    lut.put(5.5, new ShooterParameters(0.0, 0.0));
+    lut.put(6.0, new ShooterParameters(0.0, 0.0));
+    lut.put(6.5, new ShooterParameters(0.0, 0.0));
   }
 
   public record ShooterParameters(double rpm, double angle) {
