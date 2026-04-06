@@ -26,12 +26,12 @@ public class ATVisionConstants {
   public static final class Cameras {
     public static final class RightCamera {
       public static final String name = "Right Camera";
-      public static final Transform3d robotToCamera = new Transform3d(0.117442234, -0.363533055, 0.2400393726, new Rotation3d(Degrees.zero(),
+      public static final Transform3d robotToCamera = new Transform3d(0.363533055, -0.117442234, 0.2400393726, new Rotation3d(Degrees.zero(),
           Degrees.of(-10.0), Degrees.of(15.0)));
     }
     public static final class LeftCamera {
       public static final String name = "Left Camera";
-      public static final Transform3d robotToCamera = new Transform3d(0.117442234, 0.363533055, 0.2400393726, new Rotation3d(Degrees.zero(),
+      public static final Transform3d robotToCamera = new Transform3d(0.363533055, 0.117442234, 0.2400393726, new Rotation3d(Degrees.zero(),
           Degrees.of(-10.0), Degrees.of(-15.0)));
     }
   }
