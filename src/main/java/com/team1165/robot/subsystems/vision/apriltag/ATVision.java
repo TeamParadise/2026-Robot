@@ -69,8 +69,8 @@ public class ATVision extends SubsystemBase {
 
     // Initialize all arrays for each camera
     disconnectedAlerts = new Alert[config.length];
-    // Specifically make sure we are set to SINGLE_TAG_3D before enabled for pose correction
-    setState(ATVisionState.SINGLE_TAG_3D);
+    // Specifically make sure we are set to normal 3D pose estimation for starting position
+    setSingleTagTrig(false);
     io = new ATVisionIO[config.length];
     inputs = new ATVisionIOInputsAutoLogged[config.length];
     cameraTransforms = new Transform3d[config.length];
@@ -120,10 +120,8 @@ public class ATVision extends SubsystemBase {
 
       // Add visible tag poses
       for (int tagId : inputs[cameraIndex].tagIds) {
-        if (tagId != 14 && tagId != 15 && tagId != 4 && tagId != 5 && tagId != 3 && tagId != 16) {
           var tagPose = aprilTagLayout.getTagPose(tagId);
           tagPose.ifPresent(tagPoses::add);
-        }
       }
 
       // Loop over pose observations

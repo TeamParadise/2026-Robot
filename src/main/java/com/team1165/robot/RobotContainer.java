@@ -25,6 +25,12 @@ import com.team1165.robot.subsystems.hood.io.HoodIO;
 import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
+import com.team1165.robot.subsystems.vision.apriltag.ATVision;
+import com.team1165.robot.subsystems.vision.apriltag.ATVision.CameraConfig;
+import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants.Cameras.*;
+import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
+import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
+import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhotonSim;
 import com.team1165.util.constants.RobotMode;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.roller.RollerIO;
@@ -39,6 +45,7 @@ public class RobotContainer {
   private final Turret turret;
   private final Hood hood;
   private final Flywheel flywheel;
+  private final ATVision vision;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
@@ -61,6 +68,9 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        vision = new ATVision(drive::addVisionMeasurement, drive::getRotation, new CameraConfig(new ATVisionIOPhoton(
+            RightCamera.name), RightCamera.robotToCamera), new CameraConfig(new ATVisionIOPhoton(
+            LeftCamera.name), LeftCamera.robotToCamera));
       }
       case SIM -> {
         drive =
@@ -76,16 +86,12 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
-      }
-      case REPLAY -> {
-        drive = new Drive(new DriveIO() {});
-        groundIntake =
-            new GroundIntake(
-                new PivotIO() {}, new RollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
-        turret = new Turret(new TurretIO() {});
-        hood = new Hood(new HoodIO() {}, new Slot0Configs());
-        flywheel =
-            new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        vision =
+            new ATVision(
+                drive::addVisionMeasurement,
+                drive::getRotation,
+                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
+                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
       }
       default -> {
         drive = new Drive(new DriveIO() {});
@@ -96,6 +102,12 @@ public class RobotContainer {
         hood = new Hood(new HoodIO() {}, new Slot0Configs());
         flywheel =
             new Flywheel(new DualRollerIO() {}, new Slot0Configs(), new MotionMagicConfigs());
+        vision =
+            new ATVision(
+                drive::addVisionMeasurement,
+                drive::getRotation,
+                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
+                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
       }
     }
 
