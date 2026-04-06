@@ -55,6 +55,8 @@ public interface DualRollerIO {
    */
   default void runVelocity(double velocity) {}
 
+  default void runBangBangVelocity(double velocity) {}
+
   /**
    * Run the motors separately at different voltages. This should only be used if the motors are not
    * physically coupled by any means.
@@ -69,9 +71,6 @@ public interface DualRollerIO {
 
   /** Stops both of the motors (sets the output to zero). */
   default void stop() {}
-
-  default void setMotionProfiling(MotionMagicConfigs configs) {}
-  ;
 
   /**
    * Enables or disables brake mode on both of the roller motors.
