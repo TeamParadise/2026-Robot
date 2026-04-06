@@ -14,7 +14,7 @@ import com.team1165.util.tunables.TunableNumber;
 public enum GroundIntakeState implements State {
   IDLE(0, 0),
   AGITATE(0, 0),
-  AGITATE_AND_RUN(0,12 ),
+  AGITATE_AND_RUN(0, 12),
   DEPLOY(0, 0),
   DEPLOY_AND_RUN(0, 12),
   DEPLOY_AND_REVERSE(0, -12),

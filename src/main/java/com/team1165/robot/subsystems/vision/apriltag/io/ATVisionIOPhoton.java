@@ -88,17 +88,17 @@ public class ATVisionIOPhoton implements ATVisionIO {
         PhotonTrackedTarget tag = result.targets.get(0);
 
         if (trigEnabled) { // If we are using trig, calculate tx, ty, etc.
-            // Add tag ID
-            tagIds.add((short) tag.fiducialId);
+          // Add tag ID
+          tagIds.add((short) tag.fiducialId);
 
-            // Add single tag observation
-            singleTagObservations.add(
-                new SingleTagObservation(
-                    tag.yaw, // Yaw (horizontal angle, x value)
-                    tag.pitch, // Pitch (vertical angle, y value)
-                    tag.fiducialId, // Tag ID
-                    tag.bestCameraToTarget.getTranslation().getNorm(), // Tag distance
-                    result.getTimestampSeconds())); // Timestamp
+          // Add single tag observation
+          singleTagObservations.add(
+              new SingleTagObservation(
+                  tag.yaw, // Yaw (horizontal angle, x value)
+                  tag.pitch, // Pitch (vertical angle, y value)
+                  tag.fiducialId, // Tag ID
+                  tag.bestCameraToTarget.getTranslation().getNorm(), // Tag distance
+                  result.getTimestampSeconds())); // Timestamp
         } else {
           Optional<Pose3d> tagPose = ATVisionConstants.aprilTagLayout.getTagPose(tag.fiducialId);
 
@@ -117,7 +117,9 @@ public class ATVisionIOPhoton implements ATVisionIO {
             poseObservations.add(
                 new CameraPoseObservation(
                     tagPose.get().plus(bestCameraToTarget.inverse()), // Best pose estimate
-                    tagPose.get().plus(alternateCameraToTarget.inverse()), // Alternate pose estimate
+                    tagPose
+                        .get()
+                        .plus(alternateCameraToTarget.inverse()), // Alternate pose estimate
                     bestCameraToTarget.getTranslation().getNorm(), // Tag distance
                     tag.poseAmbiguity, // Ambiguity
                     1, // Tag count (one because single tag)
