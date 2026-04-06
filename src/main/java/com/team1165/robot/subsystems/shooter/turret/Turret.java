@@ -7,12 +7,16 @@
 
 package com.team1165.robot.subsystems.shooter.turret;
 
+import com.team1165.robot.RobotState;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO.TurretIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.Logger;
 
 public class Turret extends OverridableStateMachine<TurretState> {
+  private static final double minAngle = Units.degreesToRadians(-90.0);
+  private static final double maxAngle = Units.degreesToRadians(90.0);
 
   private final TurretIO io;
   private final TurretIOInputs inputs = new TurretIOInputs();
@@ -48,6 +52,11 @@ public class Turret extends OverridableStateMachine<TurretState> {
   protected void update() {
     io.updateInputs(inputs);
     Logger.processInputs(name, inputs.motor);
+  }
+
+  public void updateState() {
+    transition();
+    Logger.recordOutput("Turret/Pose", RobotState.getTurretPose());
   }
 
   @Override

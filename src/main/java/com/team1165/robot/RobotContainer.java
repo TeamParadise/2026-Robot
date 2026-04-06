@@ -48,6 +48,8 @@ public class RobotContainer {
   private final ATVision vision;
   private final CommandXboxController driverController = new CommandXboxController(0);
 
+  public final RobotState robotState;
+
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
     switch (RobotMode.get()) {
@@ -110,6 +112,8 @@ public class RobotContainer {
                 new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
       }
     }
+
+    robotState = new RobotState(drive);
 
     configureButtonBindings();
   }
