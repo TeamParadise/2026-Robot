@@ -8,17 +8,18 @@
 package com.team1165.robot.subsystems.intake;
 
 import com.team1165.robot.subsystems.intake.io.PivotIO;
-import com.team1165.robot.subsystems.intake.io.PivotIO.PivotIOInputs;
+import com.team1165.robot.subsystems.intake.io.PivotIOInputsAutoLogged;
 import com.team1165.util.io.roller.RollerIO;
-import com.team1165.util.io.roller.RollerIO.RollerIOInputs;
+import com.team1165.util.io.roller.RollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.StateMachine;
 import edu.wpi.first.wpilibj2.command.Command;
+import org.littletonrobotics.junction.Logger;
 
 public class GroundIntake extends StateMachine<GroundIntakeState> {
   private final RollerIO roller;
-  private final RollerIOInputs rollerInputs = new RollerIOInputs();
+  private final RollerIOInputsAutoLogged rollerInputs = new RollerIOInputsAutoLogged();
   private final PivotIO pivot;
-  private final PivotIOInputs pivotInputs = new PivotIOInputs();
+  private final PivotIOInputsAutoLogged pivotInputs = new PivotIOInputsAutoLogged();
 
   public GroundIntake(PivotIO pivot, RollerIO roller) {
     super(GroundIntakeState.IDLE);
@@ -34,6 +35,9 @@ public class GroundIntake extends StateMachine<GroundIntakeState> {
   protected void update() {
     pivot.updateInputs(pivotInputs);
     roller.updateInputs(rollerInputs);
+
+    Logger.processInputs("GroundIntake/Pivot", pivotInputs);
+    Logger.processInputs("GroundIntake/Roller", rollerInputs);
   }
 
   @Override
