@@ -5,11 +5,8 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.intake;
+package com.team1165.robot.subsystems.intake;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -26,23 +23,11 @@ public final class GroundIntakeConstants {
   public static final class Pivot {
     private Pivot() {}
 
-    public static final Slot0Configs gains =
-        new Slot0Configs()
-            .withKP(0)
-            .withKI(0)
-            .withKD(0)
-            .withKS(0)
-            .withKV(0)
-            .withKA(0)
-            .withKG(0)
-            .withGravityType(GravityTypeValue.Arm_Cosine);
-    public static final MotionMagicConfigs motionProfile =
-        new MotionMagicConfigs().withMotionMagicAcceleration(0).withMotionMagicCruiseVelocity(0);
     private static final SparkBaseConfig baseConfig =
         new SparkMaxConfig()
             .apply(SparkUtils.createEncoderRatio(1.0 / 9.0))
             .idleMode(IdleMode.kBrake)
-            .openLoopRampRate(0.1)
+            .openLoopRampRate(0.15)
             .smartCurrentLimit(40);
     public static final SparkConfig primaryConfig =
         SparkConfig.sparkMax(
@@ -60,7 +45,7 @@ public final class GroundIntakeConstants {
         new SparkMaxConfig()
             .apply(SparkUtils.createEncoderRatio(14.0 / 24.0))
             .idleMode(IdleMode.kCoast)
-            .openLoopRampRate(0.1)
+            .openLoopRampRate(0.15)
             .smartCurrentLimit(50);
     public static final SparkConfig config =
         SparkConfig.sparkMax("IntakeRoller", RIO.intakeRoller, MotorType.kBrushless, baseConfig);

@@ -5,10 +5,8 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.intake.io;
+package com.team1165.robot.subsystems.intake.io;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
@@ -40,26 +38,6 @@ public interface PivotIO {
    * @param voltage The voltage to run the pivot at.
    */
   default void runVolts(double voltage) {}
-
-  /**
-   * Run the motors to a specific position using PID.
-   *
-   * @param position The position to run to.
-   */
-  default void runPosition(double position) {}
-
-  /**
-   * Resets the current position to a specific value.
-   *
-   * @param position The position to reset the position to.
-   */
-  default void resetPosition(double position) {}
-
-  /** Sets the PIDF values for the motors. */
-  default void setPIDF(Slot0Configs configs) {}
-
-  /** Sets the motion profiling configuration for the motors. */
-  default void setMotionProfiling(MotionMagicConfigs configs) {}
 
   /** Stops the pivot motors (sets the output to zero). */
   default void stop() {}

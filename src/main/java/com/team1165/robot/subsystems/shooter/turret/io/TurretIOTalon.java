@@ -12,19 +12,9 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.revrobotics.PersistMode;
-import com.revrobotics.ResetMode;
-import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.team1165.util.logging.motordata.SparkMotorData;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
-import com.team1165.util.vendor.rev.SparkConfig;
-import com.team1165.util.vendor.rev.SparkUtils;
 
 public class TurretIOTalon implements TurretIO {
   private final TalonFX motor;

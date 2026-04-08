@@ -14,6 +14,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.team1165.robot.globalconstants.IDConstants.CANivore;
 import com.team1165.robot.globalconstants.IDConstants.RIO;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.CANcoderConfig;
 import com.team1165.util.vendor.rev.SparkConfig;
@@ -38,7 +39,7 @@ public final class TurretConstants {
             .idleMode(IdleMode.kBrake)
             .apply(SparkUtils.createEncoderRatio((14.0 / 44.0) * (10.0 / 100.0)));
     public static final SparkConfig config =
-        SparkConfig.sparkMax("TurretMotor", RIO.turretMotor, MotorType.kBrushless, baseConfig);
+        SparkConfig.sparkMax("TurretMotor", CANivore.turretMotor, MotorType.kBrushless, baseConfig);
   }
 
   public static final class Encoder {
@@ -47,7 +48,7 @@ public final class TurretConstants {
 
     private static final CANcoderConfiguration baseConfig = new CANcoderConfiguration();
     public static final CANcoderConfig config =
-        new CANcoderConfig("TurretEncoder", RIO.turretEncoder, RIO.bus, baseConfig);
+        new CANcoderConfig("TurretEncoder", 1, RIO.bus, baseConfig);
 
     static {
       baseConfig.MagnetSensor.MagnetOffset = 0.0;

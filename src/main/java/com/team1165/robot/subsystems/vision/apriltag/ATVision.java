@@ -27,7 +27,6 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -120,8 +119,8 @@ public class ATVision extends SubsystemBase {
 
       // Add visible tag poses
       for (int tagId : inputs[cameraIndex].tagIds) {
-          var tagPose = aprilTagLayout.getTagPose(tagId);
-          tagPose.ifPresent(tagPoses::add);
+        var tagPose = aprilTagLayout.getTagPose(tagId);
+        tagPose.ifPresent(tagPoses::add);
       }
 
       // Loop over pose observations
@@ -179,9 +178,9 @@ public class ATVision extends SubsystemBase {
             // Get the current rotation of the robot
             Rotation2d currentRotation = rotationSupplier.getRotation(Timer.getTimestamp());
             if (Math.abs(
-                currentRotation.minus(robotPose1.getRotation().toRotation2d()).getRadians())
+                    currentRotation.minus(robotPose1.getRotation().toRotation2d()).getRadians())
                 < Math.abs(
-                currentRotation.minus(robotPose2.getRotation().toRotation2d()).getRadians())) {
+                    currentRotation.minus(robotPose2.getRotation().toRotation2d()).getRadians())) {
               robotPose = robotPose1;
             } else {
               robotPose = robotPose2;
@@ -268,10 +267,10 @@ public class ATVision extends SubsystemBase {
         // Get the robot pose with the translation
         var robotPose =
             new Pose2d(
-                fieldToCameraTranslation,
-                rotationSupplier
-                    .getRotation(observation.timestamp())
-                    .plus(robotToCamera.getRotation().toRotation2d()))
+                    fieldToCameraTranslation,
+                    rotationSupplier
+                        .getRotation(observation.timestamp())
+                        .plus(robotToCamera.getRotation().toRotation2d()))
                 .transformBy(
                     new Transform2d(
                         new Pose2d(

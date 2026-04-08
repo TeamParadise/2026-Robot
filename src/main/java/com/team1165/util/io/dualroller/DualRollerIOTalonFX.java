@@ -36,7 +36,8 @@ public class DualRollerIOTalonFX implements DualRollerIO {
 
   // Velocity control
   private final VelocityVoltage velocityVoltage = new VelocityVoltage(0).withUpdateFreqHz(0);
-  private final VelocityTorqueCurrentFOC velocityCurrent = new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
+  private final VelocityTorqueCurrentFOC velocityCurrent =
+      new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
 
   public DualRollerIOTalonFX(TalonFXConfig primaryConfig, TalonFXConfig secondaryConfig) {
     // Assign motor variables
@@ -84,7 +85,8 @@ public class DualRollerIOTalonFX implements DualRollerIO {
 
   @Override
   public void runBangBangVelocity(double velocity) {
-    if (MathUtil.isNear(velocity, primaryMotorData.getVelocity(), velocity * 0.2));
+    if (MathUtil.isNear(velocity, primaryMotorData.getVelocity(), velocity * 0.2))
+      ;
   }
 
   /** Stops ONE of the motors (sets the output to zero). */
