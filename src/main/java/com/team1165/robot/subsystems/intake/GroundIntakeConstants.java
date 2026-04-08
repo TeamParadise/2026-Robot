@@ -45,6 +45,7 @@ public final class GroundIntakeConstants {
         new SparkMaxConfig()
             .apply(SparkUtils.createEncoderRatio(14.0 / 24.0))
             .idleMode(IdleMode.kCoast)
+            .inverted(true)
             .openLoopRampRate(0.15)
             .smartCurrentLimit(50);
     public static final SparkConfig config =

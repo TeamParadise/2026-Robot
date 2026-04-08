@@ -16,7 +16,7 @@ public enum GroundIntakeState implements State {
   /** Hold intake against the bumper. */
   HOLD_DOWN(-0.2, 0),
   /** Hold intake against the bumper and run the roller. */
-  HOLD_DOWN_AND_INTAKE(-0.25, 13),
+  HOLD_DOWN_AND_INTAKE(-0.25, 12.5),
   /** Don't run pivot or roller. */
   IDLE(0, 0),
   /** Run pivot down (out of robot). */
