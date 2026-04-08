@@ -127,7 +127,7 @@ public final class SparkUtils {
   /**
    * Create an {@link EncoderConfig} using a specific gear ratio.
    *
-   * @param gearRatio The grea ratio to multiply the reported position/velocity by.
+   * @param gearRatio The gear ratio to multiply the reported position/velocity by.
    * @return A {@link EncoderConfig} with the provided gear ratio.
    */
   public static EncoderConfig createEncoderRatio(double gearRatio) {

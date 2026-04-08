@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.spindexer;
+package com.team1165.robot.subsystems.spindexer;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -21,7 +21,7 @@ public final class SpindexerConstants {
 
   private static final SparkBaseConfig baseConfig =
       new SparkMaxConfig()
-          .apply(SparkUtils.createEncoderRatio(1.0 / 5.0))
+          .apply(SparkUtils.createEncoderRatio(1.0 / 9.0))
           .idleMode(IdleMode.kCoast)
           .openLoopRampRate(0.5)
           .smartCurrentLimit(40);

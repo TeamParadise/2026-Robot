@@ -5,17 +5,18 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.spindexer;
+package com.team1165.robot.subsystems.spindexer;
 
 import com.team1165.util.statemachine.v1.State;
 import com.team1165.util.tunables.TunableNumber;
 
+@SuppressWarnings("ImmutableEnumChecker")
 public enum SpindexerState implements State {
+  FAST_CW(-12.0),
+  FAST_CCW(12.0),
   IDLE(0.0),
-  SLOW_CW(5.0),
-  FAST_CW(12.0),
-  SLOW_CCW(-5.0),
-  FAST_CCW(-12.0);
+  SLOW_CW(-6.0),
+  SLOW_CCW(6.0);
 
   private final TunableNumber voltage;
 
