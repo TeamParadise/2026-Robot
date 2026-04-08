@@ -7,22 +7,12 @@
 
 package com.team1165.robot;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
-import com.team1165.robot.commands.ShootOnTheMoveCommands;
-import com.team1165.robot.subsystems.base.intake.GroundIntake;
-import com.team1165.robot.subsystems.base.intake.GroundIntakeConstants;
-import com.team1165.robot.subsystems.base.intake.GroundIntakeState;
-import com.team1165.robot.subsystems.base.intake.io.PivotIO;
-import com.team1165.robot.subsystems.base.intake.io.PivotIOSpark;
+import com.team1165.robot.commands.DriveCommands;
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.drive.constants.DriveConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
 import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
 import com.team1165.robot.subsystems.drive.io.DriveIOReal;
-import com.team1165.robot.subsystems.hood.Hood;
-import com.team1165.robot.subsystems.hood.io.HoodIO;
-import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.vision.apriltag.ATVision;
@@ -30,11 +20,10 @@ import com.team1165.robot.subsystems.vision.apriltag.ATVision.CameraConfig;
 import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants.Cameras.*;
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
-import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhotonSim;
 import com.team1165.util.constants.RobotMode;
-import com.team1165.util.io.dualroller.DualRollerIO;
-import com.team1165.util.io.roller.RollerIO;
-import com.team1165.util.io.roller.RollerIOSpark;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -57,9 +46,12 @@ public class RobotContainer {
                 new DriveIOReal(
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
         turret = new Turret(new TurretIO() {});
-        vision = new ATVision(drive::addVisionMeasurement, drive::getRotation, new CameraConfig(new ATVisionIOPhoton(
-            RightCamera.name), RightCamera.robotToCamera), new CameraConfig(new ATVisionIOPhoton(
-            LeftCamera.name), LeftCamera.robotToCamera));
+        vision =
+            new ATVision(
+                drive::addVisionMeasurement,
+                drive::getRotation,
+                new CameraConfig(new ATVisionIOPhoton(RightCamera.name), RightCamera.robotToCamera),
+                new CameraConfig(new ATVisionIOPhoton(LeftCamera.name), LeftCamera.robotToCamera));
       }
       case SIM -> {
         drive =
@@ -97,16 +89,40 @@ public class RobotContainer {
 
   /** Configure driver button bindings for ground intake. */
   private void configureButtonBindings() {
-    driverController.a().whileTrue(all.runShooter());
-    driverController.b().onTrue(all.stop());
-    driverController.x().whileTrue(all.runTransfer());
+    drive.setDefaultCommand(
+        DriveCommands.teleopManualDrive(
+            drive,
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
+            () -> (driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis()),
+            () -> false,
+            true));
+
+    driverController
+        .back()
+        .onTrue(
+            Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
+
+    driverController.a().whileTrue(all.runTransfer());
+    driverController.x().whileTrue(all.runShooter());
+    driverController.b().whileTrue(all.stop());
+    driverController.povLeft().whileTrue(all.reverse());
+    driverController.povDown().whileTrue(all.kickIntakeOut());
+    driverController.povUp().whileTrue(all.pullIntakeIn());
     driverController.y().whileTrue(all.runIntake());
-    driverController.povUp().whileTrue(all.pullIntakeIn()).onFalse(all.stopIntake());
-    driverController.povDown().whileTrue(all.kickIntakeOut()).onFalse(all.stopIntake());
+    driverController.leftBumper().whileTrue(all.spindexerReverse());
+    driverController.rightBumper().whileTrue(all.spindexerForward());
   }
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-    return Commands.none();
+    return Commands.runOnce(
+        () ->
+            drive.resetRotation(
+                new Rotation2d(
+                    DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get() == Alliance.Red
+                        ? 0
+                        : 180)));
   }
 }

@@ -13,18 +13,18 @@ import edu.wpi.first.math.interpolation.Interpolator;
 import edu.wpi.first.math.interpolation.InverseInterpolator;
 
 public class BasicShooterLUT {
-  public static final InterpolatingTreeMap<Double, ShooterParameters> lut = new InterpolatingTreeMap<>(
-      InverseInterpolator.forDouble(), ShooterParameters.interpolator());
+  public static final InterpolatingTreeMap<Double, ShooterParameters> lut =
+      new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterParameters.interpolator());
 
   static {
     lut.put(0.5, new ShooterParameters(0.0, 0.0));
     lut.put(1.0, new ShooterParameters(0.0, 0.0));
     lut.put(1.5, new ShooterParameters(0.0, 0.0));
-    lut.put(2.0, new ShooterParameters(0.0, 0.0));
-    lut.put(2.5, new ShooterParameters(0.0, 0.0));
-    lut.put(3.0, new ShooterParameters(0.0, 0.0));
-    lut.put(3.5, new ShooterParameters(0.0, 0.0));
-    lut.put(4.0, new ShooterParameters(0.0, 0.0));
+    lut.put(2.3, new ShooterParameters(-1.5, 4300.0));
+    lut.put(2.5, new ShooterParameters(-1.5, 4550.0));
+    lut.put(3.0, new ShooterParameters(-1.75, 4650.0));
+    lut.put(3.5, new ShooterParameters(-1.9, 4800.0));
+    lut.put(4.0, new ShooterParameters(-3.9, 4475.0));
     lut.put(4.5, new ShooterParameters(0.0, 0.0));
     lut.put(5.0, new ShooterParameters(0.0, 0.0));
     lut.put(5.5, new ShooterParameters(0.0, 0.0));
@@ -39,5 +39,6 @@ public class BasicShooterLUT {
               MathUtil.interpolate(start.rpm, end.rpm, t),
               MathUtil.interpolate(start.angle, end.angle, t));
     }
-  };
+  }
+  ;
 }

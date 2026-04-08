@@ -55,7 +55,6 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   protected void update() {
     io.updateInputs(inputs);
     if (pidf.hasChanged(hashCode())) io.setPIDF(pidf.getSlot0Configs());
-    if (motionProfile.hasChanged(hashCode())) io.setMotionProfiling(motionProfile.getConfigs());
     Logger.processInputs(name, inputs);
   }
 

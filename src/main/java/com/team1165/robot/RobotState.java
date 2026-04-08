@@ -12,7 +12,6 @@ import com.team1165.robot.subsystems.shooter.turret.Turret;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 public class RobotState {
@@ -27,11 +26,12 @@ public class RobotState {
 
   void update() {
     odometryPose = drive.getPose();
-    turretRotation = turret.getPosition();
+    turretRotation = 0.0;
   }
 
   public static Pose2d getTurretPose() {
-    return odometryPose.plus(new Transform2d(0.0, 0.192024, Rotation2d.kZero)).rotateBy(new Rotation2d(
-        Units.rotationsToRadians(turretRotation)));
+    return odometryPose
+        .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero))
+        .rotateBy(new Rotation2d(Units.rotationsToRadians(turretRotation)));
   }
 }

@@ -25,7 +25,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RepeatCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.function.DoubleSupplier;
 
 public class All extends SubsystemBase {
   private final SparkMax spindexerMotor = new SparkMax(12, MotorType.kBrushless);
@@ -35,6 +34,8 @@ public class All extends SubsystemBase {
   private final SparkMax secondaryPivot = new SparkMax(15, MotorType.kBrushless);
   private final SparkMax hood = new SparkMax(20, MotorType.kBrushless);
   private final SparkClosedLoopController controller = hood.getClosedLoopController();
+  private final SparkClosedLoopController transferController =
+      transferMotor.getClosedLoopController();
   private final TalonFX main = new TalonFX(13, IDConstants.CANivore.bus);
   private final TalonFX follow = new TalonFX(14, IDConstants.CANivore.bus);
 
@@ -80,8 +81,7 @@ public class All extends SubsystemBase {
   public Command runTransfer() {
     return Commands.run(
         () -> {
-          spindexerMotor.set(0.8);
-          transferMotor.set(-1);
+          transferController.setSetpoint(-5200, ControlType.kVelocity);
           controller.setSetpoint(testAngle, ControlType.kPosition);
           setShooterSpeed(testRPM);
         });
@@ -129,11 +129,25 @@ public class All extends SubsystemBase {
     return Commands.run(
         () -> {
           spindexerMotor.set(0.8);
-          transferMotor.set(-1);
+          transferController.setSetpoint(-5200, ControlType.kVelocity);
           intakeMotor.set(-1);
           mainPivot.set(-0.1);
           controller.setSetpoint(testAngle, ControlType.kPosition);
           setShooterSpeed(testRPM);
+        });
+  }
+
+  public Command spindexerForward() {
+    return Commands.run(
+        () -> {
+          spindexerMotor.set(1);
+        });
+  }
+
+  public Command spindexerReverse() {
+    return Commands.run(
+        () -> {
+          spindexerMotor.set(-1.0);
         });
   }
 
@@ -148,14 +162,14 @@ public class All extends SubsystemBase {
   public Command kickIntakeOut() {
     return Commands.run(
         () -> {
-          mainPivot.set(-0.5);
+          mainPivot.set(-0.25);
         });
   }
 
   public Command pullIntakeIn() {
     return Commands.run(
         () -> {
-          mainPivot.set(0.3);
+          mainPivot.set(0.30);
         });
   }
 
@@ -171,7 +185,7 @@ public class All extends SubsystemBase {
     SmartDashboard.putNumber(
         "CurrentShooterRPM", currentVelocity = main.getVelocity().getValueAsDouble() * 60);
 
-    if (MathUtil.isNear(shooterRPM, currentVelocity, shooterRPM * 0.2)) {
+    if (MathUtil.isNear(shooterRPM, currentVelocity, shooterRPM * 0.05)) {
       main.setControl(velocityTorqueCurrentFOC.withVelocity(shooterRPM / 60));
     } else {
       main.setControl(velocityDutyCycle.withVelocity(shooterRPM / 60));
