@@ -9,7 +9,6 @@ package com.team1165.robot.subsystems.spindexer;
 
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOInputsAutoLogged;
-import com.team1165.util.statemachine.v1.OverridableStateMachine;
 import com.team1165.util.statemachine.v1.StateMachine;
 import org.littletonrobotics.junction.Logger;
 
