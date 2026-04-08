@@ -21,7 +21,7 @@ public enum SpindexerState implements State {
   private final TunableNumber voltage;
 
   SpindexerState(double voltage) {
-    this.voltage = new TunableNumber(Spindexer.class.getName() + "Voltages/" + name(), voltage);
+    this.voltage = new TunableNumber(Spindexer.class.getName() + "/Voltages/" + name(), voltage);
   }
 
   public double getVoltage() {
