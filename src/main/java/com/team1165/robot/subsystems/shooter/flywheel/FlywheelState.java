@@ -8,9 +8,8 @@
 package com.team1165.robot.subsystems.shooter.flywheel;
 
 import com.team1165.util.statemachine.v1.State;
-import com.team1165.util.tunables.TunableNumber;
 
 public enum FlywheelState implements State {
-  IDLE(0),
-  TRACK(0)
+  IDLE(),
+  TRACKING()
 }

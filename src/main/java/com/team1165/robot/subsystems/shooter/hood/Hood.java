@@ -66,6 +66,10 @@ public class Hood extends OverridableStateMachine<HoodState> {
     Logger.recordOutput(name + "/TrackingPosition", trackingPosition);
   }
 
+  public void updateState() {
+    transition();
+  }
+
   @Override
   protected void update() {
     io.updateInputs(inputs);

@@ -7,7 +7,6 @@
 
 package com.team1165.util.io.dualroller;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
@@ -18,7 +17,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1165.util.logging.motordata.TalonMotorData;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 import com.team1165.util.vendor.ctre.PhoenixDeviceUtils;
-import edu.wpi.first.math.MathUtil;
 
 /**
  * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by two
@@ -53,7 +51,8 @@ public class DualRollerIOTalonFX implements DualRollerIO {
   }
 
   /**
-   * Updates a {@link DualRollerIOInputs} instance with the latest updates from this {@link RollerIO}.
+   * Updates a {@link DualRollerIOInputs} instance with the latest updates from this {@link
+   * RollerIO}.
    *
    * @param inputs A {@link DualRollerIOInputs} instance to update.
    */
@@ -101,9 +100,7 @@ public class DualRollerIOTalonFX implements DualRollerIO {
 
   @Override
   public void setBrakeMode(boolean enabled) {
-    primaryMotor.setNeutralMode(
-                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
-    secondaryMotor.setNeutralMode(
-        enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
+    primaryMotor.setNeutralMode(enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
+    secondaryMotor.setNeutralMode(enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
   }
 }

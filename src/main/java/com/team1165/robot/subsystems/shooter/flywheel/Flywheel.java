@@ -7,12 +7,10 @@
 
 package com.team1165.robot.subsystems.shooter.flywheel;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.util.tunables.TunablePIDF;
+import edu.wpi.first.math.MathUtil;
 import org.littletonrobotics.junction.Logger;
 
 /** State-machine-based Flywheel subsystem, powered by two motors. */
@@ -20,34 +18,39 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
 
-  public Flywheel(DualRollerIO io, Slot0Configs configs, MotionMagicConfigs motionMagicConfigs) {
+  /** Tracking speed provided by ShooterManager. */
+  private double trackingSpeed = 0.0;
+
+  public Flywheel(DualRollerIO io) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
     super(FlywheelState.IDLE);
     this.io = io;
   }
 
   /**
-   * Returns the output current of the primary flywheel motor.
+   * Returns if the shooter is at speed based on the provided tolerance.
    *
-   * @return The output current in amps.
+   * @param tolerance The tolerance allowed from the set soeed.
    */
-  public double getOutputCurrent() {
-    return inputs.primaryMotor.getOutputCurrentAmps();
+  public boolean atGoal(double tolerance) {
+    return switch (getCurrentState()) {
+      case TRACKING -> MathUtil.isNear(trackingSpeed, inputs.primaryMotor.getVelocity(), tolerance);
+      default -> false;
+    };
   }
 
-  /**
-   * Returns the velocity of the primary flywheel motor.
-   *
-   * @return The velocity of the primary motor.
-   */
-  public double getVelocity() {
-    return inputs.primaryMotor.getVelocity();
+  /** Returns if the hood is in position based on the default tolerance. */
+  public boolean atGoal() {
+    return atGoal(FlywheelConstants.defaultTolerance);
+  }
+
+  public void updateState() {
+    transition();
   }
 
   @Override
   protected void update() {
     io.updateInputs(inputs);
-    if (pidf.hasChanged(hashCode())) io.setPIDF(pidf.getSlot0Configs());
     Logger.processInputs(name, inputs);
   }
 
@@ -55,10 +58,18 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
   protected void transition() {
     switch (getCurrentState()) {
       case IDLE -> io.stop();
-      case TRACKING ->
-          // TODO: Implement distance-based speed calculation with other shooter components
-          io.runVolts(getCurrentState().getDualRollerVoltage());
-      case FIXED -> io.runVolts(getCurrentState().getDualRollerVoltage());
+      case TRACKING -> {
+        if (MathUtil.isNear(
+            trackingSpeed,
+            inputs.primaryMotor.getVelocity(),
+            trackingSpeed * FlywheelConstants.currentTolerance)) {
+          Logger.recordOutput(name + "/ControlMode", "TorqueCurrentFOC");
+          io.runVelocityTorqueCurrent(trackingSpeed);
+        } else {
+          Logger.recordOutput(name + "/ControlMode", "Voltage");
+          io.runVelocityVoltage(trackingSpeed);
+        }
+      }
     }
   }
 }

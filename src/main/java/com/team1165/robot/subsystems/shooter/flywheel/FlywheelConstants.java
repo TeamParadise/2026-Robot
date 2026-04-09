@@ -9,13 +9,16 @@ package com.team1165.robot.subsystems.shooter.flywheel;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.team1165.robot.globalconstants.IDConstants.CANivore;
 import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 
 /** Constants for the Flywheel subsystem motor configuration. */
 public class FlywheelConstants {
+  public static final double defaultTolerance = 0.1; // TODO: Tune this
+
+  public static final double currentTolerance = 0.15;
+
   public static final TalonFXConfiguration baseMotorConfig = new TalonFXConfiguration();
 
   static {
@@ -32,7 +35,13 @@ public class FlywheelConstants {
     baseMotorConfig.MotorOutput.PeakReverseDutyCycle = 0.0;
 
     baseMotorConfig.Slot0 =
-        new Slot0Configs().withKP(999999.0).withKI(0.0).withKD(0.0).withKS(0.0).withKV(0.0).withKA(0.0);
+        new Slot0Configs()
+            .withKP(999999.0)
+            .withKI(0.0)
+            .withKD(0.0)
+            .withKS(0.0)
+            .withKV(0.0)
+            .withKA(0.0);
 
     baseMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 70.0;
     baseMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0.0;
