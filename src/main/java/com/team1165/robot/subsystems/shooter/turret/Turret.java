@@ -8,9 +8,12 @@
 package com.team1165.robot.subsystems.shooter.turret;
 
 import com.team1165.robot.RobotState;
+import com.team1165.robot.globalconstants.FieldConstants;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO.TurretIOInputs;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.Logger;
 
@@ -52,11 +55,18 @@ public class Turret extends OverridableStateMachine<TurretState> {
   protected void update() {
     io.updateInputs(inputs);
     Logger.processInputs(name, inputs.motor);
+    Logger.recordOutput("Turret/Pose", RobotState.getTurretPose());
+    Logger.recordOutput(
+        "Turret/DistanceFromHub",
+        RobotState.getTurretPose()
+            .relativeTo(
+                new Pose3d(FieldConstants.Hub.oppTopCenterPoint, Rotation3d.kZero).toPose2d())
+            .getTranslation()
+            .getNorm());
   }
 
   public void updateState() {
     transition();
-    Logger.recordOutput("Turret/Pose", RobotState.getTurretPose());
   }
 
   @Override

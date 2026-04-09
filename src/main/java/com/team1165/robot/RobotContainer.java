@@ -7,6 +7,7 @@
 
 package com.team1165.robot;
 
+import com.team1165.robot.commands.DriveCommands;
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.drive.constants.DriveConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
@@ -20,6 +21,9 @@ import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
 import com.team1165.util.constants.RobotMode;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -85,16 +89,40 @@ public class RobotContainer {
 
   /** Configure driver button bindings for ground intake. */
   private void configureButtonBindings() {
-    driverController.a().whileTrue(all.runShooter());
-    driverController.b().onTrue(all.stop());
-    driverController.x().whileTrue(all.runTransfer());
+    drive.setDefaultCommand(
+        DriveCommands.teleopManualDrive(
+            drive,
+            () -> -driverController.getLeftY(),
+            () -> -driverController.getLeftX(),
+            () -> (driverController.getLeftTriggerAxis() - driverController.getRightTriggerAxis()),
+            () -> false,
+            true));
+
+    driverController
+        .back()
+        .onTrue(
+            Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
+
+    driverController.a().whileTrue(all.runTransfer());
+    driverController.x().whileTrue(all.runShooter());
+    driverController.b().whileTrue(all.stop());
+    driverController.povLeft().whileTrue(all.reverse());
+    driverController.povDown().whileTrue(all.kickIntakeOut());
+    driverController.povUp().whileTrue(all.pullIntakeIn());
     driverController.y().whileTrue(all.runIntake());
-    driverController.povUp().whileTrue(all.pullIntakeIn()).onFalse(all.stopIntake());
-    driverController.povDown().whileTrue(all.kickIntakeOut()).onFalse(all.stopIntake());
+    driverController.leftBumper().whileTrue(all.spindexerReverse());
+    driverController.rightBumper().whileTrue(all.spindexerForward());
   }
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-    return Commands.none();
+    return Commands.runOnce(
+        () ->
+            drive.resetRotation(
+                new Rotation2d(
+                    DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get() == Alliance.Red
+                        ? 0
+                        : 180)));
   }
 }

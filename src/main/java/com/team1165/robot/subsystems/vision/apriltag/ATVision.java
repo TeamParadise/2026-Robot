@@ -68,8 +68,6 @@ public class ATVision extends SubsystemBase {
 
     // Initialize all arrays for each camera
     disconnectedAlerts = new Alert[config.length];
-    // Specifically make sure we are set to normal 3D pose estimation for starting position
-    setSingleTagTrig(false);
     io = new ATVisionIO[config.length];
     inputs = new ATVisionIOInputsAutoLogged[config.length];
     cameraTransforms = new Transform3d[config.length];
@@ -92,6 +90,8 @@ public class ATVision extends SubsystemBase {
               "The AprilTag camera \"" + inputs[i].name + "\" (ID " + i + ") is disconnected.",
               AlertType.kWarning);
     }
+    // Specifically make sure we are set to normal 3D pose estimation for starting position
+    setSingleTagTrig(false);
   }
 
   @Override
@@ -161,7 +161,7 @@ public class ATVision extends SubsystemBase {
           // Send vision observation
           globalConsumer.accept(
               robotPose.toPose2d(),
-              Utils.fpgaToCurrentTime(poseObservation.timestamp()),
+              poseObservation.timestamp(),
               VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
         } else { // Single tag
           // Get the best and the alternate pose
