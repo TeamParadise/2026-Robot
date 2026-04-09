@@ -28,8 +28,7 @@ public final class TransferConstants {
           .withKD(0.0)
           .withKS(0.0)
           .withKV(0.0)
-          .withKA(
-              0.0); // TODO: Update PID values with real life values, test bang-bang
+          .withKA(0.0); // TODO: Update PID values with real life values, test bang-bang
   private static final SparkBaseConfig baseConfig =
       new SparkMaxConfig()
           .apply(SparkUtils.createClosedLoopConfig(gains).minOutput(0.0))
