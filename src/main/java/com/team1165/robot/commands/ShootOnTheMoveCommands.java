@@ -11,10 +11,10 @@ import com.team1165.robot.calculations.shoot.ShootCalculation;
 import com.team1165.robot.calculations.shoot.ShootReturnValue;
 import com.team1165.robot.calculations.shoot.ShooterConstants;
 import com.team1165.robot.subsystems.drive.Drive;
-import com.team1165.robot.subsystems.hood.Hood;
-import com.team1165.robot.subsystems.hood.HoodState;
 import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
 import com.team1165.robot.subsystems.shooter.flywheel.FlywheelState;
+import com.team1165.robot.subsystems.shooter.hood.Hood;
+import com.team1165.robot.subsystems.shooter.hood.HoodState;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.TurretState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,7 +57,7 @@ public final class ShootOnTheMoveCommands {
 
                 double turretTarget = solution.getShootDirection() / (2 * Math.PI);
                 turret.setSotmTargetPosition(turretTarget);
-                hood.setSotmTargetPosition(solution.getShootAngle());
+                hood.setTrackingPosition(solution.getShootAngle());
 
                 Logger.recordOutput("SOTM/Valid", true);
                 Logger.recordOutput("SOTM/TurretTarget", turretTarget);
