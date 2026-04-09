@@ -18,19 +18,13 @@ import org.littletonrobotics.junction.Logger;
 
 /** State-machine-based Flywheel subsystem, powered by two motors. */
 public class Flywheel extends OverridableStateMachine<FlywheelState> {
-
   private final DualRollerIO io;
   private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
-  private final TunablePIDF pidf;
-  private final TunableMotionProfile motionProfile;
 
   public Flywheel(DualRollerIO io, Slot0Configs configs, MotionMagicConfigs motionMagicConfigs) {
     // For now the Idle state in the enum will be 0, but it will change as building progresses
     super(FlywheelState.IDLE);
-
     this.io = io;
-    this.pidf = new TunablePIDF(name + "FLywheel/PIDF", configs);
-    this.motionProfile = new TunableMotionProfile(name + "Pivot/MotionProfile", motionMagicConfigs);
   }
 
   /**

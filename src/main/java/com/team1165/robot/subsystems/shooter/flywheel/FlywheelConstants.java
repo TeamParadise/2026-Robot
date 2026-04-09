@@ -16,23 +16,26 @@ import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 
 /** Constants for the Flywheel subsystem motor configuration. */
 public class FlywheelConstants {
-
   public static final TalonFXConfiguration baseMotorConfig = new TalonFXConfiguration();
 
   static {
-    // Current limits appropriate for flywheel rollers
+    // Current limits
     baseMotorConfig.CurrentLimits.SupplyCurrentLimit = 60;
     baseMotorConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     baseMotorConfig.CurrentLimits.StatorCurrentLimit = 80;
     baseMotorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
 
-    // Flywheel motors should coast when idle to reduce wear on the mechanism
-    baseMotorConfig.MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
-    baseMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    baseMotorConfig.Feedback.SensorToMechanismRatio = (1.0 / 1.5);
 
-    // Velocity PID gains for the flywheel — placeholder values to be tuned on the real mechanism
+    baseMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+    baseMotorConfig.MotorOutput.PeakForwardDutyCycle = 1.0;
+    baseMotorConfig.MotorOutput.PeakReverseDutyCycle = 0.0;
+
     baseMotorConfig.Slot0 =
-        new Slot0Configs().withKP(0.1).withKI(0.0).withKD(0.0).withKS(0.0).withKV(0.12).withKA(0.0);
+        new Slot0Configs().withKP(999999.0).withKI(0.0).withKD(0.0).withKS(0.0).withKV(0.0).withKA(0.0);
+
+    baseMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 70.0;
+    baseMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0.0;
   }
 
   public static final TalonFXConfig primaryMotorConfig =

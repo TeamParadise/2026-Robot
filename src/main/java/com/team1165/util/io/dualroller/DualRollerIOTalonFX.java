@@ -53,9 +53,9 @@ public class DualRollerIOTalonFX implements DualRollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link RollerIO}.
+   * Updates a {@link DualRollerIOInputs} instance with the latest updates from this {@link RollerIO}.
    *
-   * @param inputs A {@link RollerIOInputs} instance to update.
+   * @param inputs A {@link DualRollerIOInputs} instance to update.
    */
   @Override
   public void updateInputs(DualRollerIOInputs inputs) {
@@ -79,20 +79,13 @@ public class DualRollerIOTalonFX implements DualRollerIO {
   }
 
   @Override
-  public void runVelocity(double velocity) {
+  public void runVelocityVoltage(double velocity) {
+    primaryMotor.setControl(velocityVoltage.withVelocity(velocity));
+  }
+
+  @Override
+  public void runVelocityTorqueCurrent(double velocity) {
     primaryMotor.setControl(velocityCurrent.withVelocity(velocity));
-  }
-
-  @Override
-  public void runBangBangVelocity(double velocity) {
-    if (MathUtil.isNear(velocity, primaryMotorData.getVelocity(), velocity * 0.2))
-      ;
-  }
-
-  /** Stops ONE of the motors (sets the output to zero). */
-  @Override
-  public void stop() {
-    primaryMotor.set(0);
   }
 
   @Override
@@ -101,27 +94,16 @@ public class DualRollerIOTalonFX implements DualRollerIO {
     secondaryMotor.getConfigurator().apply(gains);
   }
 
-  public void setMotionProfiling(MotionMagicConfigs config) {
-    primaryMotor.getConfigurator().apply(config);
-    secondaryMotor.getConfigurator().apply(config);
+  @Override
+  public void stop() {
+    primaryMotor.set(0);
   }
 
-  /**
-   * Enables or disables brake mode on the ONE roller motor.
-   *
-   * @param enabled Whether to enable brake mode.
-   */
   @Override
   public void setBrakeMode(boolean enabled) {
-    new Thread(
-            () ->
-                this.primaryMotor.setNeutralMode(
-                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
-        .start();
-    new Thread(
-            () ->
-                this.secondaryMotor.setNeutralMode(
-                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast))
-        .start();
+    primaryMotor.setNeutralMode(
+                    enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
+    secondaryMotor.setNeutralMode(
+        enabled ? NeutralModeValue.Brake : NeutralModeValue.Coast, 0.0);
   }
 }

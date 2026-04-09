@@ -30,7 +30,7 @@ public class IDConstants {
 
     public static final CANBus bus = new CANBus("canivore");
 
-    public static final int flywheelPrimary = 14;
-    public static final int flywheelSecondary = 15;
+    public static final int flywheelPrimary = 13;
+    public static final int flywheelSecondary = 14;
   }
 }

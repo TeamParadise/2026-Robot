@@ -18,7 +18,6 @@ import org.littletonrobotics.junction.AutoLog;
  * if needed.
  */
 public interface DualRollerIO {
-
   /** Class used to store the IO values of a basic roller subsystem. */
   @AutoLog
   class DualRollerIOInputs {
@@ -48,13 +47,18 @@ public interface DualRollerIO {
   default void runVolts(double voltage) {}
 
   /**
-   * Run the motors at a specific velocity using PID.
+   * Run the motors at a specific velocity using voltage control.
    *
    * @param velocity The velocity to run at.
    */
-  default void runVelocity(double velocity) {}
+  default void runVelocityVoltage(double velocity) {}
 
-  default void runBangBangVelocity(double velocity) {}
+  /**
+   * Run the motors at a specific velocity using torque current control
+   *
+   * @param velocity The velocity to run at.
+   */
+  default void runVelocityTorqueCurrent(double velocity) {}
 
   /**
    * Run the motors separately at different voltages. This should only be used if the motors are not
