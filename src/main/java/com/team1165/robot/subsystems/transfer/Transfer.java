@@ -29,6 +29,9 @@ public class Transfer extends StateMachine<TransferState> {
 
   @Override
   protected void transition() {
-    io.runVelocity(getCurrentState().getVelocity());
+    switch (getCurrentState()) {
+      case IDLE -> io.stop();
+      default -> io.runVelocity(getCurrentState().getVelocity());
+    }
   }
 }
