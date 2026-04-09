@@ -36,8 +36,8 @@ public class GroundIntake extends StateMachine<GroundIntakeState> {
     pivot.updateInputs(pivotInputs);
     roller.updateInputs(rollerInputs);
 
-    Logger.processInputs("GroundIntake/Pivot", pivotInputs);
-    Logger.processInputs("GroundIntake/Roller", rollerInputs);
+    Logger.processInputs(name + "/Pivot", pivotInputs);
+    Logger.processInputs(name + "/Roller", rollerInputs);
   }
 
   @Override
