@@ -12,8 +12,8 @@ import com.team1165.util.tunables.TunableNumber;
 
 @SuppressWarnings("ImmutableEnumChecker")
 public enum SpindexerState implements State {
-  FAST_CW(-12.0),
-  FAST_CCW(12.0),
+  FAST_CW(-12.5),
+  FAST_CCW(12.5),
   IDLE(0.0),
   SLOW_CW(-6.0),
   SLOW_CCW(6.0);
