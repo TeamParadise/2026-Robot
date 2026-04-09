@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.hood.io;
+package com.team1165.robot.subsystems.shooter.hood.io;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.PersistMode;
@@ -13,7 +13,6 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.team1165.util.logging.motordata.SparkMotorData;
@@ -21,18 +20,14 @@ import com.team1165.util.vendor.rev.SparkConfig;
 import com.team1165.util.vendor.rev.SparkUtils;
 
 public class HoodIOSpark implements HoodIO {
-
   private final SparkBase motor;
-  private final SparkBaseConfig configuration;
   private final SparkMotorData motorData;
   private final SparkClosedLoopController controller;
 
-  public HoodIOSpark(SparkConfig hoodConfig) {
-    motor = SparkUtils.createNewSpark(hoodConfig);
+  public HoodIOSpark(SparkConfig config) {
+    motor = SparkUtils.createNewSpark(config);
 
-    configuration = hoodConfig.configuration();
-
-    motorData = new SparkMotorData(motor, hoodConfig);
+    motorData = new SparkMotorData(motor, config);
 
     controller = motor.getClosedLoopController();
   }
@@ -49,32 +44,20 @@ public class HoodIOSpark implements HoodIO {
   }
 
   @Override
-  public void runPosition(double hoodPosition) {
-    controller.setSetpoint(hoodPosition, ControlType.kPosition);
+  public void runPosition(double position) {
+    controller.setSetpoint(position, ControlType.kPosition);
   }
 
   @Override
-  public void setPID(Slot0Configs configs) {
-    new Thread(
-            () -> {
-              SparkBaseConfig tempConfig = new SparkMaxConfig();
-              tempConfig
-                  .closedLoop
-                  .p(configs.kP)
-                  .i(configs.kI)
-                  .d(configs.kD)
-                  .feedForward
-                  .kS(configs.kS)
-                  .kA(configs.kA)
-                  .kV(configs.kV);
-              motor.configure(
-                  tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
-            })
-        .start();
+  public void setPIDF(Slot0Configs configs) {
+    motor.configureAsync(
+        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
   }
 
   @Override
-  public void reset() {
+  public void resetPosition(double position) {
     motor.getEncoder().setPosition(0);
   }
 
@@ -85,13 +68,9 @@ public class HoodIOSpark implements HoodIO {
 
   @Override
   public void setBrakeMode(boolean enabled) {
-    new Thread(
-            () -> {
-              motor.configure(
-                  configuration.idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
-                  ResetMode.kNoResetSafeParameters,
-                  PersistMode.kNoPersistParameters);
-            })
-        .start();
+    motor.configureAsync(
+        new SparkMaxConfig().idleMode(enabled ? IdleMode.kBrake : IdleMode.kCoast),
+        ResetMode.kNoResetSafeParameters,
+        PersistMode.kNoPersistParameters);
   }
 }

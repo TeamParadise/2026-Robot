@@ -5,15 +5,11 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.intake.io;
+package com.team1165.robot.subsystems.intake.io;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -30,9 +26,6 @@ public class PivotIOSpark implements PivotIO {
   private final SparkMotorData primaryMotorData;
   private final SparkMotorData secondaryMotorData;
 
-  // PID/closed loop controller
-  private final SparkClosedLoopController controller;
-
   public PivotIOSpark(SparkConfig primaryConfig, SparkConfig secondaryConfig) {
     // Assign motor variables
     primaryMotor = SparkUtils.createNewSpark(primaryConfig);
@@ -47,9 +40,6 @@ public class PivotIOSpark implements PivotIO {
     // Create MotorData instances to log motors
     primaryMotorData = new SparkMotorData(primaryMotor, primaryConfig);
     secondaryMotorData = new SparkMotorData(secondaryMotor, secondaryConfig);
-
-    // Create closed loop controller
-    controller = primaryMotor.getClosedLoopController();
   }
 
   @Override
@@ -66,39 +56,6 @@ public class PivotIOSpark implements PivotIO {
   @Override
   public void runVolts(double voltage) {
     primaryMotor.setVoltage(voltage);
-  }
-
-  @Override
-  public void runPosition(double pivotPosition) {
-    controller.setSetpoint(pivotPosition, ControlType.kMAXMotionPositionControl);
-  }
-
-  @Override
-  public void resetPosition(double position) {
-    primaryMotor.getEncoder().setPosition(position);
-    secondaryMotor.getEncoder().setPosition(position);
-  }
-
-  @Override
-  public void setPIDF(Slot0Configs configs) {
-    // Configure primary motor
-    primaryMotor.configureAsync(
-        new SparkMaxConfig().apply(SparkUtils.createClosedLoopConfig(configs)),
-        ResetMode.kNoResetSafeParameters,
-        PersistMode.kNoPersistParameters);
-  }
-
-  @Override
-  public void setMotionProfiling(MotionMagicConfigs configs) {
-    // Create temporary config
-    var tempConfig = new SparkMaxConfig();
-
-    // Apply motion config to temporary config
-    tempConfig.closedLoop.apply(SparkUtils.createMotionConfig(configs));
-
-    // Configure primary motor
-    primaryMotor.configureAsync(
-        tempConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
   @Override

@@ -12,7 +12,6 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.io.dualroller.DualRollerIO;
 import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.OverridableStateMachine;
-import com.team1165.util.tunables.TunableMotionProfile;
 import com.team1165.util.tunables.TunablePIDF;
 import org.littletonrobotics.junction.Logger;
 

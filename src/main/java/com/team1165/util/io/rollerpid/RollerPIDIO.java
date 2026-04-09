@@ -5,20 +5,21 @@
  * the root directory of this project.
  */
 
-package com.team1165.util.io.roller;
+package com.team1165.util.io.rollerpid;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
 import org.littletonrobotics.junction.AutoLog;
 
 /**
- * A hardware interface/implementation layer for a basic wheel/roller subsystem powered by one
- * motor.
+ * A hardware interface/implementation layer for a PID-controlled wheel/roller subsystem powered by
+ * one motor.
  */
-public interface RollerIO {
-  /** Class used to store the IO values of a basic roller subsystem. */
+public interface RollerPIDIO {
+  /** Class used to store the IO values of a PID-controlled roller subsystem. */
   @AutoLog
-  class RollerIOInputs {
+  class RollerPIDIOInputs {
     /**
      * Data from the motor of the subsystem. Most of the time, any data needed should be grabbed
      * from here.
@@ -27,11 +28,12 @@ public interface RollerIO {
   }
 
   /**
-   * Updates a {@link RollerIOInputs} instance with the latest updates from this {@link RollerIO}.
+   * Updates a {@link RollerPIDIOInputs} instance with the latest updates from this {@link
+   * RollerPIDIO}.
    *
-   * @param inputs A {@link RollerIOInputs} instance to update.
+   * @param inputs A {@link RollerPIDIOInputs} instance to update.
    */
-  default void updateInputs(RollerIOInputs inputs) {}
+  default void updateInputs(RollerPIDIOInputs inputs) {}
 
   /**
    * Run the motor at a specific voltage.
@@ -39,6 +41,16 @@ public interface RollerIO {
    * @param voltage The voltage to run the roller at.
    */
   default void runVolts(double voltage) {}
+
+  /**
+   * Run the motor at a specific velocity using PID.
+   *
+   * @param velocity The velocity to run the roller at.
+   */
+  default void runVelocity(double velocity) {}
+
+  /** Sets the PIDF values for the motor. */
+  default void setPIDF(Slot0Configs configs) {}
 
   /** Stop the motor (sets the output to zero). */
   default void stop() {}

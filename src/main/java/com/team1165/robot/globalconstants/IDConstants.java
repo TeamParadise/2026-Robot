@@ -17,12 +17,12 @@ public class IDConstants {
 
     public static final CANBus bus = CANConstants.rio;
 
-    public static final int intakePivotPrimary = 1;
-    public static final int intakePivotSecondary = 2;
-    public static final int intakeRoller = 3;
-    public static final int spindexer = 4;
-    public static final int turretMotor = 5;
-    public static final int turretEncoder = 6;
+    public static final int hood = 20;
+    public static final int intakePivotPrimary = 2;
+    public static final int intakePivotSecondary = 15;
+    public static final int intakeRoller = 1;
+    public static final int spindexer = 12;
+    public static final int transfer = 5;
   }
 
   public static final class CANivore {
@@ -32,5 +32,6 @@ public class IDConstants {
 
     public static final int flywheelPrimary = 13;
     public static final int flywheelSecondary = 14;
+    public static final int turretMotor = 20;
   }
 }

@@ -5,14 +5,14 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.base.spindexer;
+package com.team1165.robot.subsystems.spindexer;
 
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOInputsAutoLogged;
-import com.team1165.util.statemachine.v1.OverridableStateMachine;
+import com.team1165.util.statemachine.v1.StateMachine;
 import org.littletonrobotics.junction.Logger;
 
-public class Spindexer extends OverridableStateMachine<SpindexerState> {
+public class Spindexer extends StateMachine<SpindexerState> {
   private final RollerIO io;
   private final RollerIOInputsAutoLogged inputs = new RollerIOInputsAutoLogged();
 

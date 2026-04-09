@@ -5,13 +5,15 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.hood.io;
+package com.team1165.robot.subsystems.shooter.hood.io;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.team1165.util.logging.motordata.GenericMotorData;
 import com.team1165.util.logging.motordata.MotorData;
+import org.littletonrobotics.junction.AutoLog;
 
 public interface HoodIO {
+  @AutoLog
   class HoodIOInputs {
     public MotorData motor = new GenericMotorData();
   }
@@ -20,11 +22,11 @@ public interface HoodIO {
 
   default void runVolts(double voltage) {}
 
-  default void runPosition(double hoodPosition) {}
+  default void runPosition(double position) {}
 
-  default void setPID(Slot0Configs configs) {}
+  default void setPIDF(Slot0Configs configs) {}
 
-  default void reset() {}
+  default void resetPosition(double position) {}
 
   default void stop() {}
 
