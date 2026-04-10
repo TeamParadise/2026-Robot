@@ -55,7 +55,7 @@ public class ShooterManager extends StateManager<ShooterState> {
     switch (getCurrentState()) {
       case IDLE -> {
         setSubsystemState(flywheel, FlywheelState.IDLE);
-        setSubsystemState(hood, HoodState.IDLE);
+        setSubsystemState(hood, HoodState.ZERO);
         setSubsystemState(turret, TurretState.IDLE);
       }
       case CLOSE_HUB -> {
