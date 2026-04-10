@@ -45,7 +45,7 @@ public class RobotContainer {
 
   // public final RobotState robotState;
 
-  private final Command auto;
+  // private final Command auto;
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
