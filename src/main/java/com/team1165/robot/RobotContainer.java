@@ -140,7 +140,7 @@ public class RobotContainer {
     // robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
-    drive.buildPath(new Path("passing_right")).;
+    // drive.buildPath(new Path("passing_right")).;
 
   }
 
