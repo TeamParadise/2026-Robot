@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
 
@@ -140,6 +141,7 @@ public class RobotContainer {
 
     configureButtonBindings();
     path = drive.buildPath(new Path("tower"));
+    RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
   }
 
   /** Configure driver button bindings for ground intake. */
