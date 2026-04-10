@@ -26,7 +26,10 @@ import com.team1165.robot.subsystems.shooter.hood.Hood;
 import com.team1165.robot.subsystems.shooter.hood.HoodConstants;
 import com.team1165.robot.subsystems.shooter.hood.io.HoodIOSpark;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
+import com.team1165.robot.subsystems.shooter.turret.TurretConstants;
+import com.team1165.robot.subsystems.shooter.turret.TurretConstants.Motor;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
+import com.team1165.robot.subsystems.shooter.turret.io.TurretIOTalon;
 import com.team1165.robot.subsystems.spindexer.Spindexer;
 import com.team1165.robot.subsystems.spindexer.SpindexerConstants;
 import com.team1165.robot.subsystems.spindexer.SpindexerState;
@@ -123,7 +126,7 @@ public class RobotContainer {
                 new DualRollerIOTalonFX(
                     FlywheelConstants.primaryMotorConfig, FlywheelConstants.secondaryMotorConfig));
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
-        turret = new Turret(new TurretIO() {});
+        turret = new Turret(new TurretIOTalon(Motor.config));
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
 
@@ -194,7 +197,7 @@ public class RobotContainer {
     driverController
         .a()
         .onTrue(transfer.stateCommand(TransferState.FORWARD))
-        .onFalse(transfer.stateCommand(TransferState.REVERSE));
+        .onFalse(transfer.stateCommand(TransferState.IDLE));
     driverController
         .x()
         .onTrue(shooter.stateCommand(ShooterState.TEST))
