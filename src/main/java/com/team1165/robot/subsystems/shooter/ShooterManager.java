@@ -77,10 +77,20 @@ public class ShooterManager extends StateManager<ShooterState> {
         setSubsystemState(turret, TurretState.STRAIGHT);
       }
       case TRACK_HUB -> {
-        double distanceFromHub = drive.getPose().plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero)).relativeTo(
-                new Pose3d(DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get().equals(Alliance.Red) ? FieldConstants.Hub.oppTopCenterPoint : Hub.topCenterPoint, Rotation3d.kZero).toPose2d())
-            .getTranslation()
-            .getNorm();
+        double distanceFromHub =
+            drive
+                .getPose()
+                .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero))
+                .relativeTo(
+                    new Pose3d(
+                            DriverStation.getAlliance().isPresent()
+                                    && DriverStation.getAlliance().get().equals(Alliance.Red)
+                                ? FieldConstants.Hub.oppTopCenterPoint
+                                : Hub.topCenterPoint,
+                            Rotation3d.kZero)
+                        .toPose2d())
+                .getTranslation()
+                .getNorm();
         ShooterParameters parameters = BasicShooterLUT.lut.get(distanceFromHub);
 
         flywheel.setTrackingSpeed(parameters.rps());

@@ -162,6 +162,7 @@ public class RobotContainer {
     configureButtonBindings();
     path = drive.buildPath(new Path("tower"));
     RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
+    vision.setSingleTagTrig(false);
   }
 
   /** Configure driver button bindings for ground intake. */
@@ -212,7 +213,10 @@ public class RobotContainer {
     driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
     driverController.leftBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CW));
     driverController.rightBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CCW));
-    driverController.b().onTrue(shooter.stateCommand(ShooterState.TRACK_HUB)) .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
+    driverController
+        .b()
+        .onTrue(shooter.stateCommand(ShooterState.TRACK_HUB))
+        .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
   }
 
   /** Returns the autonomous command to run. */
