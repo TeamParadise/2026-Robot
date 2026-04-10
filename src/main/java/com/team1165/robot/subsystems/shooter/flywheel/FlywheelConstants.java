@@ -17,7 +17,7 @@ import com.team1165.util.vendor.ctre.PhoenixDeviceConfigs.TalonFXConfig;
 public class FlywheelConstants {
   public static final double defaultTolerance = 0.1; // TODO: Tune this
 
-  public static final double currentTolerance = 0.15;
+  public static final double currentTolerance = 0.1;
 
   public static final TalonFXConfiguration baseMotorConfig = new TalonFXConfiguration();
 

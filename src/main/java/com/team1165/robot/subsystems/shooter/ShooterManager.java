@@ -8,7 +8,6 @@
 package com.team1165.robot.subsystems.shooter;
 
 import com.team1165.robot.subsystems.drive.Drive;
-import com.team1165.robot.subsystems.intake.ShooterConstants;
 import com.team1165.robot.subsystems.shooter.flywheel.Flywheel;
 import com.team1165.robot.subsystems.shooter.flywheel.FlywheelState;
 import com.team1165.robot.subsystems.shooter.hood.Hood;
