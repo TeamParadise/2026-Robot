@@ -139,7 +139,7 @@ public class RobotContainer {
     // robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
-    drive.buildPath(new Path("tower"));
+    path = drive.buildPath(new Path("tower"));
   }
 
   /** Configure driver button bindings for ground intake. */
