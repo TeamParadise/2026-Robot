@@ -45,7 +45,12 @@ public class Turret extends OverridableStateMachine<TurretState> {
   }
 
   public void setSimpleTargetPosition(double position) {
-    this.targetPosition = position > (0.375 * TurretConstants.Motor.gearRatio) ? 0.375 * TurretConstants.Motor.gearRatio : position < -0.375 * TurretConstants.Motor.gearRatio ? -0.375 * TurretConstants.Motor.gearRatio : position;
+    this.targetPosition =
+        position > (0.375 / TurretConstants.Motor.gearRatio)
+            ? 0.375 / TurretConstants.Motor.gearRatio
+            : position < -0.375 / TurretConstants.Motor.gearRatio
+                ? -0.375 / TurretConstants.Motor.gearRatio
+                : position;
     Logger.recordOutput(name + "/TargetPosition", position);
   }
 
