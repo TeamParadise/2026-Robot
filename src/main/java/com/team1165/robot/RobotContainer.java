@@ -19,9 +19,6 @@ import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
 import com.team1165.util.constants.RobotMode;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -116,7 +113,8 @@ public class RobotContainer {
             new ATVision(
                 drive::addVisionMeasurement,
                 drive::getRotation,
-                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera), new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
+                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
 
         //        intake =
         //            new GroundIntake(
@@ -142,7 +140,6 @@ public class RobotContainer {
 
     configureButtonBindings();
     drive.buildPath(new Path("tower"));
-
   }
 
   /** Configure driver button bindings for ground intake. */
@@ -190,6 +187,11 @@ public class RobotContainer {
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-    return path.withTimeout(3.5).andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut())).andThen(new WaitCommand(1.0).deadlineFor(all.runIntake())).andThen(all.stop()).andThen(new WaitCommand(1.0).deadlineFor(all.runShooter())).andThen(all.runTransfer().alongWith(all.spindexerFddorward()));
+    return path.withTimeout(3.5)
+        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
+        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
+        .andThen(all.stop())
+        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
+        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
   }
 }
