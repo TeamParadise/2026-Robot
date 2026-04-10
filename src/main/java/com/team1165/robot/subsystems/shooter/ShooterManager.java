@@ -61,7 +61,11 @@ public class ShooterManager extends StateManager<ShooterState> {
   }
 
   public void updateState() {
+
     transition();
+    turret.updateState();
+    flywheel.updateState();
+    hood.updateState();
   }
 
   @Override

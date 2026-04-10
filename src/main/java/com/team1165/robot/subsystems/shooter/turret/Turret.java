@@ -58,6 +58,7 @@ public class Turret extends OverridableStateMachine<TurretState> {
     return inputs.motor.getPosition();
   }
 
+
   @Override
   protected void update() {
     io.updateInputs(inputs);
