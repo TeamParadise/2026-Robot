@@ -16,7 +16,6 @@ package com.team1165.robot;
 import com.team1165.robot.globalconstants.BuildConstants;
 import com.team1165.util.tunables.TuningManager;
 import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -106,9 +105,7 @@ public class Robot extends LoggedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override

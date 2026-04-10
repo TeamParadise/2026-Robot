@@ -192,7 +192,7 @@ public class RobotContainer {
     return path.withTimeout(3.5)
         .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
         .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
-        .andThen(all.stop())
+        .andThen(all.stop().withTimeout(0.02))
         .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
         .andThen(all.runTransfer().alongWith(all.spindexerForward()));
   }
