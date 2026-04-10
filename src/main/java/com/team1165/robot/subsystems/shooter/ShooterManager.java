@@ -105,7 +105,7 @@ public class ShooterManager extends StateManager<ShooterState> {
 
         flywheel.setTrackingSpeed(parameters.rps());
         hood.setTrackingPosition(parameters.angle());
-        turret.setSimpleTargetPosition(-angle/gearRatio);
+        turret.setSimpleTargetPosition(-angle / gearRatio);
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);

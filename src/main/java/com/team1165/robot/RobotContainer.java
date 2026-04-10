@@ -179,7 +179,7 @@ public class RobotContainer {
             true));
 
     driverController
-        .back()`
+        .back()
         .onTrue(
             Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
 
