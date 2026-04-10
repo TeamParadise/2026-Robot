@@ -96,9 +96,10 @@ public class RobotContainer {
                 new DualRollerIOTalonFX(
                     FlywheelConstants.primaryMotorConfig, FlywheelConstants.secondaryMotorConfig));
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        turret = new Turret(new TurretIO() {});
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
-        turret = new Turret(new TurretIOTalon(Motor.config));
+
         shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       case SIM -> {
