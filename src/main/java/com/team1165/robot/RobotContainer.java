@@ -26,7 +26,6 @@ import com.team1165.robot.subsystems.shooter.hood.Hood;
 import com.team1165.robot.subsystems.shooter.hood.HoodConstants;
 import com.team1165.robot.subsystems.shooter.hood.io.HoodIOSpark;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
-import com.team1165.robot.subsystems.shooter.turret.TurretConstants;
 import com.team1165.robot.subsystems.shooter.turret.TurretConstants.Motor;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIOTalon;
@@ -100,7 +99,7 @@ public class RobotContainer {
         turret = new Turret(new TurretIO() {});
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
-
+        turret = new Turret(new TurretIOTalon(Motor.config));
         shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       case SIM -> {
