@@ -27,6 +27,7 @@ import com.team1165.robot.subsystems.shooter.hood.HoodConstants;
 import com.team1165.robot.subsystems.shooter.hood.io.HoodIOSpark;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.TurretConstants.Motor;
+import com.team1165.robot.subsystems.shooter.turret.TurretState;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.shooter.turret.io.TurretIOTalon;
 import com.team1165.robot.subsystems.spindexer.Spindexer;
@@ -96,7 +97,7 @@ public class RobotContainer {
                 new DualRollerIOTalonFX(
                     FlywheelConstants.primaryMotorConfig, FlywheelConstants.secondaryMotorConfig));
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
-        turret = new Turret(new TurretIO() {});
+        turret = new Turret(new TurretIOTalon(Motor.config) {});
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
 
@@ -164,7 +165,6 @@ public class RobotContainer {
     configureButtonBindings();
     path = drive.buildPath(new Path("tower"));
     RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
-    vision.setSingleTagTrig(false);
   }
 
   /** Configure driver button bindings for ground intake. */
@@ -179,10 +179,11 @@ public class RobotContainer {
             true));
 
     driverController
-        .back()
+        .back()`
         .onTrue(
             Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
 
+    driverController.start().onTrue(turret.overrideState(TurretState.IDLE));
     //    driverController.a().whileTrue(all.runTransfer()).onFalse(all.stopSome());
     //    driverController.x().whileTrue(all.runShooter());
     //    driverController.b().whileTrue(all.stop());

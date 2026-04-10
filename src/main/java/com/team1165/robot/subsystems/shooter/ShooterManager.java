@@ -7,6 +7,8 @@
 
 package com.team1165.robot.subsystems.shooter;
 
+import static com.team1165.robot.subsystems.shooter.turret.TurretConstants.Motor.gearRatio;
+
 import com.team1165.robot.calculations.BasicShooterLUT;
 import com.team1165.robot.calculations.BasicShooterLUT.ShooterParameters;
 import com.team1165.robot.globalconstants.FieldConstants;
@@ -19,6 +21,7 @@ import com.team1165.robot.subsystems.shooter.hood.HoodState;
 import com.team1165.robot.subsystems.shooter.turret.Turret;
 import com.team1165.robot.subsystems.shooter.turret.TurretState;
 import com.team1165.util.statemachine.v1.StateManager;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -29,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.function.Supplier;
+import org.littletonrobotics.junction.Logger;
 
 public class ShooterManager extends StateManager<ShooterState> {
   private final Drive drive;
@@ -77,28 +81,35 @@ public class ShooterManager extends StateManager<ShooterState> {
         setSubsystemState(turret, TurretState.STRAIGHT);
       }
       case TRACK_HUB -> {
+        Pose2d drivePose = drive.getPose();
+        Pose2d hub =
+            new Pose3d(
+                    DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get().equals(Alliance.Red)
+                        ? FieldConstants.Hub.oppTopCenterPoint
+                        : Hub.topCenterPoint,
+                    Rotation3d.kZero)
+                .toPose2d();
         double distanceFromHub =
-            drive
-                .getPose()
+            drivePose
                 .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero))
-                .relativeTo(
-                    new Pose3d(
-                            DriverStation.getAlliance().isPresent()
-                                    && DriverStation.getAlliance().get().equals(Alliance.Red)
-                                ? FieldConstants.Hub.oppTopCenterPoint
-                                : Hub.topCenterPoint,
-                            Rotation3d.kZero)
-                        .toPose2d())
+                .relativeTo(hub)
                 .getTranslation()
                 .getNorm();
+        double angle =
+            new Rotation2d(Math.atan2(hub.getY() - drivePose.getY(), hub.getX() - drivePose.getX()))
+                .minus(drivePose.getRotation())
+                .getRotations();
+        Logger.recordOutput("Turret/Angle", angle);
         ShooterParameters parameters = BasicShooterLUT.lut.get(distanceFromHub);
 
         flywheel.setTrackingSpeed(parameters.rps());
         hood.setTrackingPosition(parameters.angle());
+        turret.setSimpleTargetPosition(-angle/gearRatio);
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);
-        setSubsystemState(turret, TurretState.STRAIGHT);
+        setSubsystemState(turret, TurretState.SIMPLE_TRACKING);
       }
       case TEST -> {
         flywheel.setTrackingSpeed(SmartDashboard.getNumber("Shooter/TestSpeed", 4000) / 60);

@@ -45,7 +45,7 @@ public class Turret extends OverridableStateMachine<TurretState> {
   }
 
   public void setSimpleTargetPosition(double position) {
-    this.targetPosition = position;
+    this.targetPosition = position > 0.375 ? 0.375 : position < -0.375 ? -0.375 : 0.375;
     Logger.recordOutput(name + "/TargetPosition", position);
   }
 

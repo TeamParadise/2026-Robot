@@ -25,6 +25,7 @@ public class TurretIOTalon implements TurretIO {
   public TurretIOTalon(TalonFXConfig config) {
     motor = PhoenixDeviceUtils.createNewTalonFX(config);
     motorData = new TalonMotorData(motor, config);
+    motor.setPosition(0);
   }
 
   @Override
