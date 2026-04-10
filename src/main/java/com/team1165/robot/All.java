@@ -108,6 +108,16 @@ public class All extends SubsystemBase {
         this);
   }
 
+  public Command stopSome() {
+    return Commands.run(
+        () -> {
+          transferMotor.set(0);
+          main.setControl(dutyCycle.withOutput(0));
+          controller.setSetpoint(0, ControlType.kPosition);
+        },
+        this);
+  }
+
   public Command reverse() {
     return Commands.run(
         () -> {

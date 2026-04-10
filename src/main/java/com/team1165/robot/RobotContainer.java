@@ -24,7 +24,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
 
 public class RobotContainer {
@@ -45,7 +47,7 @@ public class RobotContainer {
 
   // public final RobotState robotState;
 
-  // private final Command auto;
+  private final FollowPath path;
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
@@ -114,8 +116,7 @@ public class RobotContainer {
             new ATVision(
                 drive::addVisionMeasurement,
                 drive::getRotation,
-                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera), new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
 
         //        intake =
         //            new GroundIntake(
@@ -140,7 +141,7 @@ public class RobotContainer {
     // robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
-    // drive.buildPath(new Path("passing_right")).;
+    drive.buildPath(new Path("tower"));
 
   }
 
@@ -160,7 +161,7 @@ public class RobotContainer {
         .onTrue(
             Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
 
-    driverController.a().whileTrue(all.runTransfer());
+    driverController.a().whileTrue(all.runTransfer()).onFalse(all.stopSome());
     driverController.x().whileTrue(all.runShooter());
     driverController.b().whileTrue(all.stop());
     driverController.povLeft().whileTrue(all.reverse());
@@ -189,13 +190,6 @@ public class RobotContainer {
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-    return Commands.runOnce(
-        () ->
-            drive.resetRotation(
-                new Rotation2d(
-                    DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ? 0
-                        : 180)));
+    return path.withTimeout(3.5).andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut())).andThen(new WaitCommand(1.0).deadlineFor(all.runIntake())).andThen(all.stop()).andThen(new WaitCommand(1.0).deadlineFor(all.runShooter())).andThen(all.runTransfer().alongWith(all.spindexerFddorward()));
   }
 }
