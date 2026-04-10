@@ -33,7 +33,7 @@ public class PivotIOSpark implements PivotIO {
 
     // Make sure the secondary motor follows the primary motor
     secondaryMotor.configure(
-        new SparkMaxConfig().follow(primaryMotor),
+        new SparkMaxConfig().follow(primaryMotor, true),
         ResetMode.kNoResetSafeParameters,
         PersistMode.kNoPersistParameters);
 

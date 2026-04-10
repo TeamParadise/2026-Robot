@@ -13,8 +13,6 @@ import com.team1165.robot.subsystems.drive.constants.DriveConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
 import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
 import com.team1165.robot.subsystems.drive.io.DriveIOReal;
-import com.team1165.robot.subsystems.shooter.turret.Turret;
-import com.team1165.robot.subsystems.shooter.turret.io.TurretIO;
 import com.team1165.robot.subsystems.vision.apriltag.ATVision;
 import com.team1165.robot.subsystems.vision.apriltag.ATVision.CameraConfig;
 import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants.Cameras.*;
@@ -30,12 +28,21 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
   private final Drive drive;
-  private final Turret turret;
   private final ATVision vision;
   private final All all;
+
+  //  private final GroundIntake intake;
+  //  private final Flywheel flywheel;
+  //  private final Hood hood;
+  //  private final Turret turret;
+  //  private final Spindexer spindexer;
+  //  private final Transfer transfer;
+  //
+  //  protected final ShooterManager shooter;
+
   private final CommandXboxController driverController = new CommandXboxController(0);
 
-  public final RobotState robotState;
+  // public final RobotState robotState;
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
@@ -45,13 +52,28 @@ public class RobotContainer {
             new Drive(
                 new DriveIOReal(
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
-        turret = new Turret(new TurretIO() {});
         vision =
             new ATVision(
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIOPhoton(RightCamera.name), RightCamera.robotToCamera),
                 new CameraConfig(new ATVisionIOPhoton(LeftCamera.name), LeftCamera.robotToCamera));
+
+        //        intake =
+        //            new GroundIntake(
+        //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
+        //                new RollerIOSpark(Roller.config));
+        //        flywheel =
+        //            new Flywheel(
+        //                new DualRollerIOTalonFX(
+        //                    FlywheelConstants.primaryMotorConfig,
+        // FlywheelConstants.secondaryMotorConfig));
+        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        //        turret = new Turret(new TurretIO() {});
+        //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
+        //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        //
+        //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       case SIM -> {
         drive =
@@ -60,29 +82,59 @@ public class RobotContainer {
                     DriveConstants.drivetrainConstants,
                     DriveConstants.simConfig,
                     DriveConstants.getModuleConstants()));
-        turret = new Turret(new TurretIO() {});
         vision =
             new ATVision(
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
                 new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+
+        //        intake =
+        //            new GroundIntake(
+        //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
+        //                new RollerIOSpark(Roller.config));
+        //        flywheel =
+        //            new Flywheel(
+        //                new DualRollerIOTalonFX(
+        //                    FlywheelConstants.primaryMotorConfig,
+        // FlywheelConstants.secondaryMotorConfig));
+        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        //        turret = new Turret(new TurretIO() {});
+        //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
+        //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        //
+        //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       default -> {
         drive = new Drive(new DriveIO() {});
-        turret = new Turret(new TurretIO() {});
         vision =
             new ATVision(
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
                 new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+
+        //        intake =
+        //            new GroundIntake(
+        //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
+        //                new RollerIOSpark(Roller.config));
+        //        flywheel =
+        //            new Flywheel(
+        //                new DualRollerIOTalonFX(
+        //                    FlywheelConstants.primaryMotorConfig,
+        // FlywheelConstants.secondaryMotorConfig));
+        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        //        turret = new Turret(new TurretIO() {});
+        //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
+        //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        //
+        //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
     }
 
     all = new All();
 
-    robotState = new RobotState(drive, turret);
+    // robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
   }
@@ -112,6 +164,22 @@ public class RobotContainer {
     driverController.y().whileTrue(all.runIntake());
     driverController.leftBumper().whileTrue(all.spindexerReverse());
     driverController.rightBumper().whileTrue(all.spindexerForward());
+
+    //    driverController.a().onTrue(transfer.stateCommand(TransferState.FORWARD));
+    //    driverController.x().onTrue(shooter.stateCommand(ShooterState.TEST));
+    //    driverController
+    //        .b()
+    //        .onTrue(
+    //            intake
+    //                .stateCommand(GroundIntakeState.IDLE)
+    //                .alongWith(spindexer.stateCommand(SpindexerState.IDLE))
+    //                .alongWith(transfer.stateCommand(TransferState.IDLE))
+    //                .alongWith(shooter.stateCommand(ShooterState.IDLE)));
+    //    driverController.povDown().onTrue(intake.stateCommand(GroundIntakeState.MOVE_DOWN));
+    //    driverController.povUp().onTrue(intake.stateCommand(GroundIntakeState.MOVE_UP));
+    //    driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
+    //    driverController.leftBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CW));
+    //    driverController.rightBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CCW));
   }
 
   /** Returns the autonomous command to run. */

@@ -20,7 +20,7 @@ import org.littletonrobotics.junction.Logger;
  * machine periodically updates its inputs via the {@link CommandScheduler}.
  *
  * <p>If you want to have a state machine that supports state overrides (manual control outside a
- * {@link RobotManager}), use a {@link OverridableStateMachine}.
+ * {@link StateManager}), use a {@link OverridableStateMachine}.
  *
  * <p>The default behavior of the state machine proceeds through the following steps during each
  * command-based robot code loop:

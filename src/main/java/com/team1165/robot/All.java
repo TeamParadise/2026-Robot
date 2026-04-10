@@ -45,8 +45,8 @@ public class All extends SubsystemBase {
       new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
   private final Follower follower = new Follower(13, MotorAlignmentValue.Opposed);
 
-  private double testRPM = 4000;
-  private double testAngle = 0.5;
+  private double testRPM = 4700;
+  private double testAngle = -1.5;
 
   /** Creates a new All. */
   public All() {
@@ -54,7 +54,7 @@ public class All extends SubsystemBase {
 
     config.Slot0.kP = 999999.0;
     config.Feedback.SensorToMechanismRatio = (1.0 / 1.5);
-    config.TorqueCurrent.PeakForwardTorqueCurrent = 40.0;
+    config.TorqueCurrent.PeakForwardTorqueCurrent = 70.0;
     config.TorqueCurrent.PeakReverseTorqueCurrent = 0.0;
     config.MotorOutput.PeakForwardDutyCycle = 1.0;
     config.MotorOutput.PeakReverseDutyCycle = 0.0;
@@ -162,14 +162,14 @@ public class All extends SubsystemBase {
   public Command kickIntakeOut() {
     return Commands.run(
         () -> {
-          mainPivot.set(-0.25);
+          mainPivot.set(-0.20);
         });
   }
 
   public Command pullIntakeIn() {
     return Commands.run(
         () -> {
-          mainPivot.set(0.30);
+          mainPivot.set(0.3);
         });
   }
 
@@ -185,7 +185,7 @@ public class All extends SubsystemBase {
     SmartDashboard.putNumber(
         "CurrentShooterRPM", currentVelocity = main.getVelocity().getValueAsDouble() * 60);
 
-    if (MathUtil.isNear(shooterRPM, currentVelocity, shooterRPM * 0.05)) {
+    if (MathUtil.isNear(shooterRPM, currentVelocity, shooterRPM * 0.1)) {
       main.setControl(velocityTorqueCurrentFOC.withVelocity(shooterRPM / 60));
     } else {
       main.setControl(velocityDutyCycle.withVelocity(shooterRPM / 60));

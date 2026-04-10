@@ -10,6 +10,7 @@ package com.team1165.robot.subsystems.spindexer;
 import com.team1165.util.io.roller.RollerIO;
 import com.team1165.util.io.roller.RollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.StateMachine;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.Logger;
 
 public class Spindexer extends StateMachine<SpindexerState> {
@@ -19,6 +20,10 @@ public class Spindexer extends StateMachine<SpindexerState> {
   public Spindexer(RollerIO io) {
     super(SpindexerState.IDLE);
     this.io = io;
+  }
+
+  public Command stateCommand(SpindexerState state) {
+    return this.runOnce(() -> setState(state));
   }
 
   @Override

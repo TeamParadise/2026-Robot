@@ -32,11 +32,11 @@ public class BasicShooterLUT {
     lut.put(6.5, new ShooterParameters(0.0, 0.0));
   }
 
-  public record ShooterParameters(double rpm, double angle) {
+  public record ShooterParameters(double rps, double angle) {
     public static Interpolator<ShooterParameters> interpolator() {
       return (start, end, t) ->
           new ShooterParameters(
-              MathUtil.interpolate(start.rpm, end.rpm, t),
+              MathUtil.interpolate(start.rps, end.rps, t),
               MathUtil.interpolate(start.angle, end.angle, t));
     }
   }

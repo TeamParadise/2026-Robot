@@ -18,18 +18,18 @@ import org.littletonrobotics.junction.Logger;
  * A class that represents a {@link SubsystemBase} with an overridable state machine implementation.
  *
  * <p>An overridable state machine can have it's state overridden through {@link #overrideState(S)},
- * which can be useful to add manual controls to a codebase that is using a {@link RobotManager}
+ * which can be useful to add manual controls to a codebase that is using a {@link StateManager}
  * instance as a central point of control.
  *
  * <p>To make sure overrides work correctly, a standard automation command should only ever require
- * a {@link RobotManager} instance (not the individual subsystems), and an override/manual command
+ * a {@link StateManager} instance (not the individual subsystems), and an override/manual command
  * should require individual subsystems.
  *
  * @see StateMachine
  * @param <S> All possible states for this state machine.
  */
 public abstract class OverridableStateMachine<S extends Enum<S> & State> extends StateMachine<S> {
-  /** The state that the {@link RobotManager} is trying to command this subsystem to go to. */
+  /** The state that the {@link StateManager} is trying to command this subsystem to go to. */
   private S managedState;
 
   /** Stores if a state override is currently active. */
@@ -48,12 +48,12 @@ public abstract class OverridableStateMachine<S extends Enum<S> & State> extends
 
   /**
    * Creates a command to override the state of this subsystem. This command will set the
-   * currentState to the provided state, and will prevent a {@link RobotManager} instance from
+   * currentState to the provided state, and will prevent a {@link StateManager} instance from
    * changing the state, until this command ends.
    *
    * <p>This command will never end without interruption. Make sure to interrupt it by using a
    * Trigger or calling another override command. If interrupted, it will call the {@link
-   * RobotManager} to get the current managed state of the subsystem, and the subsystem will return
+   * StateManager} to get the current managed state of the subsystem, and the subsystem will return
    * to that state. Interrupting with another override command will immediately start the override
    * sequence again.
    *

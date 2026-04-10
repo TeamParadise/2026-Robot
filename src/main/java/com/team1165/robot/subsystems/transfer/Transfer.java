@@ -10,6 +10,7 @@ package com.team1165.robot.subsystems.transfer;
 import com.team1165.util.io.rollerpid.RollerPIDIO;
 import com.team1165.util.io.rollerpid.RollerPIDIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.StateMachine;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.Logger;
 
 public class Transfer extends StateMachine<TransferState> {
@@ -19,6 +20,10 @@ public class Transfer extends StateMachine<TransferState> {
   public Transfer(RollerPIDIO io) {
     super(TransferState.IDLE);
     this.io = io;
+  }
+
+  public Command stateCommand(TransferState state) {
+    return this.runOnce(() -> setState(state));
   }
 
   @Override
@@ -31,7 +36,7 @@ public class Transfer extends StateMachine<TransferState> {
   protected void transition() {
     switch (getCurrentState()) {
       case IDLE -> io.stop();
-      default -> io.runVelocity(getCurrentState().getVelocity());
+      default -> io.runVolts(getCurrentState().getVelocity());
     }
   }
 }

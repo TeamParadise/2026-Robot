@@ -37,7 +37,7 @@ public class ATVisionConstants {
               0.363533055,
               0.117442234,
               0.2400393726,
-              new Rotation3d(Degrees.zero(), Degrees.of(-10.0), Degrees.of(-15.0)));
+              new Rotation3d(Degrees.zero(), Degrees.of(-10.0), Degrees.of(15.0)));
     }
   }
 

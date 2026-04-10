@@ -88,7 +88,8 @@ public class Robot extends LoggedRobot {
     // Update tuning mode
     TuningManager.updateTuningMode();
 
-    robotContainer.robotState.update();
+    // robotContainer.robotState.update();
+    //    robotContainer.shooter.updateState();
 
     // Run command scheduler
     CommandScheduler.getInstance().run();

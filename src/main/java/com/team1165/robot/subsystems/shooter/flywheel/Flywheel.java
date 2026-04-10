@@ -44,6 +44,16 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
     return atGoal(FlywheelConstants.defaultTolerance);
   }
 
+  /**
+   * Sets the tracking speed provided by ShooterManager.
+   *
+   * @param trackingSpeed The target speed.
+   */
+  public void setTrackingSpeed(double trackingSpeed) {
+    this.trackingSpeed = trackingSpeed;
+    Logger.recordOutput(name + "/TrackingSpeed", trackingSpeed);
+  }
+
   public void updateState() {
     transition();
   }

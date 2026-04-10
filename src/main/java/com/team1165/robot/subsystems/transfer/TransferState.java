@@ -13,8 +13,8 @@ import com.team1165.util.tunables.TunableNumber;
 @SuppressWarnings("ImmutableEnumChecker")
 public enum TransferState implements State {
   IDLE(0.0),
-  FORWARD(3000.0),
-  REVERSE(-3000.0);
+  FORWARD(12.5),
+  REVERSE(-12.5);
 
   private final TunableNumber velocity;
 

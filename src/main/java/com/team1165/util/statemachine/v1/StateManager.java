@@ -7,14 +7,14 @@
 
 package com.team1165.util.statemachine.v1;
 
-public abstract class RobotManager<S extends Enum<S> & State> extends StateMachine<S> {
+public abstract class StateManager<S extends Enum<S> & State> extends StateMachine<S> {
   /**
-   * Creates a new {@link RobotManager} to manage a collection of robot subsystems.
+   * Creates a new {@link StateManager} to manage a collection of robot subsystems.
    *
    * @param initialState The initial/default state of the manager.
    * @see StateMachine
    */
-  protected RobotManager(S initialState) {
+  protected StateManager(S initialState) {
     super(initialState);
 
     // TODO: Test this solution compared to just always setting the managed state in terms of time

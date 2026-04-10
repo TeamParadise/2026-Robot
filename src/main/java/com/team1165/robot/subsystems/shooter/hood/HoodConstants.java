@@ -24,7 +24,7 @@ public final class HoodConstants {
 
   private static final Slot0Configs gains =
       new Slot0Configs()
-          .withKP(0.0)
+          .withKP(1.0)
           .withKI(0.0)
           .withKD(0.0)
           .withKS(0.0)
@@ -33,7 +33,7 @@ public final class HoodConstants {
   private static final SparkBaseConfig baseConfig =
       new SparkMaxConfig()
           .apply(SparkUtils.createClosedLoopConfig(gains).minOutput(-0.6).maxOutput(0.6))
-          .apply(SparkUtils.createEncoderRatio(8.0 / 54.0)) // TODO: add spur gear ratio
+          // .apply(SparkUtils.createEncoderRatio(8.0 / 54.0)) // TODO: add spur gear ratio
           .idleMode(IdleMode.kBrake)
           .inverted(true)
           .smartCurrentLimit(40);

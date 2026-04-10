@@ -14,7 +14,6 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.team1165.robot.subsystems.drive.constants.DriveConstants.PathConstants;
 import com.team1165.robot.subsystems.drive.constants.TunerConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
 import com.team1165.robot.subsystems.drive.io.DriveIO.DriveIOInputs;
@@ -33,6 +32,8 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.lib.BLine.FollowPath;
+import frc.robot.lib.BLine.Path;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
@@ -60,15 +61,17 @@ public class Drive extends SubsystemBase {
       new SwerveRequest.ApplyFieldSpeeds().withDriveRequestType(DriveRequestType.Velocity);
 
   // Create PID controllers for path following and drive to pose
-  private final PIDController xController =
-      new PIDController(
-          PathConstants.translation.kP, PathConstants.translation.kI, PathConstants.translation.kD);
-  private final PIDController yController =
-      new PIDController(
-          PathConstants.translation.kP, PathConstants.translation.kI, PathConstants.translation.kD);
-  private final PIDController rotationController =
-      new PIDController(
-          PathConstants.rotation.kP, PathConstants.rotation.kI, PathConstants.rotation.kD);
+  private final FollowPath.Builder pathBuilder =
+      new FollowPath.Builder(
+              this,
+              this::getPose,
+              this::getSpeeds,
+              this::runRobotSpeeds,
+              new PIDController(5.0, 0.0, 0.0),
+              new PIDController(3.0, 0.0, 0.0),
+              new PIDController(2.0, 0.0, 0.0))
+          .withDefaultShouldFlip()
+          .withPoseReset(this::resetPose);
 
   // Create NetworkTables table to post Field2d
   private final Field2d field = new Field2d();
@@ -85,8 +88,6 @@ public class Drive extends SubsystemBase {
     this.io = io;
     // Put the Field2d value onto the dashboard
     SmartDashboard.putData("Field", field);
-    // Configure the rotation controller to accept continuous input
-    rotationController.enableContinuousInput(-Math.PI, Math.PI);
   }
 
   @Override
@@ -103,6 +104,10 @@ public class Drive extends SubsystemBase {
   // region Automation and path following
   public void runRobotSpeeds(ChassisSpeeds speeds) {
     io.setControl(applyRobotSpeeds.withSpeeds(speeds));
+  }
+
+  public Command buildPath(Path path) {
+    return pathBuilder.build(path);
   }
 
   // endregion
