@@ -190,11 +190,11 @@ public class RobotContainer {
     //    driverController.leftBumper().whileTrue(all.spindexerReverse());
     //    driverController.rightBumper().whileTrue(all.spindexerForward());
 
-    driverController.a().onTrue(transfer.stateCommand(TransferState.FORWARD));
+    driverController.a().onTrue(transfer.stateCommand(TransferState.FORWARD)).onFalse(transfer.stateCommand(TransferState.REVERSE));
     driverController
         .x()
         .onTrue(shooter.stateCommand(ShooterState.TEST))
-        .onFalse(shooter.stateCommand(ShooterState.IDLE));
+        .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
     driverController
         .b()
         .onTrue(
@@ -203,6 +203,7 @@ public class RobotContainer {
                 .alongWith(spindexer.stateCommand(SpindexerState.IDLE))
                 .alongWith(transfer.stateCommand(TransferState.IDLE))
                 .alongWith(shooter.stateCommand(ShooterState.IDLE)));
+    driverController.povLeft().onTrue(intake.stateCommand(GroundIntakeState.REVERSE_ROLLER));
     driverController.povDown().onTrue(intake.stateCommand(GroundIntakeState.MOVE_DOWN));
     driverController.povUp().onTrue(intake.stateCommand(GroundIntakeState.MOVE_UP));
     driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
@@ -213,6 +214,7 @@ public class RobotContainer {
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
     //    return path.withTimeout(3.5)
+    //
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
