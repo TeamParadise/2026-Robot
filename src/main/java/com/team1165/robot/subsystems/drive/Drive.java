@@ -106,7 +106,7 @@ public class Drive extends SubsystemBase {
     io.setControl(applyRobotSpeeds.withSpeeds(speeds));
   }
 
-  public Command buildPath(Path path) {
+  public FollowPath buildPath(Path path) {
     return pathBuilder.build(path);
   }
 

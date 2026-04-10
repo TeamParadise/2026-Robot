@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.lib.BLine.Path;
 
 public class RobotContainer {
   private final Drive drive;
@@ -43,6 +44,8 @@ public class RobotContainer {
   private final CommandXboxController driverController = new CommandXboxController(0);
 
   // public final RobotState robotState;
+
+  private final Command auto;
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
@@ -137,6 +140,8 @@ public class RobotContainer {
     // robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
+    drive.buildPath(new Path("passing_right")).;
+
   }
 
   /** Configure driver button bindings for ground intake. */

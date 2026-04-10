@@ -81,7 +81,7 @@ public class All extends SubsystemBase {
   public Command runTransfer() {
     return Commands.run(
         () -> {
-          transferController.setSetpoint(-5200, ControlType.kVelocity);
+          transferMotor.set(-1);
           controller.setSetpoint(testAngle, ControlType.kPosition);
           setShooterSpeed(testRPM);
         });
