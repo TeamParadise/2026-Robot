@@ -68,7 +68,7 @@ public class ShooterManager extends StateManager<ShooterState> {
       }
       case TEST -> {
         flywheel.setTrackingSpeed(SmartDashboard.getNumber("Shooter/TestSpeed", 4000) / 60);
-        hood.setTrackingPosition(SmartDashboard.getNumber("Shooter/TestAngle", 1.5) / 60);
+        hood.setTrackingPosition(SmartDashboard.getNumber("Shooter/TestAngle", 1.5));
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);

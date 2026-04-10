@@ -44,7 +44,6 @@ import com.team1165.util.io.roller.RollerIOSpark;
 import com.team1165.util.io.rollerpid.RollerPIDIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.lib.BLine.FollowPath;
@@ -53,7 +52,7 @@ import frc.robot.lib.BLine.Path;
 public class RobotContainer {
   private final Drive drive;
   private final ATVision vision;
-//  private final All all;
+  //  private final All all;
 
   private final GroundIntake intake;
   private final Flywheel flywheel;
@@ -66,7 +65,7 @@ public class RobotContainer {
 
   private final CommandXboxController driverController = new CommandXboxController(0);
 
-   public final RobotState robotState;
+  public final RobotState robotState;
 
   private final FollowPath path;
 
@@ -155,9 +154,9 @@ public class RobotContainer {
       }
     }
 
-//    all = new All();
+    //    all = new All();
 
-     robotState = new RobotState(drive, turret);
+    robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
     path = drive.buildPath(new Path("tower"));
@@ -212,11 +211,11 @@ public class RobotContainer {
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-//    return path.withTimeout(3.5)
-//        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
-//        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
-//        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
-//        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
+    //    return path.withTimeout(3.5)
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
+    //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
     return Commands.none();
   }
 }
