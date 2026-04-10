@@ -44,6 +44,7 @@ import com.team1165.util.io.roller.RollerIOSpark;
 import com.team1165.util.io.rollerpid.RollerPIDIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 import frc.robot.lib.BLine.FollowPath;
@@ -216,6 +217,10 @@ public class RobotContainer {
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
     //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
-    return Commands.none();
+        return path.withTimeout(3.5)
+            .andThen(new WaitCommand(1.0).deadlineFor(intake.stateCommand(GroundIntakeState.MOVE_DOWN)))
+            .andThen(new WaitCommand(1.0).deadlineFor(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
+            .andThen(new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TEST)))
+            .andThen(transfer.stateCommand(TransferState.FORWARD).alongWith(spindexer.stateCommand(SpindexerState.FAST_CW))));
   }
 }
