@@ -86,6 +86,8 @@ public class ShooterManager extends StateManager<ShooterState> {
       }
       case TRACK_HUB -> {
         Pose2d drivePose = drive.getPose();
+        Pose2d turretPose = drivePose
+            .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero));
         Pose2d hub =
             new Pose3d(
                     DriverStation.getAlliance().isPresent()
@@ -96,13 +98,12 @@ public class ShooterManager extends StateManager<ShooterState> {
                 .toPose2d();
         Logger.recordOutput("ShooterManager/Hub", hub);
         double distanceFromHub =
-            drivePose
-                .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero))
+            turretPose
                 .relativeTo(hub)
                 .getTranslation()
                 .getNorm();
         double angle =
-            new Rotation2d(Math.atan2(hub.getY() - drivePose.getY(), hub.getX() - drivePose.getX()))
+            new Rotation2d(Math.atan2(hub.getY() - turretPose.getY(), hub.getX() - turretPose.getX()))
                 .minus(drivePose.getRotation())
                 .getRotations();
         Logger.recordOutput("Turret/Angle", angle);
