@@ -94,6 +94,7 @@ public class ShooterManager extends StateManager<ShooterState> {
                         : Hub.topCenterPoint,
                     Rotation3d.kZero)
                 .toPose2d();
+        Logger.recordOutput("ShooterManager/Hub", hub);
         double distanceFromHub =
             drivePose
                 .plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero))
