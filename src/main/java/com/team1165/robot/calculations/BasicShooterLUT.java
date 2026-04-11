@@ -17,9 +17,9 @@ public class BasicShooterLUT {
       new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterParameters.interpolator());
 
   static {
-    lut.put(2.2, new ShooterParameters(4100 / 60.0, 2.0));
-    lut.put(2.8, new ShooterParameters(4200 / 60.0, 2.4));
-    lut.put(3.3, new ShooterParameters(4300 / 60.0, 3.0));
+    lut.put(2.2, new ShooterParameters(4000 / 60.0, 2.0));
+    lut.put(2.8, new ShooterParameters(4100 / 60.0, 2.4));
+    lut.put(3.3, new ShooterParameters(4200 / 60.0, 3.0));
   }
 
   public record ShooterParameters(double rps, double angle) {
