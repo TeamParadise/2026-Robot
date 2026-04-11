@@ -230,12 +230,12 @@ public class RobotContainer {
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
     //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
-    return path.withTimeout(10.0)
+    return path.withTimeout(3.0)
         .andThen(new WaitCommand(1.0).deadlineFor(intake.stateCommand(GroundIntakeState.MOVE_DOWN)))
         .andThen(
             new WaitCommand(1.0)
                 .deadlineFor(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
-                .andThen(new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TEST)))
+                .andThen(new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
                 .andThen(
                     transfer
                         .stateCommand(TransferState.FORWARD)
