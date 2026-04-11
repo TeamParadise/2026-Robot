@@ -13,6 +13,8 @@
 
 package com.team1165.robot;
 
+import com.ctre.phoenix6.SignalLogger;
+import com.revrobotics.util.StatusLogger;
 import com.team1165.robot.globalconstants.BuildConstants;
 import com.team1165.util.tunables.TuningManager;
 import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
@@ -34,6 +36,9 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
 
   public Robot() {
+    SignalLogger.enableAutoLogging(false);
+    StatusLogger.disableAutoLogging();
+
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
