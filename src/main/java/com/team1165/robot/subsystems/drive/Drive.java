@@ -131,7 +131,7 @@ public class Drive extends SubsystemBase {
   }
 
   public Pose2d getSimulationPose() {
-      return inputs.Pose;
+    return inputs.Pose;
   }
 
   /** Get the rotation of the robot at a certain timestamp for vision. */

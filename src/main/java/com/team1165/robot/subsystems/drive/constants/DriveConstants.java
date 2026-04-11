@@ -7,14 +7,9 @@
 
 package com.team1165.robot.subsystems.drive.constants;
 
-import static edu.wpi.first.units.Units.Inches;
-import static edu.wpi.first.units.Units.Pounds;
-import static edu.wpi.first.units.Units.Seconds;
-
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-import edu.wpi.first.math.system.plant.DCMotor;
 
 public class DriveConstants {
   /** Drivetrain constants (taken directly from TunerConstants). */
