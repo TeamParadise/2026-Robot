@@ -14,7 +14,6 @@ import static edu.wpi.first.units.Units.Seconds;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim.MapleSimConfig;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class DriveConstants {

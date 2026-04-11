@@ -17,7 +17,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.team1165.robot.subsystems.drive.constants.TunerConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
 import com.team1165.robot.subsystems.drive.io.DriveIO.DriveIOInputs;
-import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -62,17 +61,17 @@ public class Drive extends SubsystemBase {
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   // Create PID controllers for path following and drive to pose
-  private final FollowPath.Builder pathBuilder =
-      new FollowPath.Builder(
-              this,
-              this::getPose,
-              this::getSpeeds,
-              this::runRobotSpeeds,
-              new PIDController(5.0, 0.0, 0.0),
-              new PIDController(3.0, 0.0, 0.0),
-              new PIDController(2.0, 0.0, 0.0))
-          .withDefaultShouldFlip()
-          .withPoseReset(this::resetPose);
+//  private final FollowPath.Builder pathBuilder =
+//      new FollowPath.Builder(
+//              this,
+//              this::getPose,
+//              this::getSpeeds,
+//              this::runRobotSpeeds,
+//              new PIDController(5.0, 0.0, 0.0),
+//              new PIDController(3.0, 0.0, 0.0),
+//              new PIDController(2.0, 0.0, 0.0))
+//          .withDefaultShouldFlip()
+//          .withPoseReset(this::resetPose);
 
   // Create NetworkTables table to post Field2d
   private final Field2d field = new Field2d();
@@ -107,9 +106,9 @@ public class Drive extends SubsystemBase {
     io.setControl(applyRobotSpeeds.withSpeeds(speeds));
   }
 
-  public FollowPath buildPath(Path path) {
-    return pathBuilder.build(path);
-  }
+//  public FollowPath buildPath(Path path) {
+//    return pathBuilder.build(path);
+//  }
 
   // endregion
 
