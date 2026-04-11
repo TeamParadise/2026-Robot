@@ -9,16 +9,11 @@ package com.team1165.robot.commands;
 
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.intake.GroundIntake;
-import com.team1165.robot.subsystems.intake.GroundIntakeState;
 import com.team1165.robot.subsystems.shooter.ShooterManager;
-import com.team1165.robot.subsystems.shooter.ShooterState;
 import com.team1165.robot.subsystems.spindexer.Spindexer;
-import com.team1165.robot.subsystems.spindexer.SpindexerState;
 import com.team1165.robot.subsystems.transfer.Transfer;
-import com.team1165.robot.subsystems.transfer.TransferState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class AutoCommands {
   public static Command depot(

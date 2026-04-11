@@ -48,14 +48,4 @@ public class DriveConstants {
    * Details about the robot used for accurate simulation. Some of these values are taken from the
    * RobotConfig.
    */
-  public static final MapleSimConfig simConfig =
-      new MapleSimConfig(
-          Seconds.of(0.002), // Loop period
-          Pounds.of(130), // Robot mass
-          Inches.of(36), // Robot width with bumpers in X direction
-          Inches.of(36), // Robot width with bumpers in Y direction
-          DCMotor.getKrakenX60Foc(1), // Drive motor
-          DCMotor.getFalcon500(1), // Turn motor
-          1.7 // Wheel COF
-          );
 }

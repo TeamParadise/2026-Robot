@@ -131,11 +131,7 @@ public class Drive extends SubsystemBase {
   }
 
   public Pose2d getSimulationPose() {
-    if (io.getClass() == DriveIOMapleSim.class) {
-      return ((DriveIOMapleSim) io).getSimulationPose();
-    } else {
       return inputs.Pose;
-    }
   }
 
   /** Get the rotation of the robot at a certain timestamp for vision. */
