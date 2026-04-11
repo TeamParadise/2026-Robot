@@ -235,7 +235,8 @@ public class RobotContainer {
         .andThen(
             new WaitCommand(1.0)
                 .deadlineFor(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
-                .andThen(new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
+                .andThen(
+                    new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
                 .andThen(
                     transfer
                         .stateCommand(TransferState.FORWARD)
