@@ -59,6 +59,7 @@ public class Drive extends SubsystemBase {
       new SwerveRequest.ApplyRobotSpeeds().withDriveRequestType(DriveRequestType.Velocity);
   private final SwerveRequest.ApplyFieldSpeeds applyFieldSpeeds =
       new SwerveRequest.ApplyFieldSpeeds().withDriveRequestType(DriveRequestType.Velocity);
+  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   // Create PID controllers for path following and drive to pose
   private final FollowPath.Builder pathBuilder =
@@ -184,6 +185,10 @@ public class Drive extends SubsystemBase {
    */
   public void setControl(SwerveRequest request) {
     io.setControl(request);
+  }
+
+  public Command brake() {
+    return applyRequest(() -> brake);
   }
 
   /**
