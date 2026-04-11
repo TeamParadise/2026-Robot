@@ -17,8 +17,8 @@ import com.team1165.robot.subsystems.spindexer.SpindexerState;
 import com.team1165.robot.subsystems.transfer.Transfer;
 import com.team1165.robot.subsystems.transfer.TransferState;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.lib.BLine.Path;
 
 public class AutoCommands {
   public static Command depot(
@@ -27,14 +27,6 @@ public class AutoCommands {
       Spindexer spindexer,
       Transfer transfer,
       ShooterManager shooter) {
-    return drive
-        .buildPath(new Path("depot"))
-        .alongWith(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
-        .andThen(new WaitCommand(1.0).andThen(intake.stateCommand(GroundIntakeState.IDLE)))
-        .andThen(new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
-        .andThen(
-            transfer
-                .stateCommand(TransferState.FORWARD)
-                .alongWith(spindexer.stateCommand(SpindexerState.FAST_CW)));
+    return Commands.none();
   }
 }

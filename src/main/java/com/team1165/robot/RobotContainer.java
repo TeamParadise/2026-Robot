@@ -76,8 +76,7 @@ public class RobotContainer {
         drive =
             new Drive(
                 new DriveIOSim(
-                    DriveConstants.drivetrainConstants,
-                    DriveConstants.getModuleConstants()));
+                    DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
         //        vision =
         //            new ATVision(
         //                drive::addVisionMeasurement,
