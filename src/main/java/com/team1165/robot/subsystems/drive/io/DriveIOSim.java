@@ -108,6 +108,6 @@ public class DriveIOSim extends DriveIOReal {
               // Use the measured time delta, get battery voltage from WPILib
               updateSimState(deltaTime, RobotController.getBatteryVoltage());
             });
-    simNotifier.startPeriodic(DriveConstants.simConfig.simLoopPeriod().in(Seconds));
+//    simNotifier.startPeriodic(DriveConstants.simConfig.simLoopPeriod().in(Seconds));
   }
 }

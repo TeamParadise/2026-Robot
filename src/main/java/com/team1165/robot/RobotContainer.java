@@ -11,38 +11,33 @@ import com.team1165.robot.commands.DriveCommands;
 import com.team1165.robot.subsystems.drive.Drive;
 import com.team1165.robot.subsystems.drive.constants.DriveConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
-import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
 import com.team1165.robot.subsystems.drive.io.DriveIOReal;
-import com.team1165.robot.subsystems.vision.apriltag.ATVision;
-import com.team1165.robot.subsystems.vision.apriltag.ATVision.CameraConfig;
-import com.team1165.robot.subsystems.vision.apriltag.constants.ATVisionConstants.Cameras.*;
-import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
-import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
+import com.team1165.robot.subsystems.drive.io.DriveIOSim;
 import com.team1165.util.constants.RobotMode;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.RobotModeTriggers;
 
 public class RobotContainer {
   private final Drive drive;
-  private final ATVision vision;
-  private final All all;
+  //  private final ATVision vision;
+  //  private final All all;
 
   //  private final GroundIntake intake;
-  //  private final Flywheel flywheel;
-  //  private final Hood hood;
-  //  private final Turret turret;
+  //  //  private final Flywheel flywheel;
+  //  //  private final Hood hood;
+  //  //  private final Turret turret;
   //  private final Spindexer spindexer;
   //  private final Transfer transfer;
-  //
+
   //  protected final ShooterManager shooter;
 
   private final CommandXboxController driverController = new CommandXboxController(0);
 
-  // public final RobotState robotState;
+  //  public final RobotState robotState;
+
+  //  private final FollowPath path;
 
   /** Creates subsystems and IO implementations based on current runtime mode. */
   public RobotContainer() {
@@ -52,91 +47,76 @@ public class RobotContainer {
             new Drive(
                 new DriveIOReal(
                     DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
-        vision =
-            new ATVision(
-                drive::addVisionMeasurement,
-                drive::getRotation,
-                new CameraConfig(new ATVisionIOPhoton(RightCamera.name), RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIOPhoton(LeftCamera.name), LeftCamera.robotToCamera));
+        //        vision =
+        //            new ATVision(
+        //                drive::addVisionMeasurement,
+        //                drive::getRotation,
+        //                new CameraConfig(new ATVisionIOPhoton(RightCamera.name),
+        // RightCamera.robotToCamera),
+        //                new CameraConfig(new ATVisionIOPhoton(LeftCamera.name),
+        // LeftCamera.robotToCamera));
 
         //        intake =
         //            new GroundIntake(
         //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
         //                new RollerIOSpark(Roller.config));
-        //        flywheel =
-        //            new Flywheel(
-        //                new DualRollerIOTalonFX(
-        //                    FlywheelConstants.primaryMotorConfig,
-        // FlywheelConstants.secondaryMotorConfig));
-        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
-        //        turret = new Turret(new TurretIO() {});
+        //        //        flywheel =
+        //        //            new Flywheel(
+        //        //                new DualRollerIOTalonFX(
+        //        //                    FlywheelConstants.primaryMotorConfig,
+        //        // FlywheelConstants.secondaryMotorConfig));
+        //        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        //        //        turret = new Turret(new TurretIOTalon(Motor.config) {});
         //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
-        //
+
         //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       case SIM -> {
         drive =
             new Drive(
-                new DriveIOMapleSim(
-                    DriveConstants.drivetrainConstants,
-                    DriveConstants.simConfig,
-                    DriveConstants.getModuleConstants()));
-        vision =
-            new ATVision(
-                drive::addVisionMeasurement,
-                drive::getRotation,
-                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
-
+                new DriveIOSim(
+                    DriveConstants.drivetrainConstants, DriveConstants.getModuleConstants()));
+        //        vision =
+        //            new ATVision(
+        //                drive::addVisionMeasurement,
+        //                drive::getRotation,
+        //                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
+        //                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+        //
         //        intake =
         //            new GroundIntake(
         //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
         //                new RollerIOSpark(Roller.config));
-        //        flywheel =
-        //            new Flywheel(
-        //                new DualRollerIOTalonFX(
-        //                    FlywheelConstants.primaryMotorConfig,
-        // FlywheelConstants.secondaryMotorConfig));
-        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
-        //        turret = new Turret(new TurretIO() {});
         //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
-        //
-        //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
       default -> {
         drive = new Drive(new DriveIO() {});
-        vision =
-            new ATVision(
-                drive::addVisionMeasurement,
-                drive::getRotation,
-                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
-
+        //        vision =
+        //            new ATVision(
+        //                drive::addVisionMeasurement,
+        //                drive::getRotation,
+        //                new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
+        //                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+        //
         //        intake =
         //            new GroundIntake(
         //                new PivotIOSpark(Pivot.primaryConfig, Pivot.secondaryConfig),
         //                new RollerIOSpark(Roller.config));
-        //        flywheel =
-        //            new Flywheel(
-        //                new DualRollerIOTalonFX(
-        //                    FlywheelConstants.primaryMotorConfig,
-        // FlywheelConstants.secondaryMotorConfig));
-        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
-        //        turret = new Turret(new TurretIO() {});
+        //
+        //        //        hood = new Hood(new HoodIOSpark(HoodConstants.config));
+        //
         //        spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
         //        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
-        //
-        //        shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
     }
 
-    all = new All();
-
-    // robotState = new RobotState(drive, turret);
+    //    all = new All();
 
     configureButtonBindings();
+    //    path = drive.buildPath(new Path("tower"));
+    RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
   }
 
   /** Configure driver button bindings for ground intake. */
@@ -155,42 +135,79 @@ public class RobotContainer {
         .onTrue(
             Commands.runOnce(drive::seedFieldCentric).withName("Controller - Back - Reset Gyro"));
 
-    driverController.a().whileTrue(all.runTransfer());
-    driverController.x().whileTrue(all.runShooter());
-    driverController.b().whileTrue(all.stop());
-    driverController.povLeft().whileTrue(all.reverse());
-    driverController.povDown().whileTrue(all.kickIntakeOut());
-    driverController.povUp().whileTrue(all.pullIntakeIn());
-    driverController.y().whileTrue(all.runIntake());
-    driverController.leftBumper().whileTrue(all.spindexerReverse());
-    driverController.rightBumper().whileTrue(all.spindexerForward());
-
-    //    driverController.a().onTrue(transfer.stateCommand(TransferState.FORWARD));
-    //    driverController.x().onTrue(shooter.stateCommand(ShooterState.TEST));
+    //    driverController.start().onTrue(turret.overrideState(TurretState.IDLE));
+    //    driverController.a().whileTrue(all.runTransfer()).onFalse(all.stopSome());
+    //    driverController.x().whileTrue(all.runShooter());
+    //    driverController.b().whileTrue(all.stop());
+    //    driverController.povLeft().whileTrue(all.reverse());
+    //    driverController.povDown().whileTrue(all.kickIntakeOut());
+    //    driverController.povUp().whileTrue(all.pullIntakeIn());
+    //    driverController.y().whileTrue(all.runIntake());
+    //    driverController.leftBumper().whileTrue(all.spindexerReverse());
+    //    driverController.rightBumper().whileTrue(all.spindexerForward());
+    //
     //    driverController
-    //        .b()
+    //        .a()
+    //        .onTrue(transfer.stateCommand(TransferState.FORWARD))
+    //        .onFalse(transfer.stateCommand(TransferState.IDLE));
+    //    driverController
+    //        .x()
+    //        .onTrue(shooter.stateCommand(ShooterState.TEST))
+    //        .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
+    //    driverController
+    //        .rightStick()
+    //        .onTrue(
+    //            intake
+    //                .stateCommand(GroundIntakeState.IDLE)
+    //                .alongWith(spindexer.stateCommand(SpindexerState.IDLE))
+    //                .alongWith(transfer.stateCommand(TransferState.IDLE))
+    //                .alongWith(shooter.stateCommand(ShooterState.IDLE)));    driverController
+    //        .x()
+    //        .onTrue(shooter.stateCommand(ShooterState.TEST))
+    //        .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
+    //    driverController
+    //        .rightStick()
     //        .onTrue(
     //            intake
     //                .stateCommand(GroundIntakeState.IDLE)
     //                .alongWith(spindexer.stateCommand(SpindexerState.IDLE))
     //                .alongWith(transfer.stateCommand(TransferState.IDLE))
     //                .alongWith(shooter.stateCommand(ShooterState.IDLE)));
+    //    driverController.povLeft().onTrue(intake.stateCommand(GroundIntakeState.REVERSE_ROLLER));
     //    driverController.povDown().onTrue(intake.stateCommand(GroundIntakeState.MOVE_DOWN));
     //    driverController.povUp().onTrue(intake.stateCommand(GroundIntakeState.MOVE_UP));
-    //    driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
+    //    //
+    // driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
+    //    driverController.y().whileTrue(drive.applyRequest(SwerveDriveBrake::new));
     //    driverController.leftBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CW));
     //    driverController.rightBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CCW));
+    //    driverController
+    //        .b()
+    //        .onTrue(shooter.stateCommand(ShooterState.TRACK_HUB))
+    //        .onFalse(new WaitCommand(0.8).andThen(shooter.stateCommand(ShooterState.IDLE)));
   }
 
   /** Returns the autonomous command to run. */
   public Command getAutonomousCommand() {
-    return Commands.runOnce(
-        () ->
-            drive.resetRotation(
-                new Rotation2d(
-                    DriverStation.getAlliance().isPresent()
-                            && DriverStation.getAlliance().get() == Alliance.Red
-                        ? 0
-                        : 180)));
+    //    return path.withTimeout(3.5)
+    //
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
+    //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
+    //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
+    //    return path.withTimeout(3.0)
+    ////        .andThen(new
+    // WaitCommand(1.0).deadlineFor(intake.stateCommand(GroundIntakeState.MOVE_DOWN)))
+    ////        .andThen(
+    ////            new WaitCommand(1.0)
+    ////                .deadlineFor(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
+    //                .andThen(
+    //                    new
+    // WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
+    //                .andThen(
+    //                    transfer
+    //                        .stateCommand(TransferState.FORWARD)
+    //                        .alongWith(spindexer.stateCommand(SpindexerState.FAST_CW)));
+    return Commands.none();
   }
 }

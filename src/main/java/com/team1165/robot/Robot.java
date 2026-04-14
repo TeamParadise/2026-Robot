@@ -13,6 +13,8 @@
 
 package com.team1165.robot;
 
+import com.ctre.phoenix6.SignalLogger;
+import com.revrobotics.util.StatusLogger;
 import com.team1165.robot.globalconstants.BuildConstants;
 import com.team1165.util.tunables.TuningManager;
 import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
@@ -34,6 +36,9 @@ public class Robot extends LoggedRobot {
   private final RobotContainer robotContainer;
 
   public Robot() {
+    SignalLogger.enableAutoLogging(false);
+    StatusLogger.disableAutoLogging();
+
     // Record metadata
     Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
@@ -88,9 +93,6 @@ public class Robot extends LoggedRobot {
     // Update tuning mode
     TuningManager.updateTuningMode();
 
-    // robotContainer.robotState.update();
-    //    robotContainer.shooter.updateState();
-
     // Run command scheduler
     CommandScheduler.getInstance().run();
   }
@@ -105,9 +107,7 @@ public class Robot extends LoggedRobot {
 
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
-  public void autonomousInit() {
-    // Placeholder until autonomous command wiring is added in RobotContainer
-  }
+  public void autonomousInit() {}
 
   /** This function is called periodically during autonomous. */
   @Override

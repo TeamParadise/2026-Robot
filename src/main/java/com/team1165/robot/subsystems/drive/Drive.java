@@ -17,9 +17,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.team1165.robot.subsystems.drive.constants.TunerConstants;
 import com.team1165.robot.subsystems.drive.io.DriveIO;
 import com.team1165.robot.subsystems.drive.io.DriveIO.DriveIOInputs;
-import com.team1165.robot.subsystems.drive.io.DriveIOMapleSim;
 import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -32,8 +30,6 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.lib.BLine.FollowPath;
-import frc.robot.lib.BLine.Path;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
@@ -59,19 +55,20 @@ public class Drive extends SubsystemBase {
       new SwerveRequest.ApplyRobotSpeeds().withDriveRequestType(DriveRequestType.Velocity);
   private final SwerveRequest.ApplyFieldSpeeds applyFieldSpeeds =
       new SwerveRequest.ApplyFieldSpeeds().withDriveRequestType(DriveRequestType.Velocity);
+  private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
   // Create PID controllers for path following and drive to pose
-  private final FollowPath.Builder pathBuilder =
-      new FollowPath.Builder(
-              this,
-              this::getPose,
-              this::getSpeeds,
-              this::runRobotSpeeds,
-              new PIDController(5.0, 0.0, 0.0),
-              new PIDController(3.0, 0.0, 0.0),
-              new PIDController(2.0, 0.0, 0.0))
-          .withDefaultShouldFlip()
-          .withPoseReset(this::resetPose);
+  //  private final FollowPath.Builder pathBuilder =
+  //      new FollowPath.Builder(
+  //              this,
+  //              this::getPose,
+  //              this::getSpeeds,
+  //              this::runRobotSpeeds,
+  //              new PIDController(5.0, 0.0, 0.0),
+  //              new PIDController(3.0, 0.0, 0.0),
+  //              new PIDController(2.0, 0.0, 0.0))
+  //          .withDefaultShouldFlip()
+  //          .withPoseReset(this::resetPose);
 
   // Create NetworkTables table to post Field2d
   private final Field2d field = new Field2d();
@@ -106,9 +103,9 @@ public class Drive extends SubsystemBase {
     io.setControl(applyRobotSpeeds.withSpeeds(speeds));
   }
 
-  public Command buildPath(Path path) {
-    return pathBuilder.build(path);
-  }
+  //  public FollowPath buildPath(Path path) {
+  //    return pathBuilder.build(path);
+  //  }
 
   // endregion
 
@@ -134,11 +131,7 @@ public class Drive extends SubsystemBase {
   }
 
   public Pose2d getSimulationPose() {
-    if (io.getClass() == DriveIOMapleSim.class) {
-      return ((DriveIOMapleSim) io).getSimulationPose();
-    } else {
-      return inputs.Pose;
-    }
+    return inputs.Pose;
   }
 
   /** Get the rotation of the robot at a certain timestamp for vision. */
@@ -184,6 +177,10 @@ public class Drive extends SubsystemBase {
    */
   public void setControl(SwerveRequest request) {
     io.setControl(request);
+  }
+
+  public Command brake() {
+    return applyRequest(() -> brake);
   }
 
   /**

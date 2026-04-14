@@ -5,7 +5,7 @@
  * the root directory of this project.
  */
 
-package com.team1165.robot.subsystems.intake;
+package com.team1165.robot.subsystems.shooter;
 
 import com.team1165.robot.calculations.BasicShooterLUT.ShooterParameters;
 
