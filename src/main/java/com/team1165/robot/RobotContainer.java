@@ -196,7 +196,7 @@ public class RobotContainer {
 
     driverController
         .a()
-        .onTrue(transfer.stateCommand(TransferState.FORWARD))
+        .onTrue(transfer.stateCommand(TransferState.REVERSE))
         .onFalse(transfer.stateCommand(TransferState.IDLE));
     driverController
         .x()
@@ -214,8 +214,18 @@ public class RobotContainer {
     driverController.povDown().onTrue(intake.stateCommand(GroundIntakeState.MOVE_DOWN));
     driverController.povUp().onTrue(intake.stateCommand(GroundIntakeState.MOVE_UP));
     driverController.y().onTrue(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE));
-    driverController.leftBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CW));
-    driverController.rightBumper().onTrue(spindexer.stateCommand(SpindexerState.FAST_CCW));
+    driverController
+        .leftBumper()
+        .onTrue(
+            spindexer
+                .stateCommand(SpindexerState.FAST_CCW)
+                .alongWith(transfer.stateCommand(TransferState.REVERSE)));
+    driverController
+        .rightBumper()
+        .onTrue(
+            spindexer
+                .stateCommand(SpindexerState.FAST_CW)
+                .alongWith(transfer.stateCommand(TransferState.FORWARD)));
     driverController
         .b()
         .onTrue(shooter.stateCommand(ShooterState.TRACK_HUB))
@@ -228,6 +238,7 @@ public class RobotContainer {
     //
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.kickIntakeOut()))
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runIntake()))
+
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
     //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
     return path.withTimeout(3.0)

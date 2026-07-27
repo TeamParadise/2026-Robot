@@ -25,7 +25,7 @@ public final class TurretConstants {
     /** Private constructor to prevent instantiation. */
     private Motor() {}
 
-    public static final double gearRatio = (14.0 / 44.0) * (10.0 / 100.0);
+    public static final double gearRatio = (14.0 / 44.0) * (10.0 / 90.0);
 
     public static final Slot0Configs gains =
         new Slot0Configs()
