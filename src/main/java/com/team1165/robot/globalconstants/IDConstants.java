@@ -18,9 +18,9 @@ public class IDConstants {
     public static final CANBus bus = CANConstants.rio;
 
     public static final int hood = 20;
-    public static final int intakePivotPrimary = 2;
-    public static final int intakePivotSecondary = 15;
-    public static final int intakeRoller = 1;
+    public static final int intakePivotPrimary = 55;
+    public static final int intakePivotSecondary = 56;
+    public static final int intakeRoller = 57;
     public static final int spindexer = 12;
     public static final int transfer = 5;
   }

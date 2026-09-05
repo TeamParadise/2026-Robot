@@ -28,7 +28,7 @@ public final class GroundIntakeConstants {
             .apply(SparkUtils.createEncoderRatio(1.0 / 9.0))
             .idleMode(IdleMode.kBrake)
             .openLoopRampRate(0.15)
-            .smartCurrentLimit(40);
+            .smartCurrentLimit(75);
     public static final SparkConfig primaryConfig =
         SparkConfig.sparkMax(
             "IntakePivotPrimary", RIO.intakePivotPrimary, MotorType.kBrushless, baseConfig);
