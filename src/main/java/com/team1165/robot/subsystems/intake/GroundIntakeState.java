@@ -14,15 +14,15 @@ import com.team1165.util.tunables.TunableNumber;
 @SuppressWarnings("ImmutableEnumChecker")
 public enum GroundIntakeState implements State {
   /** Hold intake against the bumper. */
-  HOLD_DOWN(-2.4, 0),
+  HOLD_DOWN(-1.0, 0),
   /** Hold intake against the bumper and run the roller. */
-  HOLD_DOWN_AND_INTAKE(-3, 12.5),
+  HOLD_DOWN_AND_INTAKE(-1.0, 12.5),
   /** Don't run pivot or roller. */
   IDLE(0, 0),
   /** Run pivot down (out of robot). */
-  MOVE_DOWN(-3.6, 0),
+  MOVE_DOWN(-4.0, 0),
   /** Run pivot up (into robot). */
-  MOVE_UP(3.6, 0),
+  MOVE_UP(4.0, 0),
   /** Run the roller in reverse. */
   REVERSE_ROLLER(3, -12.5);
 

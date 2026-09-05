@@ -20,24 +20,24 @@ public class ATVisionConstants {
       AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
 
   public static final class Cameras {
-    public static final class RightCamera {
-      public static final String name = "Right Camera";
+    public static final class CenterCamera {
+      public static final String name = "Center";
       public static final Transform3d robotToCamera =
           new Transform3d(
-              0.363533055,
-              -0.117442234,
-              0.2400393726,
-              new Rotation3d(Degrees.zero(), Degrees.of(-10.0), Degrees.of(-15.0)));
+              0.0665105604,
+              -0.23495,
+              0.512347083,
+              new Rotation3d(Degrees.zero(), Degrees.of(-20.0), Degrees.of(0.0)));
     }
 
-    public static final class LeftCamera {
-      public static final String name = "Left Camera";
+    public static final class RightCamera {
+      public static final String name = "Right";
       public static final Transform3d robotToCamera =
           new Transform3d(
-              0.363533055,
-              0.117442234,
-              0.2400393726,
-              new Rotation3d(Degrees.zero(), Degrees.of(-10.0), Degrees.of(15.0)));
+              0.0308866794,
+              -0.2831329872,
+              0.5135683404,
+              new Rotation3d(Degrees.zero(), Degrees.of(-30.0), Degrees.of(-72.5)));
     }
   }
 

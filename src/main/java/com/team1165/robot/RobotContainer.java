@@ -86,7 +86,8 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIOPhoton(RightCamera.name), RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIOPhoton(LeftCamera.name), LeftCamera.robotToCamera));
+                new CameraConfig(
+                    new ATVisionIOPhoton(CenterCamera.name), CenterCamera.robotToCamera));
 
         intake =
             new GroundIntake(
@@ -115,7 +116,7 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+                new CameraConfig(new ATVisionIO() {}, CenterCamera.robotToCamera));
 
         intake =
             new GroundIntake(
@@ -139,7 +140,7 @@ public class RobotContainer {
                 drive::addVisionMeasurement,
                 drive::getRotation,
                 new CameraConfig(new ATVisionIO() {}, RightCamera.robotToCamera),
-                new CameraConfig(new ATVisionIO() {}, LeftCamera.robotToCamera));
+                new CameraConfig(new ATVisionIO() {}, CenterCamera.robotToCamera));
 
         intake =
             new GroundIntake(
@@ -163,7 +164,7 @@ public class RobotContainer {
     robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
-    path = drive.buildPath(new Path("tower"));
+    path = drive.buildPath(new Path("disrupt"));
     RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
   }
 
@@ -196,7 +197,7 @@ public class RobotContainer {
 
     driverController
         .a()
-        .onTrue(transfer.stateCommand(TransferState.REVERSE))
+        .onTrue(transfer.stateCommand(TransferState.FORWARD))
         .onFalse(transfer.stateCommand(TransferState.IDLE));
     driverController
         .x()
@@ -241,16 +242,6 @@ public class RobotContainer {
 
     //        .andThen(new WaitCommand(1.0).deadlineFor(all.runShooter()))
     //        .andThen(all.runTransfer().alongWith(all.spindexerForward()));
-    return path.withTimeout(3.0)
-        .andThen(new WaitCommand(1.0).deadlineFor(intake.stateCommand(GroundIntakeState.MOVE_DOWN)))
-        .andThen(
-            new WaitCommand(1.0)
-                .deadlineFor(intake.stateCommand(GroundIntakeState.HOLD_DOWN_AND_INTAKE))
-                .andThen(
-                    new WaitCommand(1.0).deadlineFor(shooter.stateCommand(ShooterState.TRACK_HUB)))
-                .andThen(
-                    transfer
-                        .stateCommand(TransferState.FORWARD)
-                        .alongWith(spindexer.stateCommand(SpindexerState.FAST_CW))));
+    return path;
   }
 }
