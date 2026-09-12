@@ -7,17 +7,17 @@
 
 package com.team1165.robot.subsystems.transfer;
 
-import com.team1165.util.io.rollerpid.RollerPIDIO;
-import com.team1165.util.io.rollerpid.RollerPIDIOInputsAutoLogged;
+import com.team1165.util.io.dualroller.DualRollerIO;
+import com.team1165.util.io.dualroller.DualRollerIOInputsAutoLogged;
 import com.team1165.util.statemachine.v1.StateMachine;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.Logger;
 
 public class Transfer extends StateMachine<TransferState> {
-  private final RollerPIDIO io;
-  private final RollerPIDIOInputsAutoLogged inputs = new RollerPIDIOInputsAutoLogged();
+  private final DualRollerIO io;
+  private final DualRollerIOInputsAutoLogged inputs = new DualRollerIOInputsAutoLogged();
 
-  public Transfer(RollerPIDIO io) {
+  public Transfer(DualRollerIO io) {
     super(TransferState.IDLE);
     this.io = io;
   }

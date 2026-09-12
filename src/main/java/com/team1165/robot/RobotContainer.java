@@ -43,8 +43,8 @@ import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIO;
 import com.team1165.robot.subsystems.vision.apriltag.io.ATVisionIOPhoton;
 import com.team1165.util.constants.RobotMode;
 import com.team1165.util.io.dualroller.DualRollerIOTalonFX;
+import com.team1165.util.io.dualroller.DualRollerPIDIOSpark;
 import com.team1165.util.io.roller.RollerIOSpark;
-import com.team1165.util.io.rollerpid.RollerPIDIOSpark;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -100,7 +100,12 @@ public class RobotContainer {
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
         turret = new Turret(new TurretIOTalon(Motor.config) {});
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
-        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        transfer =
+            new Transfer(
+                new DualRollerPIDIOSpark(
+                    TransferConstants.primaryConfig,
+                    TransferConstants.secondaryConfig,
+                    TransferConstants.secondaryInverted));
 
         shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
@@ -129,7 +134,12 @@ public class RobotContainer {
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
         turret = new Turret(new TurretIOTalon(Motor.config));
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
-        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        transfer =
+            new Transfer(
+                new DualRollerPIDIOSpark(
+                    TransferConstants.primaryConfig,
+                    TransferConstants.secondaryConfig,
+                    TransferConstants.secondaryInverted));
 
         shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
@@ -153,7 +163,12 @@ public class RobotContainer {
         hood = new Hood(new HoodIOSpark(HoodConstants.config));
         turret = new Turret(new TurretIO() {});
         spindexer = new Spindexer(new RollerIOSpark(SpindexerConstants.config));
-        transfer = new Transfer(new RollerPIDIOSpark(TransferConstants.config));
+        transfer =
+            new Transfer(
+                new DualRollerPIDIOSpark(
+                    TransferConstants.primaryConfig,
+                    TransferConstants.secondaryConfig,
+                    TransferConstants.secondaryInverted));
 
         shooter = new ShooterManager(drive, flywheel, hood, turret);
       }
