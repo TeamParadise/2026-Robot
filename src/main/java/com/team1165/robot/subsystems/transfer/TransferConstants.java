@@ -41,6 +41,11 @@ public final class TransferConstants {
           .inverted(true)
           .openLoopRampRate(0.25)
           .smartCurrentLimit(60);
-  public static final SparkConfig config =
+  public static final SparkConfig primaryConfig =
       SparkConfig.sparkMax("Transfer", RIO.transfer, MotorType.kBrushless, baseConfig);
+  public static final SparkConfig secondaryConfig =
+      SparkConfig.sparkMax("Agitator", RIO.agitator, MotorType.kBrushless, baseConfig);
+
+  // Validate this on the assembled robot and flip it if the agitator turns the wrong direction.
+  public static final boolean secondaryInverted = true;
 }

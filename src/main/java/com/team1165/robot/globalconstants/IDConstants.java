@@ -23,6 +23,8 @@ public class IDConstants {
     public static final int intakeRoller = 57;
     public static final int spindexer = 12;
     public static final int transfer = 5;
+    // TODO: Replace with the CAN ID for agitator
+    public static final int agitator = 0;
   }
 
   public static final class CANivore {
