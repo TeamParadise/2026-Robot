@@ -17,21 +17,22 @@ public class BasicShooterLUT {
       new InterpolatingTreeMap<>(InverseInterpolator.forDouble(), ShooterParameters.interpolator());
 
   static {
-    lut.put(2.2, new ShooterParameters(4100 / 60.0, 1.0));
-    lut.put(2.8, new ShooterParameters(4200 / 60.0, 1.5));
-    lut.put(3.3, new ShooterParameters(4300 / 60.0, 2.0));
-    lut.put(3.8, new ShooterParameters(4400 / 60.0, 2.5));
-    lut.put(4.2, new ShooterParameters(4400 / 60.0, 3.0));
-    lut.put(4.6, new ShooterParameters(4450 / 60.0, 3.3));
-    lut.put(5.1, new ShooterParameters(4600 / 60.0, 3.3));
+    lut.put(2.17, new ShooterParameters(4150 / 60.0, 0.0, 0.0));
+    lut.put(2.638, new ShooterParameters(4150 / 60.0, 0.5, 0.0));
+    lut.put(3.05, new ShooterParameters(4350 / 60.0, 0.75, 0.0));
+    lut.put(3.8, new ShooterParameters(4400 / 60.0, 1.0, 0.0));
+    lut.put(4.2, new ShooterParameters(4750 / 60.0, 1.25, 0.0));
+    lut.put(4.6, new ShooterParameters(4850 / 60.0, 1.35, 0.0));
+    lut.put(5.1, new ShooterParameters(4950 / 60.0, 1.45, 0.0));
   }
 
-  public record ShooterParameters(double rps, double angle) {
+  public record ShooterParameters(double rps, double angle, double tof) {
     public static Interpolator<ShooterParameters> interpolator() {
       return (start, end, t) ->
           new ShooterParameters(
               MathUtil.interpolate(start.rps, end.rps, t),
-              MathUtil.interpolate(start.angle, end.angle, t));
+              MathUtil.interpolate(start.angle, end.angle, t),
+              MathUtil.interpolate(start.tof, end.tof, t));
     }
   }
   ;

@@ -13,6 +13,8 @@
 
 package com.team1165.robot;
 
+import com.ctre.phoenix6.SignalLogger;
+import com.revrobotics.util.StatusLogger;
 import com.team1165.robot.globalconstants.BuildConstants;
 import com.team1165.util.tunables.TuningManager;
 import com.team1165.util.vendor.ctre.PhoenixSignalUtils;
@@ -56,7 +58,7 @@ public class Robot extends LoggedRobot {
     switch (Constants.currentMode) {
       case REAL:
         // Running on a real robot, log to a USB stick ("/U/logs")
-        Logger.addDataReceiver(new WPILOGWriter());
+        //        Logger.addDataReceiver(new WPILOGWriter());
         Logger.addDataReceiver(new NT4Publisher());
         break;
       case SIM:
@@ -74,6 +76,9 @@ public class Robot extends LoggedRobot {
 
     // Start AdvantageKit logger
     Logger.start();
+
+    SignalLogger.enableAutoLogging(false);
+    StatusLogger.disableAutoLogging();
 
     // Wire up container/subsystems/commands
     robotContainer = new RobotContainer();

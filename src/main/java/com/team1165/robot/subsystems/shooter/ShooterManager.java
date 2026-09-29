@@ -114,12 +114,33 @@ public class ShooterManager extends StateManager<ShooterState> {
         setSubsystemState(turret, TurretState.SIMPLE_TRACKING);
       }
       case TEST -> {
-        flywheel.setTrackingSpeed(SmartDashboard.getNumber("Shooter/TestSpeed", 4000) / 60);
-        hood.setTrackingPosition(SmartDashboard.getNumber("Shooter/TestAngle", 1.5));
+        Pose2d drivePose = drive.getPose();
+        Pose2d turretPose = drivePose.plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero));
+        Pose2d hub =
+            new Pose3d(
+                    DriverStation.getAlliance().isPresent()
+                            && DriverStation.getAlliance().get().equals(Alliance.Red)
+                        ? FieldConstants.Hub.oppTopCenterPoint
+                        : Hub.topCenterPoint,
+                    Rotation3d.kZero)
+                .toPose2d();
+        Logger.recordOutput("ShooterManager/Hub", hub);
+        double distanceFromHub = turretPose.relativeTo(hub).getTranslation().getNorm();
+        double angle =
+            new Rotation2d(
+                    Math.atan2(hub.getY() - turretPose.getY(), hub.getX() - turretPose.getX()))
+                .minus(drivePose.getRotation())
+                .getRotations();
+        Logger.recordOutput("Turret/Angle", angle);
+        ShooterParameters parameters = BasicShooterLUT.lut.get(distanceFromHub);
+        Logger.recordOutput("ShooterManager/Distance", distanceFromHub);
+        flywheel.setTrackingSpeed(SmartDashboard.getNumber("Shooter/TestSpeed", 4700) / 60);
+        hood.setTrackingPosition(SmartDashboard.getNumber("Shooter/TestAngle", 1.2));
+        turret.setSimpleTargetPosition(angle / gearRatio);
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);
-        setSubsystemState(turret, TurretState.STRAIGHT);
+        setSubsystemState(turret, TurretState.SIMPLE_TRACKING);
       }
     }
   }

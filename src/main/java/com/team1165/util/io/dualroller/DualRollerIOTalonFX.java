@@ -33,7 +33,8 @@ public class DualRollerIOTalonFX implements DualRollerIO {
   private final TalonMotorData secondaryMotorData;
 
   // Velocity control
-  private final VelocityVoltage velocityVoltage = new VelocityVoltage(0).withUpdateFreqHz(0);
+  private final VelocityVoltage velocityVoltage =
+      new VelocityVoltage(0).withUpdateFreqHz(0).withEnableFOC(true);
   private final VelocityTorqueCurrentFOC velocityCurrent =
       new VelocityTorqueCurrentFOC(0).withUpdateFreqHz(0);
 

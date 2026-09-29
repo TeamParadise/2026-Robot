@@ -31,20 +31,15 @@ public class FlywheelConstants {
     baseMotorConfig.Feedback.SensorToMechanismRatio = (1.0 / 1.5);
 
     baseMotorConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
-    baseMotorConfig.MotorOutput.PeakForwardDutyCycle = 1.0;
-    baseMotorConfig.MotorOutput.PeakReverseDutyCycle = 0.0;
 
     baseMotorConfig.Slot0 =
         new Slot0Configs()
-            .withKP(999999.0)
+            .withKP(0.35)
             .withKI(0.0)
             .withKD(0.0)
-            .withKS(0.0)
-            .withKV(0.0)
-            .withKA(0.0);
-
-    baseMotorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 70.0;
-    baseMotorConfig.TorqueCurrent.PeakReverseTorqueCurrent = 0.0;
+            .withKS(0.16202)
+            .withKV(0.0755)
+            .withKA(0.0061278);
   }
 
   public static final TalonFXConfig primaryMotorConfig =

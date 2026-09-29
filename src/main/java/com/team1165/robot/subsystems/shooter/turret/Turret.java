@@ -18,8 +18,8 @@ import edu.wpi.first.math.util.Units;
 import org.littletonrobotics.junction.Logger;
 
 public class Turret extends OverridableStateMachine<TurretState> {
-  private static final double minAngle = Units.degreesToRadians(-90.0);
-  private static final double maxAngle = Units.degreesToRadians(90.0);
+  private static final double minAngle = Units.degreesToRadians(-200.0);
+  private static final double maxAngle = Units.degreesToRadians(30.0);
 
   private final TurretIO io;
   private final TurretIOInputs inputs = new TurretIOInputs();
@@ -48,8 +48,8 @@ public class Turret extends OverridableStateMachine<TurretState> {
     this.targetPosition =
         position > (0.375 / TurretConstants.Motor.gearRatio)
             ? 0.375 / TurretConstants.Motor.gearRatio
-            : position < -0.375 / TurretConstants.Motor.gearRatio
-                ? -0.375 / TurretConstants.Motor.gearRatio
+            : position < -0.275 / TurretConstants.Motor.gearRatio
+                ? -0.275 / TurretConstants.Motor.gearRatio
                 : position;
     Logger.recordOutput(name + "/TargetPosition", position);
   }

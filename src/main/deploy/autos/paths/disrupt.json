@@ -14,8 +14,8 @@
     },
     {
       "type": "translation",
-      "x_meters": 5.61314,
-      "y_meters": 0.54346,
+      "x_meters": 5.50733,
+      "y_meters": 0.50819,
       "intermediate_handoff_radius_meters": 0.3
     },
     {
@@ -26,31 +26,67 @@
         "intermediate_handoff_radius_meters": 0.35
       },
       "rotation_target": {
-        "rotation_radians": -0.7854,
+        "rotation_radians": -1.33157,
         "profiled_rotation": true
       }
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 8.22298,
-        "y_meters": 1.71906,
+        "x_meters": 8.46985,
+        "y_meters": 1.70731,
         "intermediate_handoff_radius_meters": 0.3
       },
       "rotation_target": {
-        "rotation_radians": -0.7854,
+        "rotation_radians": -1.48279,
         "profiled_rotation": true
       }
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 8.22298,
-        "y_meters": 6.70362,
+        "x_meters": 8.42283,
+        "y_meters": 3.21208,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
         "rotation_radians": -0.7854,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.18918,
+        "y_meters": 3.38842,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.21269,
+        "y_meters": 2.57725,
+        "intermediate_handoff_radius_meters": 0.15
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5708,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 2.2274,
+        "y_meters": 2.64779,
+        "intermediate_handoff_radius_meters": 0.3
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5708,
         "profiled_rotation": true
       }
     }
@@ -63,9 +99,24 @@
         "end_ordinal": 3
       },
       {
-        "value": 1.5,
+        "value": 0.7,
         "start_ordinal": 4,
         "end_ordinal": 4
+      },
+      {
+        "value": 1.0,
+        "start_ordinal": 5,
+        "end_ordinal": 5
+      },
+      {
+        "value": 1.0,
+        "start_ordinal": 6,
+        "end_ordinal": 6
+      },
+      {
+        "value": 3.5,
+        "start_ordinal": 7,
+        "end_ordinal": 7
       }
     ]
   }

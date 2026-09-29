@@ -179,6 +179,8 @@ public class RobotContainer {
     robotState = new RobotState(drive, turret);
 
     configureButtonBindings();
+
+    // Auto stuff
     path = drive.buildPath(new Path("disrupt"));
     RobotModeTriggers.autonomous().whileTrue(getAutonomousCommand());
   }

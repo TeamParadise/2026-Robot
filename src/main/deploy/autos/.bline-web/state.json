@@ -30,20 +30,20 @@
   "path_groups": [],
   "linked_targets": [],
   "paths": {
-    "tower.json": {
-      "display_name": "tower",
-      "editor_metadata": null
-    },
-    "example_b.json": {
-      "display_name": "example b",
+    "disrupt.json": {
+      "display_name": "disrupt",
       "editor_metadata": null
     },
     "depot.json": {
       "display_name": "depot",
       "editor_metadata": null
     },
-    "disrupt.json": {
-      "display_name": "disrupt",
+    "tower.json": {
+      "display_name": "tower",
+      "editor_metadata": null
+    },
+    "example_b.json": {
+      "display_name": "example b",
       "editor_metadata": null
     }
   },

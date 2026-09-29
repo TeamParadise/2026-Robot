@@ -69,16 +69,8 @@ public class Flywheel extends OverridableStateMachine<FlywheelState> {
     switch (getCurrentState()) {
       case IDLE -> io.stop();
       case TRACKING -> {
-        if (MathUtil.isNear(
-            trackingSpeed,
-            inputs.primaryMotor.getVelocity(),
-            trackingSpeed * FlywheelConstants.currentTolerance)) {
-          Logger.recordOutput(name + "/ControlMode", "TorqueCurrentFOC");
-          io.runVelocityTorqueCurrent(trackingSpeed);
-        } else {
-          Logger.recordOutput(name + "/ControlMode", "Voltage");
-          io.runVelocityVoltage(trackingSpeed);
-        }
+        Logger.recordOutput(name + "/ControlMode", "Voltage");
+        io.runVelocityVoltage(trackingSpeed);
       }
     }
   }
