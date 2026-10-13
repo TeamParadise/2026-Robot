@@ -26,6 +26,8 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -85,6 +87,7 @@ public class ShooterManager extends StateManager<ShooterState> {
         setSubsystemState(turret, TurretState.STRAIGHT);
       }
       case TRACK_HUB -> {
+        ChassisSpeeds speed = drive.getSpeeds();
         Pose2d drivePose = drive.getPose();
         Pose2d turretPose = drivePose.plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero));
         Pose2d hub =
@@ -96,23 +99,22 @@ public class ShooterManager extends StateManager<ShooterState> {
                     Rotation3d.kZero)
                 .toPose2d();
         Logger.recordOutput("ShooterManager/Hub", hub);
-        double distanceFromHub = turretPose.relativeTo(hub).getTranslation().getNorm();
-        double angle =
-            new Rotation2d(
-                    Math.atan2(hub.getY() - turretPose.getY(), hub.getX() - turretPose.getX()))
-                .minus(drivePose.getRotation())
-                .getRotations();
-        Logger.recordOutput("Turret/Angle", angle);
-        ShooterParameters parameters = BasicShooterLUT.lut.get(distanceFromHub);
+        Translation2d vectorToHub = hub.relativeTo(turretPose).getTranslation();
+        double angleToHub = Math.atan2(vectorToHub.getY() - speed.vyMetersPerSecond, vectorToHub.getX() - speed.vxMetersPerSecond);
+
+        Logger.recordOutput("Turret/AngleToHub", angleToHub);
+
+        ShooterParameters parameters = BasicShooterLUT.lut.get(vectorToHub.getNorm());
 
         flywheel.setTrackingSpeed(parameters.rps());
         hood.setTrackingPosition(parameters.angle());
-        turret.setSimpleTargetPosition(angle / gearRatio);
+        turret.setSimpleTargetPosition(angleToHub / gearRatio);
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);
         setSubsystemState(turret, TurretState.SIMPLE_TRACKING);
       }
+
       case TEST -> {
         Pose2d drivePose = drive.getPose();
         Pose2d turretPose = drivePose.plus(new Transform2d(0.192024, 0.0, Rotation2d.kZero));
@@ -126,17 +128,18 @@ public class ShooterManager extends StateManager<ShooterState> {
                 .toPose2d();
         Logger.recordOutput("ShooterManager/Hub", hub);
         double distanceFromHub = turretPose.relativeTo(hub).getTranslation().getNorm();
-        double angle =
+        double angleToHub =
             new Rotation2d(
                     Math.atan2(hub.getY() - turretPose.getY(), hub.getX() - turretPose.getX()))
                 .minus(drivePose.getRotation())
                 .getRotations();
-        Logger.recordOutput("Turret/Angle", angle);
+        Logger.recordOutput("Turret/AngleToHub", angleToHub);
         ShooterParameters parameters = BasicShooterLUT.lut.get(distanceFromHub);
+
         Logger.recordOutput("ShooterManager/Distance", distanceFromHub);
         flywheel.setTrackingSpeed(SmartDashboard.getNumber("Shooter/TestSpeed", 4700) / 60);
         hood.setTrackingPosition(SmartDashboard.getNumber("Shooter/TestAngle", 1.2));
-        turret.setSimpleTargetPosition(angle / gearRatio);
+        turret.setSimpleTargetPosition(angleToHub / gearRatio);
 
         setSubsystemState(flywheel, FlywheelState.TRACKING);
         setSubsystemState(hood, HoodState.TRACKING);
